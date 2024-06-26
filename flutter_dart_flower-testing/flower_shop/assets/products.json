@@ -1,0 +1,157 @@
+[
+    {
+      "id": 1,
+      "images": [
+        "assets/images/flower_white_1.png",
+        "assets/images/hoahong.png",
+        "assets/images/flower_white_1.png",
+        "assets/images/flower_white_1.png"
+      ],
+      "title": "Hoa Trắng",
+      "price": 64.99,
+      "description": "Hoa hồng là một loài hoa nổi tiếng, Hoa hồng là một loài hoa nổi tiếng, Hoa hồng là một loài hoa nổi tiếng, Hoa hồng là một loài hoa nổi tiếng, Hoa hồng là một loài hoa nổi tiếng, Hoa hồng là một loài hoa nổi tiếng, Hoa hồng là một loài hoa nổi tiếng,",
+      "rating": 4.8,
+      "isFavourite": true,
+      "isPopular": true,
+      "category": "Flower"
+    },
+    {
+      "id": 2,
+      "images": [
+        "assets/images/hoahong.png"
+      ],
+      "title": "Hoa hồng",
+      "price": 50.5,
+      "description": "Hoa hồng là một loài hoa nổi tiếng...",
+      "rating": 4.1,
+      "isPopular": true,
+      "category": "Flower"
+    },
+    {
+      "id": 3,
+      "images": [
+        "assets/images/hoahong.png"
+      ],
+      "title": "Hoa Cẩm tú cầu",
+      "price": 36.55,
+      "description": "Hoa hồng là một loài hoa nổi tiếng...",
+      "rating": 4.1,
+      "isFavourite": true,
+      "isPopular": true,
+      "category": "Gift"
+    },
+    {
+      "id": 4,
+      "images": [
+        "assets/images/flower_white_1.png"
+      ],
+      "title": "Hoa Lan",
+      "price": 20.20,
+      "description": "Hoa hồng là một loài hoa nổi tiếng...",
+      "rating": 4.1,
+      "isFavourite": true,
+      "category": "Special"
+    },
+    {
+        "id": 5,
+        "images": [
+          "assets/images/flower_white_1.png",
+          "assets/images/flower_white_1.png",
+          "assets/images/flower_white_1.png",
+          "assets/images/flower_white_1.png"
+        ],
+        "title": "Hoa Trắng",
+        "price": 64.99,
+        "description": "Hoa hồng là một loài hoa nổi tiếng...",
+        "rating": 4.8,
+        "isFavourite": false,
+        "isPopular": true,
+        "category": "Classify"
+      },
+      {
+        "id": 6,
+        "images": [
+          "assets/images/hoahong.png"
+        ],
+        "title": "Hoa hồng",
+        "price": 50.5,
+        "description": "Hoa hồng là một loài hoa nổi tiếng...",
+        "rating": 4.1,
+        "isPopular": true,
+        "category": "Daily Gift"
+      },
+      {
+        "id": 7,
+        "images": [
+          "assets/images/hoahong.png"
+        ],
+        "title": "Hoa Cẩm tú cầu",
+        "price": 36.55,
+        "description": "Hoa hồng là một loài hoa nổi tiếng...",
+        "rating": 4.1,
+        "isFavourite": true,
+        "isPopular": true,
+        "category": "Gift"
+      },
+      {
+        "id": 8,
+        "images": [
+          "assets/images/flower_white_1.png"
+        ],
+        "title": "Hoa Lan",
+        "price": 20.20,
+        "description": "Hoa hồng là một loài hoa nổi tiếng...",
+        "rating": 4.1,
+        "isFavourite": false,
+        "category": "Special"
+      },
+      {
+        "id": 9,
+        "images": [
+          "assets/images/flower_white_1.png"
+        ],
+        "title": "Hoa Lan",
+        "price": 20.20,
+        "description": "Hoa hồng là một loài hoa nổi tiếng...",
+        "rating": 4.1,
+        "isFavourite": false,
+        "category": "Special"
+      },
+      {
+        "id": 10,
+        "images": [
+          "assets/images/flower_white_1.png"
+        ],
+        "title": "Hoa Lan",
+        "price": 20.20,
+        "description": "Hoa hồng là một loài hoa nổi tiếng...",
+        "rating": 4.1,
+        "isFavourite": false,
+        "category": "Flower"
+      },
+      {
+        "id": 11,
+        "images": [
+          "assets/images/flower_white_1.png"
+        ],
+        "title": "Hoa Lan",
+        "price": 20.20,
+        "description": "Hoa hồng là một loài hoa nổi tiếng...",
+        "rating": 4.1,
+        "isFavourite": false,
+        "category": "Flower"
+      },
+      {
+        "id": 12,
+        "images": [
+          "assets/images/flower_white_1.png"
+        ],
+        "title": "Hoa Lan",
+        "price": 20.20,
+        "description": "Hoa hồng là một loài hoa nổi tiếng...",
+        "rating": 4.1,
+        "isFavourite": false,
+        "category": "Special"
+      }
+]
+  

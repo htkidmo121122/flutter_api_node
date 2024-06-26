@@ -1,0 +1,35 @@
+name: health_care
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.3.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_svg: ^2.0.9 # help us to use SVG in our app
+  provider: ^6.1.1 # for State management
+  image_picker: ^0.8.4+4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/products.json
+  # fonts:
+  #   - family: Muli
+  #     fonts:
+  #       - asset: assets/fonts/muli/Muli.ttf
+  #       - asset: assets/fonts/muli/Muli-Bold.ttf
+  #         weight: 700
+  #       - asset: assets/fonts/muli/Muli-Light.ttf
+  #         weight: 300
