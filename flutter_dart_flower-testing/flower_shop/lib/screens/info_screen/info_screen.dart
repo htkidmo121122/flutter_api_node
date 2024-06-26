@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:health_care/screens/signin_screen/signin_screen.dart';
@@ -27,6 +27,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   final addressController = TextEditingController();
 
   bool isLoading = true;
+  Uint8List? userImage;
 
   @override
   void initState() {
@@ -56,12 +57,19 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
           gender: userData['gender']?.toString() ?? 'N/A',
           address: userData['address']?.toString() ?? 'N/A',
           password: '********',
-          image: userData['avatar']?.toString() ?? 'assets/images/profile_image.png',
+          image: userData['avatar']?.toString() ?? '',
         );
+
+        String base64String = user.image!;
+
+        // Tách phần base64 ra khỏi header
+        String base64Image = base64String.split(',').last;
+        // Giải mã chuỗi base64 thành mảng byte
+        userImage = Uint8List.fromList(base64.decode(base64Image));
 
         // Cập nhật giá trị của các TextEditingController
         fullNameController.text = user.fullName!;
-        emailController.text = user.email!;
+        emailController.text = user.email;
         phoneNumberController.text = user.phoneNumber!;
         countryController.text = user.country!;
         genderController.text = user.gender!;
@@ -112,11 +120,11 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     onTap: () {
                       Navigator.of(context).pushNamed(EditProfileScreen.routeName);
                     },
-                    child: const CircleAvatar(
+                    child: CircleAvatar(
                       radius: 50,
-                      backgroundImage: AssetImage(
-                        'assets/images/profile_image.png',
-                      ),
+                      backgroundImage: userImage != null
+                          ? MemoryImage(userImage!)
+                          : AssetImage('assets/images/profile_image.png') as ImageProvider,
                     ),
                   ),
                   const SizedBox(height: 16),
