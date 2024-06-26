@@ -70,7 +70,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
         isLoading = false; // Đã tải xong dữ liệu
       });
     } else {
-      print('No user data found in SharedPreferences');
+      // print('No user data found in SharedPreferences');
       // Xử lý khi không tìm thấy dữ liệu người dùng trong SharedPreferences
       isLoading = false; // Đã tải xong dữ liệu
       Navigator.pushNamed(context, SignInScreen.routeName);

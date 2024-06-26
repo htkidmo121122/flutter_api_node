@@ -65,12 +65,8 @@ class _SignFormState extends State<SignForm> {
       if (response.statusCode == 200) {
         try {
           final data = jsonDecode(response.body);
-        
-            
-        
-           
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setString('access_token', data['access_token']); //luu accesstoken 
+          await prefs.setString('access_token', data['access_token']); //luu accesstoken duoi dang doi tuong dart
           await prefs.setString('refresh_token', data['refresh_token']);
 
            final decodedToken = JwtDecoder.decode(data['access_token']);//decode access token lay id nguoi dung
@@ -109,13 +105,13 @@ class _SignFormState extends State<SignForm> {
       try {
         final userData = jsonDecode(response.body);
         final userDetail = userData['data'];
-        print(userDetail);
+
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         // user_data lưu trữ thông tin người dùng chi tiết
-        await prefs.setString('user_data', jsonEncode(userDetail));
+        await prefs.setString('user_data', jsonEncode(userDetail));//luu duoi dang json
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(userData['message'])),
+          SnackBar(content: Text('Đăng nhập thành công')),
         );
 
       } catch (e) {
