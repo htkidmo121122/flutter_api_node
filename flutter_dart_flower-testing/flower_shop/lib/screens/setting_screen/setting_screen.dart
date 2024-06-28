@@ -17,7 +17,7 @@ class _SettingScreenState extends State<SettingScreen> {
   bool notificationsOn = true; // Example state for notifications
   String language = 'English'; // Example state for language
   String theme = 'Light mode'; // Example state for theme
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

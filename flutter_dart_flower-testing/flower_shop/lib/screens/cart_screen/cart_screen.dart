@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_care/constants.dart';
 import 'package:health_care/mainpage.dart';
-import 'package:health_care/models/CartItem.dart';
+
 import 'package:health_care/screens/cart_screen/cart_item_widget.dart';
 import 'package:health_care/screens/cart_screen/cart_provider.dart';
 import 'package:provider/provider.dart';

@@ -5,9 +5,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:health_care/screens/info_screen/info_screen.dart';
 import 'package:health_care/screens/signin_screen/signin_screen.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'dart:io';
-import 'package:health_care/mainpage.dart';
+
 import 'package:health_care/models/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,8 +32,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final addressController = TextEditingController();
   Uint8List? userImage;
   bool isLoading = true;
-  String? selectedCountry;
-  String? userId;
 
   // final List<String> genders = ['Nam', 'Nữ', 'Khác'];
 
@@ -111,7 +109,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         });
       }
     }
-    print(_imageBase64);
   }
   
 
@@ -142,13 +139,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 onTap: _pickImage,
                 child: CircleAvatar(
                   radius: 50,
-                  backgroundImage:  _imageBase64.isNotEmpty || _filePath.isNotEmpty
+                  backgroundImage:  _imageBase64.isNotEmpty 
                       ? MemoryImage(
             base64Decode(_imageBase64), // Giả sử _imageBase64 là một chuỗi base64 đã được giải mã
           )
-                      : AssetImage(
-                              user.image ?? 'assets/images/profile_image.png')
-                          as ImageProvider,
+                      : MemoryImage(
+                            userImage!)
+                          as ImageProvider 
                 ),
               ),
               const SizedBox(height: 16),

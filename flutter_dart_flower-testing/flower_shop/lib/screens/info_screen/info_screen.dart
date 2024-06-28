@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:health_care/screens/signin_screen/components/sign_form.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:health_care/screens/signin_screen/signin_screen.dart';
 import 'package:health_care/mainpage.dart';
 import 'package:health_care/models/User.dart';
 import 'package:health_care/screens/info_screen/edit_profile.dart';
+
 
 class PersonalInfoScreen extends StatefulWidget {
   const PersonalInfoScreen({Key? key}) : super(key: key);
@@ -26,6 +28,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
   bool isLoading = true;
   Uint8List? userImage;
+
 
   @override
   void initState() {
@@ -53,15 +56,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
           phoneNumber: userData['phone']?.toString() ?? 'N/A',
           country: userData['city']?.toString() ?? 'N/A',
           address: userData['address']?.toString() ?? 'N/A',
-          image: userData['avatar']?.toString() ?? '',
+          image: userData['avatar']?.toString(),
         );
 
-        String base64String = user.image!;
-
-        // Tách phần base64 ra khỏi header
-        String base64Image = base64String.split(',').last;
-        // Giải mã chuỗi base64 thành mảng byte
-        userImage = Uint8List.fromList(base64.decode(base64Image));
+       
 
         // Cập nhật giá trị của các TextEditingController
         fullNameController.text = user.fullName!;
@@ -71,6 +69,15 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
         // genderController.text = user.gender!;
         addressController.text = user.address!;
 
+        if(user.image != null)
+        {
+          String base64String = user.image!;
+          // Tách phần base64 ra khỏi header
+          String base64Image = base64String.split(',').last;
+          // Giải mã chuỗi base64 thành mảng byte
+          userImage = Uint8List.fromList(base64.decode(base64Image));
+        }
+        
         isLoading = false; // Đã tải xong dữ liệu
       });
     } else {
