@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:health_care/screens/signin_screen/signin_screen.dart';
 // import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
 
 // import '../../../components/custom_surfix_icon.dart';
 // import '../../../components/form_error.dart';
@@ -19,7 +23,10 @@ class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
+  String? confirmPassword;
   bool? remember = false;
+  bool _isLoading = false;
+
   final List<String?> errors = [];
 
   void addError({String? error}) {
@@ -35,6 +42,53 @@ class _SignFormState extends State<SignForm> {
       setState(() {
         errors.remove(error);
       });
+    }
+  }
+
+  Future<void> _signup() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      setState(() {
+        _isLoading = true;
+      });
+
+      final response = await http.post(
+        Uri.parse('http://localhost:3001/api/user/sign-up'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'email': email!,
+          'password': password!,
+          'confirmPassword': confirmPassword!
+        }),
+      );
+
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        try {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Đăng Kí Thành Công')),
+          );
+          _isLoading = false;
+          Navigator.pushNamed(context, SignInScreen.routeName);
+        }
+
+        // Navigate to MyStoredDataPage after successful login
+        catch (e) {
+          // Handle JSON parse error
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content:
+                    Text('Failed to connect with server: ${response.body}')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Sign Up failed: ${response.statusCode}')),
+        );
+      }
     }
   }
 
@@ -225,33 +279,27 @@ class _SignFormState extends State<SignForm> {
           // ),
           // FormError(errors: errors),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                // KeyboardUtil.hideKeyboard(context);
-                // Navigator.pushNamed(context, LoginSuccessScreen.routeName);
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: kPrimaryColor,
-              padding: EdgeInsets.symmetric(vertical: 12),
-              minimumSize:
-                  Size(double.infinity, 50), // Set kích thước tối thiểu
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-                // Set border radius here
-              ),
-            ),
-            child: const Text(
-              "Sign Up",
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-          ),
+          _isLoading
+              ? CircularProgressIndicator()
+              : ElevatedButton(
+                  onPressed: _signup,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kPrimaryColor,
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    minimumSize: Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(color: kPrimaryColor, width: 1),
+                    ),
+                  ),
+                  child: const Text(
+                    "Sign Up",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ),
         ],
       ),
     );
