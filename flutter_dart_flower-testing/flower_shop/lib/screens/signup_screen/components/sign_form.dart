@@ -46,51 +46,72 @@ class _SignFormState extends State<SignForm> {
   }
 
   Future<void> _signup() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+  if (_formKey.currentState!.validate()) {
+    _formKey.currentState!.save();
+    print(email);
+    print(password);
+    print(confirmPassword);
+    
+
+    if (email != null && password != null && confirmPassword != null) {
       setState(() {
         _isLoading = true;
       });
 
-      final response = await http.post(
-        Uri.parse('http://localhost:3001/api/user/sign-up'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'email': email!,
-          'password': password!,
-          'confirmPassword': confirmPassword!
-        }),
-      );
+      try {
+        final response = await http.post(
+          Uri.parse('http://localhost:3001/api/user/sign-up'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'email': email!,
+            'password': password!,
+            'confirmPassword': confirmPassword!
+          }),
+        );
 
-      print(response.body);
+        print(response.body);
 
-      if (response.statusCode == 200) {
-        try {
-          ScaffoldMessenger.of(context).showSnackBar(
+        if (response.statusCode == 200) {
+          final data = jsonDecode(response.body);
+          final message = data["message"];
+          if(data["status"] == "ERR")
+          {
+              ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('$message')),
+          );
+          }
+          else{
+            ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Đăng Kí Thành Công')),
           );
-          _isLoading = false;
           Navigator.pushNamed(context, SignInScreen.routeName);
-        }
 
-        // Navigate to MyStoredDataPage after successful login
-        catch (e) {
-          // Handle JSON parse error
+          }
+          
+        } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content:
-                    Text('Failed to connect with server: ${response.body}')),
+            SnackBar(content: Text('Sign Up failed: ${response.statusCode}')),
           );
         }
-      } else {
+      } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Sign Up failed: ${response.statusCode}')),
+          SnackBar(content: Text('Failed to connect with server: ${e.toString()}')),
         );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
       }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill out all fields')),
+      );
     }
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +226,7 @@ class _SignFormState extends State<SignForm> {
           const SizedBox(height: 20),
           TextFormField(
             obscureText: true,
-            onSaved: (newValue) => password = newValue,
+            onSaved: (newValue) => confirmPassword = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
                 removeError(error: kPassNullError);
