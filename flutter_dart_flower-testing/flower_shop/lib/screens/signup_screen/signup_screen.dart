@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_care/constants.dart';
+import 'package:health_care/screens/splash_screen/splash_screen.dart';
 // import 'package:health_care/constants.dart';
 
 // import '../../components/no_account_text.dart';
@@ -18,6 +19,12 @@ class SignUpScreen extends StatelessWidget {
         title: const Text(
           "ĐĂNG KÝ",
           style: TextStyle(fontWeight: FontWeight.bold, color: kPrimaryColor),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pushNamed(SplashScreen.routeName);
+          },
         ),
         backgroundColor: Colors.white,
       ),
