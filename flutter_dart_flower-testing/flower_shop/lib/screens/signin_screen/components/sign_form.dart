@@ -105,6 +105,7 @@ class _SignFormState extends State<SignForm> {
       try {
         final userData = jsonDecode(response.body);
         final userDetail = userData['data'];
+        print(userDetail);
 
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         // user_data lưu trữ thông tin người dùng chi tiết

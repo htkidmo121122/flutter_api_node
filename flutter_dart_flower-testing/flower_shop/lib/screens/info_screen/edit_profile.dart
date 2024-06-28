@@ -1,13 +1,19 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:health_care/screens/info_screen/info_screen.dart';
+import 'package:health_care/screens/signin_screen/signin_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:health_care/mainpage.dart';
 import 'package:health_care/models/User.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
-  static String routeName = "/edit";
+  static String routeName = "/edit_info";
 
   @override
   // ignore: library_private_types_in_public_api
@@ -15,72 +21,102 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  final picker = ImagePicker();
-  File? _image;
+  String _filePath = ''; // Đường dẫn của hình ảnh đã chọn
+  String _imageBase64 = ''; // Dữ liệu của hình ảnh dạng base64
 
-  final user = User(
-    fullName: 'Nguyen Van A',
-    email: 'doanflutter@gmail.com',
-    phoneNumber: '0989891234',
-    country: 'Hồ Chí Minh',
-    gender: 'Nam',
-    address: '828 Sư Vạn Hạnh, Phường 13, Quận 10, TP.HCM',
-    password: '********',
-    image: 'assets/images/profile_image.png',
-  );
-
-  late TextEditingController nameController;
-  late TextEditingController emailController;
-  late TextEditingController phoneController;
-  late TextEditingController addressController;
+  late User user;
+  final fullNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneNumberController = TextEditingController();
+  final countryController = TextEditingController();
+  final addressController = TextEditingController();
+  Uint8List? userImage;
+  bool isLoading = true;
   String? selectedCountry;
-  String? selectedGender;
+  String? userId;
 
-  final List<String> countries = [
-    'Hồ Chí Minh',
-    'Hà Nội',
-    'Đà Nẵng',
-    'Cần Thơ',
-    'Hải Phòng',
-    'Huế',
-    'Nam Định',
-    'Hà Giang',
-    'Quảng Ngãi',
-    'Bình Định',
-    'Đăk Lăk',
-    'Gia Lai'
-  ];
-  final List<String> genders = ['Nam', 'Nữ', 'Khác'];
+  // final List<String> genders = ['Nam', 'Nữ', 'Khác'];
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController(text: user.fullName);
-    emailController = TextEditingController(text: user.email);
-    phoneController = TextEditingController(text: user.phoneNumber);
-    selectedCountry = user.country;
-    selectedGender = user.gender;
-    addressController = TextEditingController(text: user.address);
+    loadUserData();
+  }
+  Future<void> loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userDataString = prefs.getString('user_data');
+    if (userDataString != null) {
+      Map<String, dynamic> userData = jsonDecode(userDataString);
+
+      setState(() {
+        user = User(
+          fullName: userData['name']?.toString() ?? 'N/A',
+          email: userData['email']?.toString() ?? 'N/A',
+          phoneNumber: userData['phone']?.toString() ?? 'N/A',
+          country: userData['city']?.toString() ?? 'N/A',
+          address: userData['address']?.toString() ?? 'N/A',
+          image: userData['avatar']?.toString() ?? '',
+
+        );
+
+        String base64String = user.image!;
+
+        // Tách phần base64 ra khỏi header
+        String base64Image = base64String.split(',').last;
+        // Giải mã chuỗi base64 thành mảng byte
+        userImage = Uint8List.fromList(base64.decode(base64Image));
+
+        // Cập nhật giá trị của các TextEditingController
+        fullNameController.text = user.fullName!;
+        emailController.text = user.email;
+        phoneNumberController.text = user.phoneNumber!;
+        countryController.text = user.country!;
+        // genderController.text = user.gender!;
+        addressController.text = user.address!;
+
+        isLoading = false; // Đã tải xong dữ liệu
+      });
+    } else {
+      // print('No user data found in SharedPreferences');
+      // Xử lý khi không tìm thấy dữ liệu người dùng trong SharedPreferences
+      isLoading = false; // Đã tải xong dữ liệu
+      Navigator.pushNamed(context, SignInScreen.routeName);
+      // Điều hướng về màn hình đăng nhập
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Bạn chưa đăng nhập vào tài khoản')),
+      );
+    }
   }
 
   Future<void> _pickImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: false,
+    );
 
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
+    if (result != null) {
+      PlatformFile file = result.files.first;
+      setState(() {
+        _filePath = file.path ?? '';
+      });
+
+      // Đọc và chuyển đổi hình ảnh sang base64
+      if (_filePath.isNotEmpty) {
+        File imageFile = File(_filePath);
+        List<int> imageBytes = await imageFile.readAsBytes();
+        setState(() {
+          _imageBase64 = base64Encode(imageBytes);
+        });
       }
-    });
+    }
+    print(_imageBase64);
   }
+  
 
   @override
   void dispose() {
-    nameController.dispose();
-    emailController.dispose();
-    phoneController.dispose();
-    addressController.dispose();
     super.dispose();
   }
 
@@ -106,8 +142,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 onTap: _pickImage,
                 child: CircleAvatar(
                   radius: 50,
-                  backgroundImage: _image != null
-                      ? FileImage(_image!)
+                  backgroundImage:  _imageBase64.isNotEmpty || _filePath.isNotEmpty
+                      ? MemoryImage(
+            base64Decode(_imageBase64), // Giả sử _imageBase64 là một chuỗi base64 đã được giải mã
+          )
                       : AssetImage(
                               user.image ?? 'assets/images/profile_image.png')
                           as ImageProvider,
@@ -115,7 +153,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               const SizedBox(height: 16),
               TextFormField(
-                controller: nameController,
+                controller: fullNameController,
                 decoration: const InputDecoration(
                   labelText: 'Full Name',
                   border: OutlineInputBorder(),
@@ -146,7 +184,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               const SizedBox(height: 16),
               TextFormField(
-                controller: phoneController,
+                controller: phoneNumberController,
                 decoration: const InputDecoration(
                   labelText: 'Phone Number',
                   border: OutlineInputBorder(),
@@ -162,56 +200,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 },
               ),
               const SizedBox(height: 16),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: DropdownButtonFormField<String>(
-                      value: selectedCountry,
-                      decoration: const InputDecoration(
-                        labelText: 'Country',
-                        border: OutlineInputBorder(),
-                      ),
-                      items: countries.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedCountry = newValue;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please select your country';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: DropdownButtonFormField<String>(
-                      value: selectedGender,
-                      decoration: const InputDecoration(
-                        labelText: 'Gender',
-                        border: OutlineInputBorder(),
-                      ),
-                      items: genders.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedGender = newValue;
-                        });
-                      },
-                    ),
-                  ),
-                ],
+              TextFormField(
+                controller: countryController,
+                decoration: const InputDecoration(
+                  labelText: 'Country',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your country';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
               TextFormField(

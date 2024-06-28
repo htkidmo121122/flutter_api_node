@@ -11,7 +11,8 @@ dependencies:
     sdk: flutter
   flutter_svg: ^2.0.9 # help us to use SVG in our app
   provider: ^6.1.1 # for State management
-  image_picker: ^0.8.4+4
+  image_picker: ^1.1.2
+  file_picker: ^8.0.5
   http: ^1.2.1
   shared_preferences: ^2.2.3
   jwt_decoder: ^2.0.1

@@ -18,12 +18,10 @@ class PersonalInfoScreen extends StatefulWidget {
 
 class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   late User user;
-
   final fullNameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final countryController = TextEditingController();
-  final genderController = TextEditingController();
   final addressController = TextEditingController();
 
   bool isLoading = true;
@@ -53,10 +51,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
           fullName: userData['name']?.toString() ?? 'N/A',
           email: userData['email']?.toString() ?? 'N/A',
           phoneNumber: userData['phone']?.toString() ?? 'N/A',
-          country: userData['address']?.toString() ?? 'N/A',
-          gender: userData['gender']?.toString() ?? 'N/A',
+          country: userData['city']?.toString() ?? 'N/A',
           address: userData['address']?.toString() ?? 'N/A',
-          password: '********',
           image: userData['avatar']?.toString() ?? '',
         );
 
@@ -72,7 +68,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
         emailController.text = user.email;
         phoneNumberController.text = user.phoneNumber!;
         countryController.text = user.country!;
-        genderController.text = user.gender!;
+        // genderController.text = user.gender!;
         addressController.text = user.address!;
 
         isLoading = false; // Đã tải xong dữ liệu
@@ -88,6 +84,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       );
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -157,29 +154,26 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextFormField(
+                  
+                  TextFormField(
                           controller: countryController,
                           decoration: const InputDecoration(
                             labelText: 'Country',
                             border: OutlineInputBorder(),
                           ),
                         ),
-                      ),
+                 
                       const SizedBox(width: 16),
-                      Expanded(
-                        child: TextFormField(
-                          controller: genderController,
-                          decoration: const InputDecoration(
-                            labelText: 'Gender',
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                      // Expanded(
+                      //   child: TextFormField(
+                      //     controller: genderController,
+                      //     decoration: const InputDecoration(
+                      //       labelText: 'Gender',
+                      //       border: OutlineInputBorder(),
+                      //     ),
+                      //   ),
+                      // ),
+                 
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: addressController,
