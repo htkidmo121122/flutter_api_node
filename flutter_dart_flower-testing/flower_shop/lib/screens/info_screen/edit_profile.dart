@@ -30,6 +30,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final addressController = TextEditingController();
   Uint8List? userImage;
   bool isLoading = true;
+  bool isSaving = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -108,6 +109,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<void> _saveUserData() async {
     if (_formKey.currentState!.validate()) {
+
+      setState(() {
+        isSaving = true;
+      });
       String? updatedImageBase64 = _imageBase64.isNotEmpty ? 'data:image/png;base64,$_imageBase64' : user.image;
 
       user = User(
@@ -179,6 +184,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               final SharedPreferences prefs = await SharedPreferences.getInstance();
               
               await prefs.setString('user_data', jsonEncode(userDetail));//luu duoi dang json
+             
 
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Sửa thông tin thành công')),
@@ -203,7 +209,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
          ScaffoldMessenger.of(context).showSnackBar(
            SnackBar(content: Text('Lỗi khi gửi yêu cầu cập nhật')),
          );
-       }
+      }
+      finally {
+          setState(() {
+            isSaving = false;
+          });
+        }
     }
   }
 }
@@ -357,7 +368,10 @@ Future<String?> refreshToken() async {
                       alignment: Alignment.center,
                       child: SizedBox(
                         width: 150,
-                        child: ElevatedButton(
+                        child: isSaving
+                            ? Center(child: CircularProgressIndicator())
+                            :
+                        ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
                             padding: const EdgeInsets.symmetric(vertical: 12),
