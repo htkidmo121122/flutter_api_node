@@ -5,24 +5,22 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:health_care/screens/info_screen/info_screen.dart';
 import 'package:health_care/screens/signin_screen/signin_screen.dart';
-
 import 'dart:io';
-
 import 'package:health_care/models/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
   static String routeName = "/edit_info";
 
   @override
-  // ignore: library_private_types_in_public_api
   _EditProfileScreenState createState() => _EditProfileScreenState();
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   String _filePath = ''; // Đường dẫn của hình ảnh đã chọn
-  String _imageBase64 = ''; // Dữ liệu của hình ảnh dạng base64
+  String _imageBase64 = ''; // Dữ liệu của hình ảnh được chọn dạng base64
 
   late User user;
   final fullNameController = TextEditingController();
@@ -33,8 +31,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Uint8List? userImage;
   bool isLoading = true;
 
-  // final List<String> genders = ['Nam', 'Nữ', 'Khác'];
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -42,6 +38,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.initState();
     loadUserData();
   }
+
   Future<void> loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userDataString = prefs.getString('user_data');
@@ -50,34 +47,32 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       setState(() {
         user = User(
-          fullName: userData['name']?.toString() ?? 'N/A',
-          email: userData['email']?.toString() ?? 'N/A',
-          phoneNumber: userData['phone']?.toString() ?? 'N/A',
-          country: userData['city']?.toString() ?? 'N/A',
-          address: userData['address']?.toString() ?? 'N/A',
-          image: userData['avatar']?.toString() ?? '',
-
+          fullName: userData['name']?.toString() ?? '',
+          email: userData['email'],
+          phoneNumber: userData['phone']?.toString() ?? '',
+          country: userData['city']?.toString() ?? '',
+          address: userData['address']?.toString() ?? '',
+          image: userData['avatar'],
         );
 
-        String base64String = user.image!;
-
-        // Tách phần base64 ra khỏi header
-        String base64Image = base64String.split(',').last;
-        // Giải mã chuỗi base64 thành mảng byte
-        userImage = Uint8List.fromList(base64.decode(base64Image));
+        if (user.image != null) {
+          String base64String = user.image!;
+          // Tách phần base64 ra khỏi header
+          String base64Image = base64String.split(',').last;
+          // Giải mã chuỗi base64 thành mảng byte
+          userImage = Uint8List.fromList(base64.decode(base64Image));
+        }
 
         // Cập nhật giá trị của các TextEditingController
         fullNameController.text = user.fullName!;
         emailController.text = user.email;
         phoneNumberController.text = user.phoneNumber!;
         countryController.text = user.country!;
-        // genderController.text = user.gender!;
         addressController.text = user.address!;
 
         isLoading = false; // Đã tải xong dữ liệu
       });
     } else {
-      // print('No user data found in SharedPreferences');
       // Xử lý khi không tìm thấy dữ liệu người dùng trong SharedPreferences
       isLoading = false; // Đã tải xong dữ liệu
       Navigator.pushNamed(context, SignInScreen.routeName);
@@ -110,15 +105,152 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       }
     }
   }
-  
 
-  @override
-  void dispose() {
-    super.dispose();
+  Future<void> _saveUserData() async {
+    if (_formKey.currentState!.validate()) {
+      String? updatedImageBase64 = _imageBase64.isNotEmpty ? 'data:image/png;base64,$_imageBase64' : user.image;
+
+      user = User(
+        fullName: fullNameController.text,
+        email: emailController.text,
+        phoneNumber: phoneNumberController.text,
+        country: countryController.text,
+        address: addressController.text,
+        image: updatedImageBase64,
+      );
+
+      // Tạo dữ liệu JSON để gửi lên API
+      Map<String, dynamic> updatedUserData = {
+        'name': user.fullName,
+        'email': user.email,
+        'phone': user.phoneNumber,
+        'city': user.country,
+        'address': user.address,
+        'avatar': user.image,
+      };
+
+      //Láy user id và token từ sharedpreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? userDataString = prefs.getString('user_data');
+      String? token = prefs.getString('access_token');
+        if (userDataString != null || token != null ) {
+          Map<String, dynamic> userData = jsonDecode(userDataString!);
+          final accessToken = token;
+          final userId = userData['_id'];
+
+
+
+      // Gửi yêu cầu PUT lên API
+      String apiUrl = 'http://localhost:3001/api/user/update-user/${userId}'; // Thay bằng URL API thực tế của bạn
+      try {
+        //////////Gọi Api
+          var response = await http.put(
+            Uri.parse(apiUrl),
+            headers: <String, String>{
+            'token': 'Bearer $accessToken',
+            'Content-Type': 'application/json',
+            },
+            body: jsonEncode(updatedUserData),
+          );
+        /////////Kiểm tra nếu token hết hạn
+         if (response.statusCode == 404) {
+          // Token hết hạn, refresh token và thử lại
+          String? newToken = await refreshToken(); // lấy token mới
+          if (newToken != null) {
+            /////Gọi api lại với token mới
+            response = await http.put(
+              Uri.parse(apiUrl),
+              headers: <String, String>{
+                'token': 'Bearer $newToken',
+                'Content-Type': 'application/json',
+              },
+              body: jsonEncode(updatedUserData),
+            );
+          }
+        }
+        //Gửi api thành công với token mới
+        if (response.statusCode == 200) {
+          try {
+              final userData = jsonDecode(response.body);
+              final userDetail = userData['data'];
+
+              //load lại dữ liệu người dùng sau khi đã cập nhập vào sharedPreferences
+
+              final SharedPreferences prefs = await SharedPreferences.getInstance();
+              
+              await prefs.setString('user_data', jsonEncode(userDetail));//luu duoi dang json
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Sửa thông tin thành công')),
+              );
+              Navigator.pushNamed(context, PersonalInfoScreen.routeName);
+
+            } catch (e) {
+              // Handle JSON parse error
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Failed To Parse')),
+              );
+            }
+         } 
+        else {
+           ScaffoldMessenger.of(context).showSnackBar(
+             SnackBar(content: Text('Lỗi khi cập nhật thông tin người dùng')),
+           );
+        }
+      } 
+      catch (e) {
+         print('Lỗi khi gửi yêu cầu PUT: $e');
+         ScaffoldMessenger.of(context).showSnackBar(
+           SnackBar(content: Text('Lỗi khi gửi yêu cầu cập nhật')),
+         );
+       }
+    }
   }
+}
+
+//hàm lấy token mới khi token cũ hết han
+Future<String?> refreshToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? refreshToken = prefs.getString('refresh_token');
+  if (refreshToken == null) {
+    // Không có refresh token
+    return null;
+  }
+
+  final response = await http.post(
+    Uri.parse('http://localhost:3001/api/user/refresh-token'), // Thay URL bằng URL API thực tế của bạn
+    headers: <String, String>{
+        'token': 'Bearer $refreshToken',
+      },
+  );
+
+  if (response.statusCode == 200) {
+    Map<String, dynamic> responseData = jsonDecode(response.body);
+    String newAccessToken = responseData['access_token'];
+    await prefs.setString('access_token', newAccessToken);
+    return newAccessToken;
+  } else {
+    // Xử lý lỗi
+    return null;
+  }
+}
 
   @override
   Widget build(BuildContext context) {
+    ImageProvider backgroundImage;
+    try {
+      if (_imageBase64.isNotEmpty) {
+        backgroundImage = MemoryImage(base64Decode(_imageBase64));
+      } else if (userImage != null) {
+        backgroundImage = MemoryImage(userImage!);
+      } else {
+        backgroundImage = AssetImage('assets/images/profile_image.png');
+      }
+    } catch (e) {
+      print("Lỗi khi tải hình ảnh: $e");
+      backgroundImage = AssetImage('assets/images/profile_image.png');
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Edit Profile"),
@@ -129,129 +261,120 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              GestureDetector(
-                onTap: _pickImage,
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage:  _imageBase64.isNotEmpty 
-                      ? MemoryImage(
-            base64Decode(_imageBase64), // Giả sử _imageBase64 là một chuỗi base64 đã được giải mã
-          )
-                      : MemoryImage(
-                            userImage!)
-                          as ImageProvider 
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: fullNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Full Name',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your full name';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return 'Please enter a valid email address';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: phoneNumberController,
-                decoration: const InputDecoration(
-                  labelText: 'Phone Number',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your phone number';
-                  }
-                  if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-                    return 'Please enter a valid phone number';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: countryController,
-                decoration: const InputDecoration(
-                  labelText: 'Country',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your country';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: addressController,
-                decoration: const InputDecoration(
-                  labelText: 'Address',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your address';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 32),
-              Align(
-                alignment: Alignment.center,
-                child: SizedBox(
-                  width: 150, // Set the desired width for the button
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      textStyle:
-                          const TextStyle(fontSize: 16, color: Colors.white),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: _pickImage,
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundImage: backgroundImage,
+                      ),
                     ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        // Handle save functionality here
-                        print('Save button pressed');
-                        // You can add actual save logic here
-                      }
-                    },
-                    child: const Text('Save',
-                        style: TextStyle(color: Colors.white)),
-                  ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: fullNameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Full Name',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your full name';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: emailController,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                          return 'Please enter a valid email address';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: phoneNumberController,
+                      decoration: const InputDecoration(
+                        labelText: 'Phone Number',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your phone number';
+                        }
+                        if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                          return 'Please enter a valid phone number';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: countryController,
+                      decoration: const InputDecoration(
+                        labelText: 'Country',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your country';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: addressController,
+                      decoration: const InputDecoration(
+                        labelText: 'Address',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your address';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 32),
+                    Align(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        width: 150,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            textStyle: const TextStyle(
+                                fontSize: 16, color: Colors.white),
+                          ),
+                          onPressed: _saveUserData,
+                          child: const Text('Save',
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }
+
