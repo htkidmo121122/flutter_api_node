@@ -97,7 +97,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Personal information"),
+        title: const Text("Personal Information"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

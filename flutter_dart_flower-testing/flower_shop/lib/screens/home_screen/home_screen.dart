@@ -30,12 +30,7 @@ class HomeScreen extends StatelessWidget {
 
               PopularProducts(),
               SizedBox(height: 20),
-              PopularProducts(),
-              SizedBox(height: 20),
-              PopularProducts(),
-              SizedBox(height: 20),
-              PopularProducts(),
-              SizedBox(height: 20),
+
             ],
           ),
         ),

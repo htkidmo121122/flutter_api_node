@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:health_care/constants.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +9,7 @@ import '../cart_screen/cart_provider.dart';
 
 class CartItemWidget extends StatelessWidget {
   final CartItem cartItem;
-  final Function(int) onRemove;
+  final Function(String) onRemove;
 
   const CartItemWidget({
     Key? key,
@@ -52,8 +54,8 @@ class CartItemWidget extends StatelessWidget {
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(10),
                   ),
-                  child: Image.asset(
-                    cartItem.img,
+                  child: Image.memory(
+                    base64Decode(cartItem.img),
                     fit: BoxFit.cover,
                   ),
                 ),

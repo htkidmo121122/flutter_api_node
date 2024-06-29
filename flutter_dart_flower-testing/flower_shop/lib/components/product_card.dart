@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -44,7 +45,7 @@ class ProductCard extends StatelessWidget {
                   color: randomColor.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Image.asset(product.images[0]),
+                child: Image.memory(base64Decode(product.images)),
               ),
             ),
             const SizedBox(height: 8),
@@ -64,29 +65,29 @@ class ProductCard extends StatelessWidget {
                     color: kPrimaryColor,
                   ),
                 ),
-                InkWell(
-                  borderRadius: BorderRadius.circular(50),
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    height: 24,
-                    width: 24,
-                    decoration: BoxDecoration(
-                      color: product.isFavourite
-                          ? kPrimaryColor.withOpacity(0.15)
-                          : kSecondaryColor.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: SvgPicture.asset(
-                      "assets/icons/heart.svg",
-                      colorFilter: ColorFilter.mode(
-                          product.isFavourite
-                              ? const Color(0xFFFF4848)
-                              : const Color(0xFFDBDEE4),
-                          BlendMode.srcIn),
-                    ),
-                  ),
-                ),
+                // InkWell(
+                //   borderRadius: BorderRadius.circular(50),
+                //   onTap: () {},
+                //   child: Container(
+                //     padding: const EdgeInsets.all(6),
+                //     height: 24,
+                //     width: 24,
+                //     decoration: BoxDecoration(
+                //       color: product.isFavourite
+                //           ? kPrimaryColor.withOpacity(0.15)
+                //           : kSecondaryColor.withOpacity(0.1),
+                //       shape: BoxShape.circle,
+                //     ),
+                //     child: SvgPicture.asset(
+                //       "assets/icons/heart.svg",
+                //       colorFilter: ColorFilter.mode(
+                //           product.isFavourite
+                //               ? const Color(0xFFFF4848)
+                //               : const Color(0xFFDBDEE4),
+                //           BlendMode.srcIn),
+                //     ),
+                //   ),
+                // ),
               ],
             )
           ],

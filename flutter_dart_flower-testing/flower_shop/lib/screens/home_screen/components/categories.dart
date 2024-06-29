@@ -53,7 +53,7 @@ class Categories extends StatelessWidget {
               List.generate(
                 categories.length,
                 (index) => CategoryCard(
-                  icon: categoryIcons[categories[index]] ?? "assets/icons/Flower.svg",
+                  icon: categoryIcons[categories[index]] ?? "assets/icons/flower.svg",
                   text: categories[index],
                   press: () {
                     Navigator.push(

@@ -1,37 +1,51 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Product {
-  final int id;
+  final String id;
   final String title, description;
-  final List<String> images;
-  final double rating, price;
-  final bool isFavourite, isPopular;
+  final String images;
+  final int rating;
+  final double price;
   final String category;
+  final int? discount;
+  final int countInStock;
+  final int? selled;
+
+  
 
   Product({
     required this.id,
     required this.images,
-    this.rating = 0.0,
-    this.isFavourite = false,
-    this.isPopular = false,
+    required this.rating,
     required this.title,
     required this.price,
     required this.description,
     required this.category,
+    this.discount,
+    required this.countInStock,
+    this.selled
+
+
+    
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
+    String base64Image = json['image'].split(',').last;
     return Product(
-      id: json['id'],
-      images: List<String>.from(json['images']),
-      title: json['title'],
+      
+      id: json['_id'],
+      images: base64Image,
+      title: json['name'],
       price: json['price'].toDouble(),
       description: json['description'],
-      rating: json['rating'] ?? 0.0,
-      isFavourite: json['isFavourite'] ?? false,
-      isPopular: json['isPopular'] ?? false,
-      category: json['category'],
+      rating: json['rating'] ?? 0,
+      category: json['type'],
+      discount: json['discount'] ?? 0,
+      countInStock: json['countInStock'] ?? 0,
+      selled: json['selled'] ?? 0
     );
   }
 }
@@ -41,11 +55,21 @@ List<Product> demoProducts = [];
 Future<void> fetchProducts(BuildContext context) async {
   try {
     //sau này thay đường dẫn này thành api api/product/getAll
-    String jsonData = await DefaultAssetBundle.of(context).loadString('assets/products.json');
-    List<dynamic> jsonList = json.decode(jsonData);
-    demoProducts = jsonList.map((json) => Product.fromJson(json)).toList();
+    // Update the URL to your actual API endpoint
+    final response = await http.get(Uri.parse('http://localhost:3001/api/product/get-all'));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonResponse = json.decode(response.body);
+      List<dynamic> jsonList = jsonResponse['data']; 
+      demoProducts = jsonList.map((json) => Product.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load products');
+    }
   } catch (e) {
     print('Error fetching products: $e');
     // Handle error as per your app's requirements
   }
+}
+
+Uint8List _decodeBase64(String base64String) {
+  return base64Decode(base64String);
 }

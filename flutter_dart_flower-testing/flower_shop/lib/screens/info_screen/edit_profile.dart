@@ -67,7 +67,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         // Cập nhật giá trị của các TextEditingController
         fullNameController.text = user.fullName!;
         emailController.text = user.email;
-        phoneNumberController.text = user.phoneNumber!;
+        phoneNumberController.text = '0' + user.phoneNumber!;
         countryController.text = user.country!;
         addressController.text = user.address!;
 
