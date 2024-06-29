@@ -59,7 +59,7 @@ class PopularProducts extends StatelessWidget {
                     ...List.generate(
                       searchResults.length,
                       (index) {
-                        if (searchResults[index].isFavourite) {
+                        
                           return Padding(
                             padding: const EdgeInsets.only(left: 20),
                             child: ProductCard(
@@ -71,7 +71,7 @@ class PopularProducts extends StatelessWidget {
                               ),
                             ),
                           );
-                        }
+                 
                         return SizedBox.shrink();
                       },
                     ),

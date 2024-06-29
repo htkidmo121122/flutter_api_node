@@ -115,8 +115,10 @@ class DetailsScreen extends StatelessWidget {
                   id: product.id,
                   name: product.title,
                   price: product.price,
-                  img: product.images[0],
+                  img: product.images,
                   quantity: 1,
+                  discount: product.discount
+
                 ));
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Added to Cart')),

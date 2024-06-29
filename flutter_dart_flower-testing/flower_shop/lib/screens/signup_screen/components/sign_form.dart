@@ -48,9 +48,6 @@ class _SignFormState extends State<SignForm> {
   Future<void> _signup() async {
   if (_formKey.currentState!.validate()) {
     _formKey.currentState!.save();
-    print(email);
-    print(password);
-    print(confirmPassword);
     
 
     if (email != null && password != null && confirmPassword != null) {
@@ -71,7 +68,6 @@ class _SignFormState extends State<SignForm> {
           }),
         );
 
-        print(response.body);
 
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
