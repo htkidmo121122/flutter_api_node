@@ -51,12 +51,12 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
       setState(() {
         user = User(
-          fullName: userData['name']?.toString() ?? 'N/A',
-          email: userData['email']?.toString() ?? 'N/A',
-          phoneNumber: userData['phone']?.toString() ?? 'N/A',
-          country: userData['city']?.toString() ?? 'N/A',
-          address: userData['address']?.toString() ?? 'N/A',
-          image: userData['avatar']?.toString(),
+          fullName: userData['name']?.toString() ?? '',
+          email: userData['email'],
+          phoneNumber: userData['phone']?.toString() ?? '',
+          country: userData['city']?.toString() ?? '',
+          address: userData['address']?.toString() ?? '',
+          image: userData['avatar'],
         );
 
        

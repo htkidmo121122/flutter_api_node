@@ -80,9 +80,11 @@ class _SignFormState extends State<SignForm> {
            Navigator.pushNamed(context, Mainpage.routeName);
 
         } catch (e) {
+          final data = jsonDecode(response.body);
+          final message = data['message'];
           // Handle JSON parse error
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to parse response: ${response.body}')),
+            SnackBar(content: Text('${message}')),
           );
         }
       } else {
@@ -105,7 +107,8 @@ class _SignFormState extends State<SignForm> {
       try {
         final userData = jsonDecode(response.body);
         final userDetail = userData['data'];
-        print(userDetail);
+        
+        // print(userDetail);
 
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         // user_data lưu trữ thông tin người dùng chi tiết
