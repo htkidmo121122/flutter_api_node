@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart'; // Import thư viện intl
 
 import '../../../constants.dart';
 import '../../../models/Product.dart';
@@ -24,6 +25,10 @@ class _ProductDescriptionState extends State<ProductDescription> {
     // Tính giá tiền đã áp dụng discount
     double discountedPrice = widget.product.price * (1 - (widget.product.discount ?? 0) / 100);
 
+    // Định dạng số tiền thành VND
+    final formattedDiscountedPrice = NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(discountedPrice);
+    final formattedOriginalPrice = NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(widget.product.price);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -40,8 +45,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
           child: Row(
             children: [
               Text(
-                "\$${discountedPrice.toStringAsFixed(2)}",
-                style: TextStyle(
+                formattedDiscountedPrice,
+                style: const TextStyle(
                   backgroundColor: kSecondaryColor,
                   color: Colors.white,
                   fontSize: 22,
@@ -52,8 +57,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
                 Padding(
                   padding: const EdgeInsets.only(left: 8),
                   child: Text(
-                    "\$${widget.product.price.toStringAsFixed(2)}",
-                    style: TextStyle(
+                    formattedOriginalPrice,
+                    style: const TextStyle(
                       color: Colors.grey,
                       decoration: TextDecoration.lineThrough,
                     ),
@@ -82,7 +87,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
               children: [
                 Text(
                   isExpanded ? "Show Less" : "See More Detail",
-                  style: TextStyle(fontWeight: FontWeight.w600, color: kPrimaryColor),
+                  style: const TextStyle(fontWeight: FontWeight.w600, color: kPrimaryColor),
                 ),
                 const SizedBox(width: 5),
                 Icon(

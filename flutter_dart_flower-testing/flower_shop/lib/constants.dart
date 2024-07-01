@@ -6,7 +6,7 @@ const kcolorminor  = Color(0xFFFF85A1);
 //random color background list
 const color1 = Color(0xFF86CDEC);
 const color2 = Color(0xFF967BB6);
-const colot3 = Color(0xFFFFE454);
+const color3 = Color(0xFFFFE454);
 const color4 = Color(0xFFFFBBCB);
 //mau co ban
 const white = Colors.white;

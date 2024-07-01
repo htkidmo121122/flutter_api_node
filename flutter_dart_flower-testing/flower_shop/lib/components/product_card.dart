@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart'; // Import thư viện intl
 
 import '../constants.dart';
 import '../models/Product.dart';
@@ -24,12 +25,15 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // Define a list of colors
     final List<Color> colors = [
-      color1,color2, colot3, color4
-
+      color1, color2, color3, color4
     ];
 
     // Select a random color from the list
     final Color randomColor = colors[Random().nextInt(colors.length)];
+
+    // Định dạng số tiền
+    final formattedPrice = NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(product.price);
+
     return SizedBox(
       width: width,
       child: GestureDetector(
@@ -58,13 +62,14 @@ class ProductCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "\$${product.price}",
+                  formattedPrice,
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: kPrimaryColor,
                   ),
                 ),
+                // Nếu cần sử dụng lại phần yêu thích, bỏ ghi chú các dòng dưới
                 // InkWell(
                 //   borderRadius: BorderRadius.circular(50),
                 //   onTap: () {},

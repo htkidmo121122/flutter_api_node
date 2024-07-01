@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:health_care/constants.dart';
 import 'package:health_care/mainpage.dart';
+import 'package:intl/intl.dart'; // Import thư viện intl
 
 import 'package:health_care/screens/cart_screen/cart_item_widget.dart';
 import 'package:health_care/screens/cart_screen/cart_provider.dart';
 import 'package:provider/provider.dart';
 
-
 class CartScreen extends StatefulWidget {
-   static String routeName = "/cart";
+  static String routeName = "/cart";
 
   const CartScreen({super.key});
   
@@ -22,6 +22,10 @@ class _CartScreenState extends State<CartScreen> {
     final cartProvider = Provider.of<CartProvider>(context);
     final cartItems = cartProvider.cartItems;
 
+    // Định dạng tổng tiền thành VND
+    final formattedTotalPrice = NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
+        .format(cartProvider.getTotalPrice());
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Shopping Cart"),
@@ -32,7 +36,6 @@ class _CartScreenState extends State<CartScreen> {
           },
         ),
         backgroundColor: Colors.white
-
       ),
       body: Column(
         children: [
@@ -73,7 +76,7 @@ class _CartScreenState extends State<CartScreen> {
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      '\$${cartProvider.getTotalPrice().toStringAsFixed(2)}',
+                      formattedTotalPrice,
                       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -107,9 +110,8 @@ class _CartScreenState extends State<CartScreen> {
                       color: white,
                       fontWeight: FontWeight.bold,
                       fontSize: 16
-
                     ),
-                    ),
+                  ),
                 ),
               ],
             ),

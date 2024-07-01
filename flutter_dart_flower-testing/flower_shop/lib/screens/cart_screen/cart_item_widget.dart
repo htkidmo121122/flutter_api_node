@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:health_care/constants.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart'; // Import thư viện intl
 
 import '../../models/CartItem.dart';
 import '../cart_screen/cart_provider.dart';
@@ -31,6 +32,10 @@ class CartItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Định dạng số tiền thành VND
+    final formattedPrice = NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
+        .format(cartItem.price * cartItem.quantity);
+
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       child: Padding(
@@ -85,7 +90,7 @@ class CartItemWidget extends StatelessWidget {
                         Text(cartItem.name, style: const TextStyle(fontSize: 18)),
                         const SizedBox(height: 5),
                         Text(
-                          "\$${(cartItem.price * cartItem.quantity).toStringAsFixed(2)}",
+                          formattedPrice,
                         ),
                         const SizedBox(height: 5),
                         Row(

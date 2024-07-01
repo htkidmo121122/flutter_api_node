@@ -30,8 +30,8 @@ class Categories extends StatelessWidget {
       "Flower": "assets/icons/flower.svg",
       "Gift": "assets/icons/gift.svg",
       "Special": "assets/icons/special.svg",
-      "Daily Gift": "assets/icons/dailygift.svg",
-      "Classify": "assets/icons/classify.svg",
+      "Collection": "assets/icons/dailygift.svg",
+      "Wedding": "assets/icons/classify.svg",
     };
     return Padding(
       padding: const EdgeInsets.all(20),
