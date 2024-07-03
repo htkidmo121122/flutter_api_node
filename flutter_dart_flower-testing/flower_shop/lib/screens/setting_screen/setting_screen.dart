@@ -24,6 +24,7 @@ class _SettingScreenState extends State<SettingScreen> {
   String userPhone = 'Loading...';
   String? userImage64;
   Uint8List? userImage;
+  bool isAdmin = false;  // Thêm biến trạng thái isAdmin
 
   @override
   void initState() {
@@ -41,11 +42,10 @@ class _SettingScreenState extends State<SettingScreen> {
         userEmail = userData['email'] ?? 'No Email';
         userPhone = '0${userData['phone'] ?? 'No Phone'}';
         userImage64 = userData['avatar'];
+        isAdmin = userData['isAdmin'] ?? false; // Lấy giá trị isAdmin
 
         String base64String = userImage64!;
-          // Tách phần base64 ra khỏi header
         String base64Image = base64String.split(',').last;
-          // Giải mã chuỗi base64 thành mảng byte
         userImage = Uint8List.fromList(base64.decode(base64Image));
       });
     } else {
@@ -139,6 +139,14 @@ class _SettingScreenState extends State<SettingScreen> {
                             destination: PrivacyPolicyScreen()),
                       ],
                     ),
+                    if (isAdmin) // Hiển thị mục "Quản lý hệ thống" nếu là quản trị viên
+                      buildSettingsGroup(
+                        context,
+                        [
+                          buildListTile(context, Icons.admin_panel_settings,
+                              'Quản lý hệ thống'),
+                        ],
+                      ),
                   ],
                 ),
               ),

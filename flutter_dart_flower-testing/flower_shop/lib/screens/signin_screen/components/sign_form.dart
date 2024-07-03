@@ -69,15 +69,13 @@ class _SignFormState extends State<SignForm> {
           await prefs.setString('access_token', data['access_token']); //luu accesstoken duoi dang doi tuong dart
           await prefs.setString('refresh_token', data['refresh_token']);
 
-           final decodedToken = JwtDecoder.decode(data['access_token']);//decode access token lay id nguoi dung
-           final userId = decodedToken['id'];
-          
-
-            //Fetch user details using the access_token and userId
-           await _getUserDetails(userId, data['access_token']);
+          final decodedToken = JwtDecoder.decode(data['access_token']);//decode access token lay id nguoi dung
+          final userId = decodedToken['id'];
+          //Fetch user details using the access_token and userId
+          await _getUserDetails(userId, data['access_token']);
 
           // Navigate to MyStoredDataPage after successful login
-           Navigator.pushNamed(context, Mainpage.routeName);
+          Navigator.pushNamed(context, Mainpage.routeName);
 
         } catch (e) {
           final data = jsonDecode(response.body);
