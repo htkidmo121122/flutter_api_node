@@ -304,6 +304,7 @@ Future<String?> refreshToken() async {
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: emailController,
+                      enabled: false,
                       decoration: const InputDecoration(
                         labelText: 'Email',
                         border: OutlineInputBorder(),
