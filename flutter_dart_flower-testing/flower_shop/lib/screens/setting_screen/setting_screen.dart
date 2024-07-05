@@ -100,6 +100,14 @@ class _SettingScreenState extends State<SettingScreen> {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
+                    if (isAdmin) // Hiển thị mục "Quản lý hệ thống" nếu là quản trị viên
+                      buildSettingsGroup(
+                        context,
+                        [
+                          buildListTile(context, Icons.admin_panel_settings,
+                              'Quản lý hệ thống'),
+                        ],
+                      ),
                     buildSettingsGroup(
                       context,
                       [
@@ -139,14 +147,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             destination: PrivacyPolicyScreen()),
                       ],
                     ),
-                    if (isAdmin) // Hiển thị mục "Quản lý hệ thống" nếu là quản trị viên
-                      buildSettingsGroup(
-                        context,
-                        [
-                          buildListTile(context, Icons.admin_panel_settings,
-                              'Quản lý hệ thống'),
-                        ],
-                      ),
+                    
                   ],
                 ),
               ),

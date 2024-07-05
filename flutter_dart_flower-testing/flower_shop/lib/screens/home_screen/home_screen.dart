@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_care/constants.dart';
+import 'package:health_care/screens/home_screen/components/discount_product.dart';
 import 'package:health_care/screens/home_screen/components/search_field.dart';
 
 import 'components/categories.dart';
@@ -26,12 +27,15 @@ class HomeScreen extends StatelessWidget {
               SpecialOffers(),
               // DiscountBanner(),
               Categories(),
-              
-
               PopularProducts(),
               SizedBox(height: 20),
-
-            ],
+              SizedBox(
+                height: 280, // Chiều cao cố định cho DiscountProducts
+                child: DiscountProducts(),
+              ),
+              SizedBox(height: 20),
+              // DiscountProduct()
+            ]
           ),
         ),
       ),

@@ -5,13 +5,11 @@ import 'package:health_care/screens/details_screen/details_screen.dart';
 import 'package:health_care/screens/search_screen/components/search_provider.dart';
 import 'package:provider/provider.dart';
 
-
 import 'section_title.dart';
 
-class PopularProducts extends StatelessWidget {
-  const PopularProducts({super.key});
+class DiscountProducts extends StatelessWidget {
+  const DiscountProducts({super.key});
 
-  
 
   @override
   Widget build(BuildContext context) {
@@ -36,47 +34,31 @@ class PopularProducts extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SectionTitle(
-                  title: "Your Favourite",
+                  title: "Discount",
                   press: () {},
                 ),
               ),
               const SizedBox(height: 5),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (searchResults.isEmpty)
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Text(
-                          "Không tìm thấy sản phẩm nào",
-                          style: TextStyle(fontSize: 15, color: Colors.red),
-                        ),
-                      ),
-                    
-                    SizedBox(height: 20),
-                    ...List.generate(
-                      searchResults.length,
-                      (index) {
-                      
-                          return Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: ProductCard(
-                              product: searchResults[index],
-                              onPress: () => Navigator.pushNamed(
-                                context,
-                                DetailsScreen.routeName,
-                                arguments: ProductDetailsArguments(product: searchResults[index]),
-                              ),
-                            ),
-                          );
-                 
-                        return SizedBox.shrink();
-                      },
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: GridView.builder(
+                    itemCount: searchResults.length,
+                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200,
+                      childAspectRatio: 0.7,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 16,
                     ),
-                    SizedBox(width: 20),
-                  ],
+                    itemBuilder: (context, index) => ProductCard(
+                      product: searchResults[index],
+                      onPress: () => Navigator.pushNamed(
+                        context,
+                        DetailsScreen.routeName,
+                        arguments: ProductDetailsArguments(product: searchResults[index]),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],

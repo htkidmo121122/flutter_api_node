@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:health_care/constants.dart';
 import 'package:health_care/models/CartItem.dart';
 import 'package:health_care/screens/cart_screen/cart_provider.dart';
+import 'package:health_care/screens/details_screen/components/comment_section.dart';
 
 import 'package:provider/provider.dart';
 
@@ -97,6 +98,7 @@ class DetailsScreen extends StatelessWidget {
                 //     ],
                 //   ),
                 // ),
+                CommentsSection(productId: product.id),
               ],
             ),
           ),
@@ -125,7 +127,7 @@ class DetailsScreen extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: black
+                backgroundColor: kPrimaryColor
               ),
               child: const Text(
                 'Add To Cart',

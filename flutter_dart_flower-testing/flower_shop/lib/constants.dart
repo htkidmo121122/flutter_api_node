@@ -13,7 +13,7 @@ const white = Colors.white;
 const black = Colors.black;
 
 //mau nut dam, mau nut nhat
-const kPrimaryColor = Color.fromRGBO(0, 0, 0, 1);
+const kPrimaryColor = Color.fromARGB(255, 255, 113, 146);
 const kWhite = Color.fromARGB(255, 182, 182, 182);
 const kPrimaryLightColor = Color.fromARGB(255, 65, 65, 65);
 const kPrimaryGradientColor = LinearGradient(
@@ -22,7 +22,7 @@ const kPrimaryGradientColor = LinearGradient(
   colors: [Color(0xFFFFA53E), Color(0xFFFF7643)],
 );
 //mau navigator
-const kSecondaryColor = Color(0xFFFA1056);
+const kSecondaryColor = Color.fromARGB(255, 255, 69, 112);
 //mau text
 const kTextColor = Colors.black;
 

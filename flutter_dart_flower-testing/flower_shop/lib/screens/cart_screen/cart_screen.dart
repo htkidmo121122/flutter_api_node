@@ -102,7 +102,7 @@ class _CartScreenState extends State<CartScreen> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: black,
+                    backgroundColor: kPrimaryColor,
                   ),
                   child: const Text(
                     'Thanh Toán',
