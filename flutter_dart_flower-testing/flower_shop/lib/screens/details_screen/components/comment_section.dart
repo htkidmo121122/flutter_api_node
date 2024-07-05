@@ -67,6 +67,7 @@ class _CommentsSectionState extends State<CommentsSection> {
     if (response.statusCode == 200) {
       List<dynamic> body = jsonDecode(response.body);
       List<Comment> comments = body.map((dynamic item) => Comment.fromJson(item)).toList();
+      comments.sort((a, b) => b.date.compareTo(a.date));
       return comments;
     } else {
       throw Exception('Failed to load comments');
@@ -114,11 +115,10 @@ class _CommentsSectionState extends State<CommentsSection> {
         _commentController.clear();
         _ratingController.clear();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Comment added')),
+          const SnackBar(content: Text('Gửi Thành Công')),
         );
 
         setState(() {
-          futureComments = fetchCommentsByProduct(widget.productId);
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -238,6 +238,7 @@ class _CommentsSectionState extends State<CommentsSection> {
                         return ListView.builder(
                           itemCount: pageComments.length,
                           itemBuilder: (context, index) {
+                           
                             Comment comment = pageComments[index];
                             DateTime dated = comment.date;
                             String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(dated);
