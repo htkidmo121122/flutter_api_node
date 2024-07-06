@@ -51,7 +51,7 @@ class _CommentsSectionState extends State<CommentsSection> {
       Comment comment = Comment.fromJson(data);
       if (comment.productId == widget.productId) {
         setState(() {
-          comments.add(comment);
+          comments.insert(0, comment);  // Thêm comment vào đầu danh sách
         });
       }
     });
@@ -118,8 +118,7 @@ class _CommentsSectionState extends State<CommentsSection> {
           const SnackBar(content: Text('Gửi Thành Công')),
         );
 
-        setState(() {
-        });
+
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Bạn chưa điền bình luận và đánh giá')),
