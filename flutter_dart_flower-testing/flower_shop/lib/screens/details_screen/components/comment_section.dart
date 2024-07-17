@@ -35,10 +35,12 @@ class _CommentsSectionState extends State<CommentsSection> {
   }
 
   void _setupSocket() {
-    socket = IO.io('http://localhost:3001', IO.OptionBuilder()
-        .setTransports(['websocket'])
-        .disableAutoConnect()
-        .build());
+    socket = IO.io(
+        'http://10.0.2.2:3001',
+        IO.OptionBuilder()
+            .setTransports(['websocket'])
+            .disableAutoConnect()
+            .build());
 
     socket.connect();
 
@@ -51,7 +53,7 @@ class _CommentsSectionState extends State<CommentsSection> {
       Comment comment = Comment.fromJson(data);
       if (comment.productId == widget.productId) {
         setState(() {
-          comments.insert(0, comment);  // Thêm comment vào đầu danh sách
+          comments.insert(0, comment); // Thêm comment vào đầu danh sách
         });
       }
     });
@@ -62,11 +64,12 @@ class _CommentsSectionState extends State<CommentsSection> {
   }
 
   Future<List<Comment>> fetchCommentsByProduct(String productId) async {
-    final url = Uri.parse('http://localhost:3001/api/comment/$productId');
+    final url = Uri.parse('http://10.0.2.2:3001/api/comment/$productId');
     final response = await http.get(url);
     if (response.statusCode == 200) {
       List<dynamic> body = jsonDecode(response.body);
-      List<Comment> comments = body.map((dynamic item) => Comment.fromJson(item)).toList();
+      List<Comment> comments =
+          body.map((dynamic item) => Comment.fromJson(item)).toList();
       comments.sort((a, b) => b.date.compareTo(a.date));
       return comments;
     } else {
@@ -92,14 +95,17 @@ class _CommentsSectionState extends State<CommentsSection> {
       final avatar = userData['avatar'];
 
       // Kiểm tra thông tin cá nhân
-      if (username == null || username.isEmpty || avatar == null || avatar.isEmpty) {
+      if (username == null ||
+          username.isEmpty ||
+          avatar == null ||
+          avatar.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Bạn chưa điền thông tin cá nhân')),
         );
         Navigator.pushNamed(context, EditProfileScreen.routeName);
         return;
       }
-      final url = Uri.parse('http://localhost:3001/api/comment');
+      final url = Uri.parse('http://10.0.2.2:3001/api/comment');
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -117,8 +123,6 @@ class _CommentsSectionState extends State<CommentsSection> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Gửi Thành Công')),
         );
-
-
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Bạn chưa điền bình luận và đánh giá')),
@@ -199,7 +203,8 @@ class _CommentsSectionState extends State<CommentsSection> {
                     style: TextStyle(color: white, fontWeight: FontWeight.bold),
                   ),
                   style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24.0, vertical: 12.0),
                       backgroundColor: kcolorminor),
                 ),
               ),
@@ -232,18 +237,22 @@ class _CommentsSectionState extends State<CommentsSection> {
                       },
                       itemBuilder: (context, pageIndex) {
                         int startIndex = pageIndex * 5;
-                        int endIndex = (startIndex + 5).clamp(0, comments.length);
-                        List<Comment> pageComments = comments.sublist(startIndex, endIndex);
+                        int endIndex =
+                            (startIndex + 5).clamp(0, comments.length);
+                        List<Comment> pageComments =
+                            comments.sublist(startIndex, endIndex);
                         return ListView.builder(
                           itemCount: pageComments.length,
                           itemBuilder: (context, index) {
-                           
                             Comment comment = pageComments[index];
                             DateTime dated = comment.date;
-                            String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(dated);
+                            String formattedDate =
+                                DateFormat('dd/MM/yyyy HH:mm').format(dated);
                             return ListTile(
                               leading: CircleAvatar(
-                                backgroundImage: imageFromBase64String(comment.avatar!).image,
+                                backgroundImage:
+                                    imageFromBase64String(comment.avatar!)
+                                        .image,
                               ),
                               title: Text(comment.username!),
                               subtitle: Column(
@@ -251,11 +260,15 @@ class _CommentsSectionState extends State<CommentsSection> {
                                 children: [
                                   Text(comment.content),
                                   Row(
-                                    children: List.generate(comment.rating, (index) {
-                                      return Icon(Icons.star, color: Colors.amber);
+                                    children:
+                                        List.generate(comment.rating, (index) {
+                                      return Icon(Icons.star,
+                                          color: Colors.amber);
                                     }),
                                   ),
-                                  Text(formattedDate, style: TextStyle(color: Colors.grey, fontSize: 12)),
+                                  Text(formattedDate,
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 12)),
                                 ],
                               ),
                             );
@@ -279,7 +292,9 @@ class _CommentsSectionState extends State<CommentsSection> {
                           height: 12.0,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: _currentPage == index ? Colors.blue : Colors.grey,
+                            color: _currentPage == index
+                                ? Colors.blue
+                                : Colors.grey,
                           ),
                         ),
                       );

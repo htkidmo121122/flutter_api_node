@@ -8,7 +8,6 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import '../../../constants.dart';
 import '../../forgotpass_screen/forgotpass_screen.dart';
 
-
 class SignForm extends StatefulWidget {
   const SignForm({super.key});
 
@@ -48,7 +47,7 @@ class _SignFormState extends State<SignForm> {
       });
 
       final response = await http.post(
-        Uri.parse('http://localhost:3001/api/user/sign-in'),
+        Uri.parse('http://10.0.2.2:3001/api/user/sign-in'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -66,17 +65,18 @@ class _SignFormState extends State<SignForm> {
         try {
           final data = jsonDecode(response.body);
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setString('access_token', data['access_token']); //luu accesstoken duoi dang doi tuong dart
+          await prefs.setString('access_token',
+              data['access_token']); //luu accesstoken duoi dang doi tuong dart
           await prefs.setString('refresh_token', data['refresh_token']);
 
-          final decodedToken = JwtDecoder.decode(data['access_token']);//decode access token lay id nguoi dung
+          final decodedToken = JwtDecoder.decode(
+              data['access_token']); //decode access token lay id nguoi dung
           final userId = decodedToken['id'];
           //Fetch user details using the access_token and userId
           await _getUserDetails(userId, data['access_token']);
 
           // Navigate to MyStoredDataPage after successful login
           Navigator.pushNamed(context, Mainpage.routeName);
-
         } catch (e) {
           final data = jsonDecode(response.body);
           final message = data['message'];
@@ -95,7 +95,7 @@ class _SignFormState extends State<SignForm> {
 
   Future<void> _getUserDetails(String userId, String token) async {
     final response = await http.get(
-      Uri.parse('http://localhost:3001/api/user/get-details/$userId'),
+      Uri.parse('http://10.0.2.2:3001/api/user/get-details/$userId'),
       headers: <String, String>{
         'token': 'Bearer $token',
       },
@@ -105,17 +105,17 @@ class _SignFormState extends State<SignForm> {
       try {
         final userData = jsonDecode(response.body);
         final userDetail = userData['data'];
-        
+
         // print(userDetail);
 
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         // user_data lưu trữ thông tin người dùng chi tiết
-        await prefs.setString('user_data', jsonEncode(userDetail));//luu duoi dang json
+        await prefs.setString(
+            'user_data', jsonEncode(userDetail)); //luu duoi dang json
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Đăng nhập thành công')),
         );
-
       } catch (e) {
         // Handle JSON parse error
         ScaffoldMessenger.of(context).showSnackBar(
@@ -124,7 +124,9 @@ class _SignFormState extends State<SignForm> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to fetch user details: ${response.statusCode}')),
+        SnackBar(
+            content:
+                Text('Failed to fetch user details: ${response.statusCode}')),
       );
     }
   }
@@ -232,7 +234,8 @@ class _SignFormState extends State<SignForm> {
             children: [
               const Spacer(),
               GestureDetector(
-                onTap: () => Navigator.pushNamed(context, ForgotPasswordScreen.routeName),
+                onTap: () => Navigator.pushNamed(
+                    context, ForgotPasswordScreen.routeName),
                 child: const Text(
                   "Forgot Password?",
                   style: TextStyle(

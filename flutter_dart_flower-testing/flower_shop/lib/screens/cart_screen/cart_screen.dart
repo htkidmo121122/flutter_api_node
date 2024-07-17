@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_care/constants.dart';
 import 'package:health_care/mainpage.dart';
+import 'package:health_care/screens/checkout/checkout.dart';
 import 'package:intl/intl.dart'; // Import thư viện intl
 
 import 'package:health_care/screens/cart_screen/cart_item_widget.dart';
@@ -85,21 +86,7 @@ class _CartScreenState extends State<CartScreen> {
                 ElevatedButton(
                   onPressed: () {
                     // Thêm logic thanh toán tại đây
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Thanh Toán'),
-                        content: const Text('Cảm ơn bạn đã mua hàng!'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Đóng'),
-                          ),
-                        ],
-                      ),
-                    );
+                     Navigator.of(context).pushNamed(Checkout.screenroute);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: kPrimaryColor,

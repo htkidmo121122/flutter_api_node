@@ -109,11 +109,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<void> _saveUserData() async {
     if (_formKey.currentState!.validate()) {
-
       setState(() {
         isSaving = true;
       });
-      String? updatedImageBase64 = _imageBase64.isNotEmpty ? 'data:image/png;base64,$_imageBase64' : user.image;
+      String? updatedImageBase64 = _imageBase64.isNotEmpty
+          ? 'data:image/png;base64,$_imageBase64'
+          : user.image;
 
       user = User(
         fullName: fullNameController.text,
@@ -138,113 +139,110 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? userDataString = prefs.getString('user_data');
       String? token = prefs.getString('access_token');
-        if (userDataString != null || token != null ) {
-          Map<String, dynamic> userData = jsonDecode(userDataString!);
-          final accessToken = token;
-          final userId = userData['_id'];
+      if (userDataString != null || token != null) {
+        Map<String, dynamic> userData = jsonDecode(userDataString!);
+        final accessToken = token;
+        final userId = userData['_id'];
 
-
-
-      // Gửi yêu cầu PUT lên API
-      String apiUrl = 'http://localhost:3001/api/user/update-user/${userId}'; // Thay bằng URL API thực tế của bạn
-      try {
-        //////////Gọi Api
+        // Gửi yêu cầu PUT lên API
+        String apiUrl =
+            'http://10.0.2.2:3001/api/user/update-user/${userId}'; // Thay bằng URL API thực tế của bạn
+        try {
+          //////////Gọi Api
           var response = await http.put(
             Uri.parse(apiUrl),
             headers: <String, String>{
-            'token': 'Bearer $accessToken',
-            'Content-Type': 'application/json',
+              'token': 'Bearer $accessToken',
+              'Content-Type': 'application/json',
             },
             body: jsonEncode(updatedUserData),
           );
-        /////////Kiểm tra nếu token hết hạn
-         if (response.statusCode == 404) {
-          // Token hết hạn, refresh token và thử lại
-          String? newToken = await refreshToken(); // lấy token mới
-          if (newToken != null) {
-            /////Gọi api lại với token mới
-            response = await http.put(
-              Uri.parse(apiUrl),
-              headers: <String, String>{
-                'token': 'Bearer $newToken',
-                'Content-Type': 'application/json',
-              },
-              body: jsonEncode(updatedUserData),
-            );
+          /////////Kiểm tra nếu token hết hạn
+          if (response.statusCode == 404) {
+            // Token hết hạn, refresh token và thử lại
+            String? newToken = await refreshToken(); // lấy token mới
+            if (newToken != null) {
+              /////Gọi api lại với token mới
+              response = await http.put(
+                Uri.parse(apiUrl),
+                headers: <String, String>{
+                  'token': 'Bearer $newToken',
+                  'Content-Type': 'application/json',
+                },
+                body: jsonEncode(updatedUserData),
+              );
+            }
           }
-        }
-        //Gửi api thành công với token mới
-        if (response.statusCode == 200) {
-          try {
+          //Gửi api thành công với token mới
+          if (response.statusCode == 200) {
+            try {
               final userData = jsonDecode(response.body);
               final userDetail = userData['data'];
 
               //load lại dữ liệu người dùng sau khi đã cập nhập vào sharedPreferences
 
-              final SharedPreferences prefs = await SharedPreferences.getInstance();
-              
-              await prefs.setString('user_data', jsonEncode(userDetail));//luu duoi dang json
-             
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+
+              await prefs.setString(
+                  'user_data', jsonEncode(userDetail)); //luu duoi dang json
 
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Sửa thông tin thành công')),
               );
               Navigator.pushNamed(context, PersonalInfoScreen.routeName);
-
             } catch (e) {
               // Handle JSON parse error
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Failed To Parse')),
               );
             }
-         } 
-        else {
-           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(content: Text('Lỗi khi cập nhật thông tin người dùng')),
-           );
-        }
-      } 
-      catch (e) {
-         print('Lỗi khi gửi yêu cầu PUT: $e');
-         ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(content: Text('Lỗi khi gửi yêu cầu cập nhật')),
-         );
-      }
-      finally {
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Lỗi khi cập nhật thông tin người dùng')),
+            );
+          }
+        } catch (e) {
+          print('Lỗi khi gửi yêu cầu PUT: $e');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Lỗi khi gửi yêu cầu cập nhật')),
+          );
+        } finally {
           setState(() {
             isSaving = false;
           });
         }
+      }
     }
   }
-}
 
 //hàm lấy token mới khi token cũ hết han
-Future<String?> refreshToken() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? refreshToken = prefs.getString('refresh_token');
-  if (refreshToken == null) {
-    // Không có refresh token
-    return null;
-  }
+  Future<String?> refreshToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? refreshToken = prefs.getString('refresh_token');
+    if (refreshToken == null) {
+      // Không có refresh token
+      return null;
+    }
 
-  final response = await http.post(
-    Uri.parse('http://localhost:3001/api/user/refresh-token'), // Thay URL bằng URL API thực tế của bạn
-    headers: <String, String>{
+    final response = await http.post(
+      Uri.parse(
+          'http://10.0.2.2:3001/api/user/refresh-token'), // Thay URL bằng URL API thực tế của bạn
+      headers: <String, String>{
         'token': 'Bearer $refreshToken',
       },
-  );
+    );
 
-  if (response.statusCode == 200) {
-    Map<String, dynamic> responseData = jsonDecode(response.body);
-    String newAccessToken = responseData['access_token'];
-    await prefs.setString('access_token', newAccessToken);
-    return newAccessToken;
-  } else {
-    // Xử lý lỗi
-    return null;
+    if (response.statusCode == 200) {
+      Map<String, dynamic> responseData = jsonDecode(response.body);
+      String newAccessToken = responseData['access_token'];
+      await prefs.setString('access_token', newAccessToken);
+      return newAccessToken;
+    } else {
+      // Xử lý lỗi
+      return null;
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -371,18 +369,18 @@ Future<String?> refreshToken() async {
                         width: 150,
                         child: isSaving
                             ? Center(child: CircularProgressIndicator())
-                            :
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            textStyle: const TextStyle(
-                                fontSize: 16, color: Colors.white),
-                          ),
-                          onPressed: _saveUserData,
-                          child: const Text('Save',
-                              style: TextStyle(color: Colors.white)),
-                        ),
+                            : ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black,
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12),
+                                  textStyle: const TextStyle(
+                                      fontSize: 16, color: Colors.white),
+                                ),
+                                onPressed: _saveUserData,
+                                child: const Text('Save',
+                                    style: TextStyle(color: Colors.white)),
+                              ),
                       ),
                     ),
                   ],
@@ -392,4 +390,3 @@ Future<String?> refreshToken() async {
     );
   }
 }
-
