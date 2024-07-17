@@ -1,4 +1,4 @@
-class Comment {
+class  Comment {
   final String id;
   final String productId;
   final String userId;

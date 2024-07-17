@@ -52,9 +52,11 @@ class _CommentsSectionState extends State<CommentsSection> {
     socket.on('newComment', (data) {
       Comment comment = Comment.fromJson(data);
       if (comment.productId == widget.productId) {
-        setState(() {
-          comments.insert(0, comment); // Thêm comment vào đầu danh sách
-        });
+        if (mounted) {
+          setState(() {
+            comments.insert(0, comment);  // Thêm comment vào đầu danh sách
+          });
+        }
       }
     });
 
@@ -180,9 +182,11 @@ class _CommentsSectionState extends State<CommentsSection> {
                           color: Colors.amber,
                         ),
                         onPressed: () {
-                          setState(() {
-                            _rating = index + 1;
-                          });
+                          if (mounted) {
+                            setState(() {
+                              _rating = index + 1;
+                            });
+                          }
                         },
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -196,7 +200,9 @@ class _CommentsSectionState extends State<CommentsSection> {
                 child: ElevatedButton(
                   onPressed: () {
                     String content = _commentController.text;
-                    _addComment(content, _rating);
+                    if (mounted) {
+                      _addComment(content, _rating);
+                    }
                   },
                   child: Text(
                     'Gửi',
@@ -227,13 +233,15 @@ class _CommentsSectionState extends State<CommentsSection> {
               return Column(
                 children: [
                   SizedBox(
-                    height: 300,
+                    height: 500,
                     child: PageView.builder(
                       itemCount: totalPages,
                       onPageChanged: (page) {
-                        setState(() {
-                          _currentPage = page;
-                        });
+                        if (mounted) {
+                          setState(() {
+                            _currentPage = page;
+                          });
+                        }
                       },
                       itemBuilder: (context, pageIndex) {
                         int startIndex = pageIndex * 5;
@@ -282,9 +290,11 @@ class _CommentsSectionState extends State<CommentsSection> {
                     children: List.generate(totalPages, (index) {
                       return GestureDetector(
                         onTap: () {
-                          setState(() {
-                            _currentPage = index;
-                          });
+                          if (mounted) {
+                            setState(() {
+                              _currentPage = index;
+                            });
+                          }
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 4.0),

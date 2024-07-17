@@ -14,7 +14,7 @@ const black = Colors.black;
 
 //mau nut dam, mau nut nhat
 const kPrimaryColor = Color.fromARGB(255, 255, 35, 87);
-const kWhite = Color.fromARGB(255, 182, 182, 182);
+const kWhite = Color.fromARGB(255, 235, 227, 227);
 const kPrimaryLightColor = Color.fromARGB(255, 65, 65, 65);
 const kPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,

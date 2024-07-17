@@ -25,7 +25,7 @@ class DetailsScreen extends StatelessWidget {
     final product = agrs.product;
     return Scaffold(
       extendBody: true,
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       backgroundColor: white,
       appBar: AppBar(
         backgroundColor: white,
@@ -105,7 +105,7 @@ class DetailsScreen extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: TopRoundedContainer(
-        color: Colors.white,
+        color: kWhite,
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),

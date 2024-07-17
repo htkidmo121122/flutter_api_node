@@ -152,9 +152,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           var response = await http.put(
             Uri.parse(apiUrl),
             headers: <String, String>{
-              'token': 'Bearer $accessToken',
-              'Content-Type': 'application/json',
-            },
+            'token': 'Bearer $accessToken',
+            'Content-Type': 'application/json',
+            },  
             body: jsonEncode(updatedUserData),
           );
           /////////Kiểm tra nếu token hết hạn
