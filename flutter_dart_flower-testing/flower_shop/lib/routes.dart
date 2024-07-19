@@ -3,7 +3,6 @@ import 'package:health_care/mainpage.dart';
 import 'package:health_care/screens/cart_screen/cart_screen.dart';
 import 'package:health_care/screens/checkout/checkout.dart';
 import 'package:health_care/screens/details_screen/details_screen.dart';
-
 import 'package:health_care/screens/forgotpass_screen/forgotpass_screen.dart';
 import 'package:health_care/screens/home_screen/home_screen.dart';
 import 'package:health_care/screens/info_screen/edit_profile.dart';
@@ -25,6 +24,6 @@ final Map<String, WidgetBuilder> routes = {
   DetailsScreen.routeName: (context) => const DetailsScreen(),
   EditProfileScreen.routeName: (context) => const EditProfileScreen(),
   ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
-  ForgotPasswordScreen.routeName:(context) => const ForgotPasswordScreen(),
-  Checkout.screenroute:(context) => const Checkout(),
+  ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
+  Checkout.screenroute: (context) => const Checkout(),
 };
