@@ -40,6 +40,7 @@ class PopularProducts extends StatelessWidget {
                   press: () {},
                 ),
               ),
+              
               const SizedBox(height: 5),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,

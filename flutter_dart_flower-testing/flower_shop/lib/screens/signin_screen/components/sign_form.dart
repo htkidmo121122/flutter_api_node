@@ -47,7 +47,7 @@ class _SignFormState extends State<SignForm> {
       });
 
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:3001/api/user/sign-in'),
+        Uri.parse('http://localhost:3001/api/user/sign-in'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -95,7 +95,7 @@ class _SignFormState extends State<SignForm> {
 
   Future<void> _getUserDetails(String userId, String token) async {
     final response = await http.get(
-      Uri.parse('http://10.0.2.2:3001/api/user/get-details/$userId'),
+      Uri.parse('http://localhost:3001/api/user/get-details/$userId'),
       headers: <String, String>{
         'token': 'Bearer $token',
       },

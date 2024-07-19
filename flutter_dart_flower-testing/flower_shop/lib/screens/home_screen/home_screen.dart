@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:health_care/constants.dart';
-import 'package:health_care/screens/home_screen/components/discount_product.dart';
+import 'package:health_care/screens/home_screen/components/animated_banner.dart';
+
+import 'package:health_care/screens/home_screen/components/all_product.dart';
 import 'package:health_care/screens/home_screen/components/search_field.dart';
 
 import 'components/categories.dart';
@@ -24,14 +26,16 @@ class HomeScreen extends StatelessWidget {
               HomeHeader(),
               SizedBox(height: 20),
               // SearchField(),
-              SpecialOffers(),
+              
+              AnimatedBanner(),
+              // SpecialOffers(),
               // DiscountBanner(),
               Categories(),
               PopularProducts(),
               SizedBox(height: 20),
               SizedBox(
-                height: 280, // Chiều cao cố định cho DiscountProducts
-                child: DiscountProducts(),
+                height: 600, // Chiều cao cố định cho DiscountProducts
+                child: AllProducts(),
               ),
               SizedBox(height: 20),
               // DiscountProduct()

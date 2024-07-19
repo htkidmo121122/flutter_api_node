@@ -56,7 +56,7 @@ class _SignFormState extends State<SignForm> {
 
         try {
           final response = await http.post(
-            Uri.parse('http://10.0.2.2:3001/api/user/sign-up'),
+            Uri.parse('http://localhost:3001/api/user/sign-up'),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },

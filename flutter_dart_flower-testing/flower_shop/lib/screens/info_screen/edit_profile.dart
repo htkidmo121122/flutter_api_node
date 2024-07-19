@@ -146,7 +146,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
         // Gửi yêu cầu PUT lên API
         String apiUrl =
-            'http://10.0.2.2:3001/api/user/update-user/${userId}'; // Thay bằng URL API thực tế của bạn
+            'http://localhost:3001/api/user/update-user/${userId}'; // Thay bằng URL API thực tế của bạn
         try {
           //////////Gọi Api
           var response = await http.put(
@@ -227,7 +227,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     final response = await http.post(
       Uri.parse(
-          'http://10.0.2.2:3001/api/user/refresh-token'), // Thay URL bằng URL API thực tế của bạn
+          'http://localhost:3001/api/user/refresh-token'), // Thay URL bằng URL API thực tế của bạn
       headers: <String, String>{
         'token': 'Bearer $refreshToken',
       },

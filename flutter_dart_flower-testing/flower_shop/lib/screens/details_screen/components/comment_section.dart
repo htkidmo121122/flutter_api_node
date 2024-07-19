@@ -36,7 +36,7 @@ class _CommentsSectionState extends State<CommentsSection> {
 
   void _setupSocket() {
     socket = IO.io(
-        'http://10.0.2.2:3001',
+        'http://localhost:3001',
         IO.OptionBuilder()
             .setTransports(['websocket'])
             .disableAutoConnect()
@@ -66,7 +66,7 @@ class _CommentsSectionState extends State<CommentsSection> {
   }
 
   Future<List<Comment>> fetchCommentsByProduct(String productId) async {
-    final url = Uri.parse('http://10.0.2.2:3001/api/comment/$productId');
+    final url = Uri.parse('http://localhost:3001/api/comment/$productId');
     final response = await http.get(url);
     if (response.statusCode == 200) {
       List<dynamic> body = jsonDecode(response.body);
@@ -107,7 +107,7 @@ class _CommentsSectionState extends State<CommentsSection> {
         Navigator.pushNamed(context, EditProfileScreen.routeName);
         return;
       }
-      final url = Uri.parse('http://10.0.2.2:3001/api/comment');
+      final url = Uri.parse('http://localhost:3001/api/comment');
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},

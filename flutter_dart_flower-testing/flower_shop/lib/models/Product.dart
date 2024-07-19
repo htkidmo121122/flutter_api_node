@@ -49,7 +49,7 @@ Future<void> fetchProducts(BuildContext context) async {
     //sau này thay đường dẫn này thành api api/product/getAll
     // Update the URL to your actual API endpoint
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:3001/api/product/get-all'));
+        await http.get(Uri.parse('http://localhost:3001/api/product/get-all'));
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = json.decode(response.body);
       List<dynamic> jsonList = jsonResponse['data'];

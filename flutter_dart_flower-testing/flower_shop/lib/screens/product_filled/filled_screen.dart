@@ -3,6 +3,8 @@ import 'package:health_care/models/Product.dart';
 import 'package:health_care/screens/home_screen/components/home_header.dart';
 import 'package:health_care/screens/home_screen/components/search_field.dart';
 import 'package:health_care/screens/product_filled/product_filled.dart';
+import 'package:health_care/screens/search_screen/components/search_provider.dart';
+import 'package:provider/provider.dart';
 
 class FilledScreen extends StatelessWidget {
   final String category;
@@ -12,26 +14,30 @@ class FilledScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Column(
-            children: [
-              const HomeHeader(),
-              const SizedBox(height: 20),
-              const SearchField(),
-              const SizedBox(height: 20),
-              Expanded(
-                child: FilteredProductsPage(
-                  category: category,
-                  products: products,
+    return ChangeNotifierProvider(
+      create: (_) => SearchProvider(),
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Column(
+              children: [
+                const HomeHeader(),
+                const SizedBox(height: 20),
+                //Tim kiem san pham
+                const SearchField(),
+                const SizedBox(height: 20),
+                Expanded(
+                  child: FilteredProductsPage(
+                    category: category,
+                    products: products,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
+      )
     );
   }
 }

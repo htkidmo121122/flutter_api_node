@@ -4,12 +4,19 @@ import 'package:health_care/models/Product.dart';
 import 'package:health_care/screens/details_screen/details_screen.dart';
 import 'package:health_care/screens/search_screen/components/search_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:health_care/components/product_sort.dart'; // Import the ProductSorter
 
 import 'section_title.dart';
 
-class DiscountProducts extends StatelessWidget {
-  const DiscountProducts({super.key});
+class AllProducts extends StatefulWidget {
+  const AllProducts({super.key});
 
+  @override
+  _AllProductsState createState() => _AllProductsState();
+}
+
+class _AllProductsState extends State<AllProducts> {
+  List<Product> _sortedProducts = [];
 
   @override
   Widget build(BuildContext context) {
@@ -21,21 +28,44 @@ class DiscountProducts extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error loading products'));
         } else {
+          //lay ds san phẩm theo từ khoá tìm kiếm tu ds san pham tong
           final searchQuery = Provider.of<SearchProvider>(context).searchQuery;
-          final searchResults = demoProducts.where((product) {
+          List<Product> searchResults = demoProducts.where((product) {
             final titleLower = product.title.toLowerCase();
             final searchLower = searchQuery.toLowerCase();
             return titleLower.contains(searchLower);
           }).toList();
+          //lay ds san pham vua loc theo gia vua theo tim kiem
+          List<Product> searchSortResults = _sortedProducts.where((product) {
+            final titleLower = product.title.toLowerCase();
+            final searchLower = searchQuery.toLowerCase();
+            return titleLower.contains(searchLower);
+          }).toList();
+
+          // Nếu không có tùy chọn sắp xếp, sử dụng ds san phẩm kết quả tìm kiếm
+          List<Product> displayedProducts = _sortedProducts.isEmpty ? searchResults : searchSortResults;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: SectionTitle(
-                  title: "Discount",
-                  press: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SectionTitle(
+                      title: "All ",
+                      press: () {},
+                    ),
+                    ProductSorter(
+                      products: searchResults,
+                      onSorted: (sortedProducts) {
+                        setState(() {
+                          _sortedProducts = sortedProducts;
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 5),
@@ -43,7 +73,7 @@ class DiscountProducts extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: GridView.builder(
-                    itemCount: searchResults.length,
+                    itemCount: displayedProducts.length,
                     gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 200,
                       childAspectRatio: 0.7,
@@ -51,11 +81,11 @@ class DiscountProducts extends StatelessWidget {
                       crossAxisSpacing: 16,
                     ),
                     itemBuilder: (context, index) => ProductCard(
-                      product: searchResults[index],
+                      product: displayedProducts[index],
                       onPress: () => Navigator.pushNamed(
                         context,
                         DetailsScreen.routeName,
-                        arguments: ProductDetailsArguments(product: searchResults[index]),
+                        arguments: ProductDetailsArguments(product: displayedProducts[index]),
                       ),
                     ),
                   ),
