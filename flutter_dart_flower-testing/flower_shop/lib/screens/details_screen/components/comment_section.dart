@@ -162,6 +162,7 @@ class _CommentsSectionState extends State<CommentsSection> {
                   contentPadding: EdgeInsets.all(12.0),
                 ),
                 maxLines: 3,
+                
               ),
               const SizedBox(height: 8.0),
               Row(

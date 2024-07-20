@@ -29,22 +29,29 @@ class DetailsScreen extends StatelessWidget {
       // backgroundColor: white,
       appBar: AppBar(
         // elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            style: ElevatedButton.styleFrom(
-                shape: const CircleBorder(),
-               padding: EdgeInsets.zero,
-               elevation: 0,
-            ),
-            child: const Icon(
-              Icons.arrow_back_ios_new,
-              size: 20,
-            ),
-          ),
+        leading: 
+        // Padding(
+        //   padding: const EdgeInsets.all(8.0),
+        //   child: ElevatedButton(
+        //     onPressed: () {
+        //       Navigator.pop(context);
+        //     },
+        //     style: ElevatedButton.styleFrom(
+        //         shape: const CircleBorder(),
+        //        padding: EdgeInsets.zero,
+        //        elevation: 0,
+        //     ),
+        //     child: const Icon(
+        //       Icons.arrow_back_ios_new,
+        //       size: 20,
+        //     ),
+        //   ),
+        // ),
+        IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         actions: [
           Row(

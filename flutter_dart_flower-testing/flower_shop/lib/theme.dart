@@ -10,15 +10,17 @@ class AppTheme {
       // fontFamily: "Muli",
       appBarTheme: const AppBarTheme(
           color: Colors.white,
+          
           elevation: 0,
           iconTheme: IconThemeData(color: Color.fromARGB(255, 0, 0, 0)),
-          titleTextStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold),
+          titleTextStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold, fontSize: 15),
             
       ),
       textTheme: const TextTheme(
          bodyLarge: TextStyle(color: kTextColor),
          bodyMedium: TextStyle(color: kTextColor),
          bodySmall: TextStyle(color: kTextColor),
+         titleLarge: TextStyle(color: kTextColor, fontWeight: FontWeight.bold)
       ),
       expansionTileTheme: const ExpansionTileThemeData(
         textColor: Colors.black,
@@ -55,13 +57,13 @@ class AppTheme {
         color: Color.fromARGB(255, 34, 34, 34),
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.white),
-        titleTextStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        titleTextStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
       ),
       textTheme: const TextTheme(
         bodyLarge: TextStyle(color: Colors.white),
         bodyMedium: TextStyle(color: Colors.white),
         bodySmall: TextStyle(color: Colors.white),
-        titleLarge: TextStyle(color: Colors.white)
+        titleLarge: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
         
         
       ),

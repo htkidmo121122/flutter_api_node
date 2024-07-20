@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:health_care/constants.dart';
+import 'package:health_care/provider/cart_provider.dart';
 import 'package:health_care/screens/cart_screen/cart_screen.dart';
 import 'package:health_care/screens/home_screen/home_screen.dart';
 import 'package:health_care/screens/search_screen/search_screen.dart';
 import 'package:health_care/screens/info_screen/info_screen.dart';
 import 'package:health_care/screens/setting_screen/setting_screen.dart';
 import 'package:health_care/screens/splash_screen/splash_screen.dart';
+import 'package:provider/provider.dart';
 
 class Mainpage extends StatefulWidget {
   static String routeName = "/main";
@@ -125,7 +127,9 @@ class _MainpageState extends State<Mainpage> {
       //     ],
       //   ),
       // ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: Consumer<CartProvider>(
+        builder: (context, cartProvider, child) {
+      return Container(
         decoration: BoxDecoration(
           // color: Colors.white,
           borderRadius: const BorderRadius.only(
@@ -142,11 +146,51 @@ class _MainpageState extends State<Mainpage> {
           ],
         ),
         child: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart),
-              label: 'Cart',
+              icon: Stack(
+                    children: [
+                      const Align(
+                        alignment: Alignment.center,
+                        child: Icon(Icons.shopping_cart),
+                      ),
+                      if (cartProvider.itemCount > 0)
+                        Positioned(
+                          right: 15,
+                          top: 0,
+                         
+                          child: Container(
+                            height: 20,
+                            width: 20,
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFF4848),
+                              shape: BoxShape.circle,
+                              border: Border.all(width: 1.5, color: Colors.white),
+                            ),
+                            // constraints: const BoxConstraints(
+                            //   minWidth: 16,
+                            //   minHeight: 16,
+                            // ),
+                            child: Center(
+                              child: Text(
+                                '${cartProvider.itemCount}',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  height: 1,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]
+              ),
+              label: 'Cart'
+                        
             ),
+            
             BottomNavigationBarItem(
               icon: Icon(Icons.search),
               label: 'Search',
@@ -170,8 +214,11 @@ class _MainpageState extends State<Mainpage> {
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed, // This prevents the labels from shifting when selected
         ),
+      );
+        },
       ),
       body: _loadWidget(_selectedIndex),
+      
     );
   }
 }

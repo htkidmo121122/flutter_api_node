@@ -121,16 +121,44 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
             ? Center(child: CircularProgressIndicator()) // Hiển thị loading khi đang tải dữ liệu
             : Column(
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(EditProfileScreen.routeName);
-                    },
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: userImage != null
-                          ? MemoryImage(userImage!)
-                          : AssetImage('assets/images/profile_image.png') as ImageProvider,
-                    ),
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundImage: userImage != null
+                            ? MemoryImage(userImage!)
+                            : const AssetImage('assets/images/profile_image.png') as ImageProvider,
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(EditProfileScreen.routeName);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.3),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            padding: const EdgeInsets.all(8),
+                            child: const Icon(
+                              Icons.edit,
+                              color: Colors.black,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]
                   ),
                   const SizedBox(height: 16),
                   Text(

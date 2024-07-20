@@ -69,6 +69,7 @@ class _CartScreenState extends State<CartScreen> {
               },
             ),
           ),
+          
           Container(
             padding: const EdgeInsets.all(16.0),
             // decoration: BoxDecoration(
@@ -121,7 +122,7 @@ class _CartScreenState extends State<CartScreen> {
                                     height: 100, // Điều chỉnh kích thước phù hợp
                                   ),
                                   SizedBox(height: 16), // Khoảng cách giữa GIF và văn bản
-                                  const Text('Vui lòng cập nhật đầy đủ thông tin cá nhân trước khi đặt hàng.', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                                  const Text('Vui lòng cập nhật đầy đủ thông tin cá nhân trước khi đặt hàng.', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: black),),
                                 ],
                                 
                               
@@ -149,7 +150,7 @@ class _CartScreenState extends State<CartScreen> {
                                   height: 100, // Điều chỉnh kích thước phù hợp
                                 ),
                                 SizedBox(height: 16), // Khoảng cách giữa GIF và văn bản
-                                const Text('Giỏ hàng trống', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                                const Text('Giỏ hàng trống', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: black),),
                               ],
                             ),
                           );
@@ -165,11 +166,11 @@ class _CartScreenState extends State<CartScreen> {
                     backgroundColor: kPrimaryColor,
                   ),
                   child: const Text(
-                    'Đặt Hàng',
+                    'Thanh Toán',
                     style: TextStyle(
                       color: white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 16
+                      fontSize: 18
                     ),
                   ),
                 ),

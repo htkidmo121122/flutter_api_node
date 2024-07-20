@@ -92,6 +92,10 @@ class _CheckoutState extends State<Checkout> {
               })
           .toList();
 
+      print(_selectedPaymentMethod);
+      // Determine the payment status based on the selected payment method
+      bool isPaid = _selectedPaymentMethod == 'Visa' || _selectedPaymentMethod == 'MasterCard';
+
       final newOrder = {
         'orderItems': orderItems,
         'fullName': userData['name'],
@@ -103,7 +107,7 @@ class _CheckoutState extends State<Checkout> {
         'shippingPrice': 30000,
         'totalPrice': totalPrice + 30000,
         'user': userId,
-        'isPaid': false,
+        'isPaid': isPaid,
         'paidAt': DateTime.now().toIso8601String(),
         'email': userData['email']
       };
@@ -319,6 +323,7 @@ class _CheckoutState extends State<Checkout> {
                           onTap: () {
                             setState(() {
                               _selectedPaymentMethod = method['name'];
+                              
                             });
                           },
                         );

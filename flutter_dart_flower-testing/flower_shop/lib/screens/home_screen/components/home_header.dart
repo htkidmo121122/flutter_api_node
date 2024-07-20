@@ -1,13 +1,41 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:health_care/mainpage.dart';
+import 'package:health_care/screens/home_screen/components/icon_btn_with_counter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'icon_btn_with_counter.dart';
-
-
-class HomeHeader extends StatelessWidget {
+class HomeHeader extends StatefulWidget {
   const HomeHeader({
     Key? key,
   }) : super(key: key);
+
+  @override
+  _HomeHeaderState createState() => _HomeHeaderState();
+}
+
+class _HomeHeaderState extends State<HomeHeader> {
+  Uint8List? userImage;
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserImage();
+  }
+
+  Future<void> loadUserImage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userDataString = prefs.getString('user_data');
+
+    if (userDataString != null) {
+      Map<String, dynamic> userData = jsonDecode(userDataString);
+      String base64String = userData['avatar'].toString() ?? '';
+      String base64Image = base64String.split(',').last;
+      setState(() {
+        userImage = Uint8List.fromList(base64.decode(base64Image));
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +47,7 @@ class HomeHeader extends StatelessWidget {
           Expanded(
             child: InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed(Mainpage.routeName);// Navigate back to the home screen
+                Navigator.of(context).pushNamed(Mainpage.routeName);
               },
               child: const Text(
                 'Flora`s',
@@ -37,9 +65,14 @@ class HomeHeader extends StatelessWidget {
             press: () {},
           ),
           const SizedBox(width: 8),
-          IconBtnWithCounter(
-            svgSrc: "assets/icons/user.svg",
-            press: () {},
+          InkWell(
+            onTap: () {},
+            child: CircleAvatar(
+              radius: 20,
+              backgroundImage: userImage != null
+                  ? MemoryImage(userImage!)
+                  : const AssetImage('assets/images/profile_image.png') as ImageProvider,
+            ),
           ),
         ],
       ),

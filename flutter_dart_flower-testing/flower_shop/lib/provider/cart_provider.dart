@@ -7,6 +7,8 @@ class CartProvider extends ChangeNotifier {
   List<CartItem> _cartItems = [];
 
   List<CartItem> get cartItems => _cartItems;
+
+  int get itemCount => _cartItems.length;
   //Thêm sp vào cart 
   void addToCart(CartItem item) {
     // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa

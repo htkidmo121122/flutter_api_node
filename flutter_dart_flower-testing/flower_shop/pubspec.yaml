@@ -9,8 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^2.0.9 # help us to use SVG in our app
-  provider: ^6.1.1 # for State management
+  flutter_svg: ^2.0.9 
+  provider: ^6.1.1 
   image_picker: ^1.1.2
   file_picker: ^8.0.5
   http: ^1.2.1
@@ -31,11 +31,4 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/products.json
-  # fonts:
-  #   - family: Muli
-  #     fonts:
-  #       - asset: assets/fonts/muli/Muli.ttf
-  #       - asset: assets/fonts/muli/Muli-Bold.ttf
-  #         weight: 700
-  #       - asset: assets/fonts/muli/Muli-Light.ttf
-  #         weight: 300
+

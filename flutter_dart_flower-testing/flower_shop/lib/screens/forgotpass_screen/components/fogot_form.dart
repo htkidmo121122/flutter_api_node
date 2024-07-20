@@ -82,7 +82,7 @@ class _FogotFormState extends State<FogotForm> {
                 gapPadding: 10,
               ),
               filled: true,
-              fillColor: const Color.fromARGB(255, 255, 255, 255),
+              fillColor: Theme.of(context).scaffoldBackgroundColor,
             ),
           ),
           const SizedBox(height: 20),

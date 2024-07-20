@@ -33,31 +33,31 @@ class IconBtnWithCounter extends StatelessWidget {
             ),
             child: SvgPicture.asset(svgSrc),
           ),
-          if (numOfitem != 0)
-            Positioned(
-              top: -3,
-              right: 0,
-              child: Container(
-                height: 20,
-                width: 20,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFF4848),
-                  shape: BoxShape.circle,
-                  border: Border.all(width: 1.5, color: Colors.white),
-                ),
-                child: Center(
-                  child: Text(
-                    "$numOfitem",
-                    style: const TextStyle(
-                      fontSize: 12,
-                      height: 1,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            )
+          // if (numOfitem != 0)
+          //   Positioned(
+          //     top: -3,
+          //     right: 0,
+          //     child: Container(
+          //       height: 20,
+          //       width: 20,
+          //       decoration: BoxDecoration(
+          //         color: const Color(0xFFFF4848),
+          //         shape: BoxShape.circle,
+          //         border: Border.all(width: 1.5, color: Colors.white),
+          //       ),
+          //       child: Center(
+          //         child: Text(
+          //           "$numOfitem",
+          //           style: const TextStyle(
+          //             fontSize: 12,
+          //             height: 1,
+          //             fontWeight: FontWeight.w600,
+          //             color: Colors.white,
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   )
         ],
       ),
     );

@@ -152,7 +152,8 @@ class _SignFormState extends State<SignForm> {
                 borderSide: BorderSide(color: kPrimaryColor, width: 2),
                 gapPadding: 10,
               ),
-          
+              filled: true,
+              fillColor: Theme.of(context).scaffoldBackgroundColor
         
 
               // hintText: "Email",
@@ -204,6 +205,8 @@ class _SignFormState extends State<SignForm> {
                 borderSide: BorderSide(color: kPrimaryColor, width: 2),
                 gapPadding: 10,
               ),
+              filled: true,
+              fillColor: Theme.of(context).scaffoldBackgroundColor,
 
               labelText: "Password",
               hintText: "Your Password",
@@ -255,8 +258,8 @@ class _SignFormState extends State<SignForm> {
                 borderSide: BorderSide(color: kPrimaryColor, width: 2),
                 gapPadding: 10,
               ),
-              // filled: true,
-              // fillColor: const Color.fromARGB(255, 255, 255, 255),
+              filled: true,
+              fillColor: Theme.of(context).scaffoldBackgroundColor,
               labelText: "Confirm Password",
               hintText: "Confirm Your Password",
               // If  you are using latest version of flutter then lable text and hint text shown like this

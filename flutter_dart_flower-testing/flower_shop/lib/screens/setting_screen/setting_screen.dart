@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:health_care/mainpage.dart';
 import 'package:health_care/provider/theme_provider.dart';
+import 'package:health_care/screens/myorder_screen/myorder_screen.dart';
 import 'package:health_care/screens/setting_screen/components/Privacy_policy_screen.dart';
 import 'package:health_care/screens/info_screen/edit_profile.dart';
 import 'package:provider/provider.dart';
@@ -101,12 +102,16 @@ class _SettingScreenState extends State<SettingScreen> {
                         context,
                         [
                           buildListTile(context, Icons.admin_panel_settings,
-                              'Quản lý hệ thống'),
+                              'Manage Systems'),
                         ],
                       ),
                     buildSettingsGroup(
                       context,
                       [
+                        buildListTile(context, Icons.shopping_basket,
+                            'My Orders',
+                            destination: MyOrdersScreen()
+                            ),
                         buildListTile(context, Icons.person,
                             'Edit profile information'),
                         buildListTile(context, Icons.notifications,
