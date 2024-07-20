@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:health_care/screens/search_screen/components/search_provider.dart';
+import 'package:health_care/provider/search_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';

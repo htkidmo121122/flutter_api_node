@@ -5,7 +5,7 @@ import 'package:health_care/screens/details_screen/details_screen.dart';
 import 'package:health_care/screens/home_screen/components/home_header.dart';
 import 'package:health_care/screens/home_screen/components/search_field.dart';
 import 'package:health_care/components/product_sort.dart';
-import 'package:health_care/screens/search_screen/components/search_provider.dart';
+import 'package:health_care/provider/search_provider.dart';
 import 'package:provider/provider.dart'; // Import the ProductSorter
 
 class FilteredProductsPage extends StatefulWidget {

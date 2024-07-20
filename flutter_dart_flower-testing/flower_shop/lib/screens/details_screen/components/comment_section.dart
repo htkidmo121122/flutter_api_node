@@ -48,13 +48,12 @@ class _CommentsSectionState extends State<CommentsSection> {
       // print('Connected to socket.io server');
     });
 
-    // Lắng nghe sự kiện newComment và cập nhật danh sách bình luận khi có bình luận mới từ server.
     socket.on('newComment', (data) {
       Comment comment = Comment.fromJson(data);
       if (comment.productId == widget.productId) {
         if (mounted) {
           setState(() {
-            comments.insert(0, comment);  // Thêm comment vào đầu danh sách
+            comments.insert(0, comment);
           });
         }
       }
@@ -96,17 +95,14 @@ class _CommentsSectionState extends State<CommentsSection> {
       final username = userData['name'];
       final avatar = userData['avatar'];
 
-      // Kiểm tra thông tin cá nhân
-      if (username == null ||
-          username.isEmpty ||
-          avatar == null ||
-          avatar.isEmpty) {
+      if (username == null || username.isEmpty || avatar == null || avatar.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Bạn chưa điền thông tin cá nhân')),
         );
         Navigator.pushNamed(context, EditProfileScreen.routeName);
         return;
       }
+
       final url = Uri.parse('http://localhost:3001/api/comment');
       final response = await http.post(
         url,
@@ -151,6 +147,7 @@ class _CommentsSectionState extends State<CommentsSection> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -172,7 +169,7 @@ class _CommentsSectionState extends State<CommentsSection> {
                 children: [
                   const Text(
                     'Đánh giá:',
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   Row(
                     children: List.generate(5, (index) {
@@ -217,20 +214,21 @@ class _CommentsSectionState extends State<CommentsSection> {
             ],
           ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         FutureBuilder<List<Comment>>(
           future: futureComments,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
+              return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Text('No comments found');
+              return Center(child: Text('No comments found'));
             } else {
               comments = snapshot.data!;
               int totalPages = (comments.length / 5).ceil();
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
                     height: 500,
@@ -245,39 +243,41 @@ class _CommentsSectionState extends State<CommentsSection> {
                       },
                       itemBuilder: (context, pageIndex) {
                         int startIndex = pageIndex * 5;
-                        int endIndex =
-                            (startIndex + 5).clamp(0, comments.length);
-                        List<Comment> pageComments =
-                            comments.sublist(startIndex, endIndex);
+                        int endIndex = (startIndex + 5).clamp(0, comments.length);
+                        List<Comment> pageComments = comments.sublist(startIndex, endIndex);
                         return ListView.builder(
                           itemCount: pageComments.length,
                           itemBuilder: (context, index) {
                             Comment comment = pageComments[index];
                             DateTime dated = comment.date;
-                            String formattedDate =
-                                DateFormat('dd/MM/yyyy HH:mm').format(dated);
-                            return ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage:
-                                    imageFromBase64String(comment.avatar!)
-                                        .image,
-                              ),
-                              title: Text(comment.username!),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(comment.content),
-                                  Row(
-                                    children:
-                                        List.generate(comment.rating, (index) {
-                                      return Icon(Icons.star,
-                                          color: Colors.amber);
-                                    }),
-                                  ),
-                                  Text(formattedDate,
-                                      style: TextStyle(
-                                          color: Colors.grey, fontSize: 12)),
-                                ],
+                            String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(dated);
+                            return Card(
+                              margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                              elevation: 4,
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: imageFromBase64String(comment.avatar!).image,
+                                ),
+                                title: Text(
+                                  comment.username!,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                      child: Text(comment.content),
+                                    ),
+                                    Row(
+                                      children: List.generate(comment.rating, (index) {
+                                        return Icon(Icons.star, color: Colors.amber);
+                                      }),
+                                    ),
+                                    Text(formattedDate,
+                                        style: TextStyle(color: Colors.grey, fontSize: 12)),
+                                  ],
+                                ),
                               ),
                             );
                           },
@@ -285,6 +285,7 @@ class _CommentsSectionState extends State<CommentsSection> {
                       },
                     ),
                   ),
+                  SizedBox(height: 15,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(totalPages, (index) {
@@ -302,9 +303,7 @@ class _CommentsSectionState extends State<CommentsSection> {
                           height: 12.0,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: _currentPage == index
-                                ? Colors.blue
-                                : Colors.grey,
+                            color: _currentPage == index ? Colors.blue : Colors.grey,
                           ),
                         ),
                       );

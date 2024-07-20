@@ -46,6 +46,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   Future<void> loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userDataString = prefs.getString('user_data');
+    
     if (userDataString != null) {
       Map<String, dynamic> userData = jsonDecode(userDataString);
 

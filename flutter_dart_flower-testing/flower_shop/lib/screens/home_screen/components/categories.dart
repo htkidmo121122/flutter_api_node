@@ -17,63 +17,63 @@ class Categories extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error loading products'));
         } else {
-     // Extract unique categories from products
-     // lấy ra danh sách loại sản phẩm từ sản phẩm
-    List<String> categories = demoProducts
-        .map((product) => product.category)
-        .toSet()
-        .toList();
+          // Extract unique categories from products
+          // lấy ra danh sách loại sản phẩm từ sản phẩm
+          List<String> categories = demoProducts
+              .map((product) => product.category)
+              .toSet()
+              .toList();
 
-    
-    // Define a map for icons associated with categories
-    Map<String, String> categoryIcons = {
-      "Flower": "assets/icons/flower.svg",
-      "Gift": "assets/icons/gift.svg",
-      "Special": "assets/icons/special.svg",
-      "Collection": "assets/icons/dailygift.svg",
-      "Wedding": "assets/icons/classify.svg",
-    };
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'What are you looking for?',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 20), // Optional SizedBox for spacing
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: 
-              List.generate(
-                categories.length,
-                (index) => CategoryCard(
-                  icon: categoryIcons[categories[index]] ?? "assets/icons/flower.svg",
-                  text: categories[index],
-                  press: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FilledScreen(
-                          category: categories[index],
-                          products: demoProducts,
-                        ),
+          
+          // Define a map for icons associated with categories
+          Map<String, String> categoryIcons = {
+            "Flower": "assets/icons/flower.svg",
+            "Gift": "assets/icons/gift.svg",
+            "Special": "assets/icons/special.svg",
+            "Collection": "assets/icons/dailygift.svg",
+            "Wedding": "assets/icons/classify.svg",
+          };
+          return Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'What are you looking for?',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 20), // Optional SizedBox for spacing
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: 
+                    List.generate(
+                      categories.length,
+                      (index) => CategoryCard(
+                        icon: categoryIcons[categories[index]] ?? "assets/icons/flower.svg",
+                        text: categories[index],
+                        press: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FilledScreen(
+                                category: categories[index],
+                                products: demoProducts,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-              ),
+                    ),
+                  ),
+                ]
             ),
-          ]
-      ),
-    );
-  }
-  }
+          );
+        }
+      }
     );
   }
 }

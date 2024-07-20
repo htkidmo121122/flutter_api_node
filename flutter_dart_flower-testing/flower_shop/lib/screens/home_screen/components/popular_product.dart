@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:health_care/components/product_card.dart';
 import 'package:health_care/models/Product.dart';
 import 'package:health_care/screens/details_screen/details_screen.dart';
-import 'package:health_care/screens/search_screen/components/search_provider.dart';
+import 'package:health_care/provider/search_provider.dart';
 import 'package:provider/provider.dart';
 
 
@@ -36,7 +36,7 @@ class PopularProducts extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SectionTitle(
-                  title: "Your Favourite",
+                  title: "Popular",
                   press: () {},
                 ),
               ),

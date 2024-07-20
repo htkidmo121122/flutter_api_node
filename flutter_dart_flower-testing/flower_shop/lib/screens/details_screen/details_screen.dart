@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:health_care/constants.dart';
 import 'package:health_care/models/CartItem.dart';
-import 'package:health_care/screens/cart_screen/cart_provider.dart';
+import 'package:health_care/provider/cart_provider.dart';
 import 'package:health_care/screens/details_screen/components/comment_section.dart';
 
 import 'package:provider/provider.dart';
@@ -123,7 +123,8 @@ class DetailsScreen extends StatelessWidget {
 
                 ));
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Added to Cart')),
+                  SnackBar(content: Text('Added to Cart'),
+                  duration: Duration(milliseconds: 500)),
                 );
               },
               style: ElevatedButton.styleFrom(

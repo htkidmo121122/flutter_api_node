@@ -19,9 +19,9 @@ class _SettingScreenState extends State<SettingScreen> {
   String language = 'English';
   String theme = 'Light mode';
 
-  String userName = 'Loading...';
-  String userEmail = 'Loading...';
-  String userPhone = 'Loading...';
+  String userName = 'None';
+  String userEmail = '';
+  String userPhone = '';
   String? userImage64;
   Uint8List? userImage;
   bool isAdmin = false;  // Thêm biến trạng thái isAdmin
@@ -38,24 +38,19 @@ class _SettingScreenState extends State<SettingScreen> {
     if (userDataString != null) {
       Map<String, dynamic> userData = jsonDecode(userDataString);
       setState(() {
-        userName = userData['name'] ?? 'No Name';
-        userEmail = userData['email'] ?? 'No Email';
-        userPhone = '0${userData['phone'] ?? 'No Phone'}';
+        userName = userData['name'] ?? 'none';
+        userEmail = userData['email'];
+        userPhone = '0${userData['phone'] ?? ''}';
         userImage64 = userData['avatar'];
         isAdmin = userData['isAdmin'] ?? false; // Lấy giá trị isAdmin
-
-        String base64String = userImage64!;
-        String base64Image = base64String.split(',').last;
-        userImage = Uint8List.fromList(base64.decode(base64Image));
+        if(userImage64 != null){
+          String base64String = userImage64!;
+          String base64Image = base64String.split(',').last;
+          userImage = Uint8List.fromList(base64.decode(base64Image));
+        }
+        
       });
-    } else {
-      setState(() {
-        userName = 'No User Data';
-        userEmail = 'No User Data';
-        userPhone = 'No User Data';
-        userImage = null;
-      });
-    }
+    } 
   }
 
   @override

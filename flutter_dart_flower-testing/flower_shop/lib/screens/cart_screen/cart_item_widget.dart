@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart'; // Import thư viện intl
 
 import '../../models/CartItem.dart';
-import '../cart_screen/cart_provider.dart';
+import '../../provider/cart_provider.dart';
 
 class CartItemWidget extends StatelessWidget {
   final CartItem cartItem;

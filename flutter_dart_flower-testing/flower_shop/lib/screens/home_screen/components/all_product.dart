@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:health_care/components/product_card.dart';
 import 'package:health_care/models/Product.dart';
 import 'package:health_care/screens/details_screen/details_screen.dart';
-import 'package:health_care/screens/search_screen/components/search_provider.dart';
+import 'package:health_care/provider/search_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:health_care/components/product_sort.dart'; // Import the ProductSorter
 
@@ -24,7 +24,20 @@ class _AllProductsState extends State<AllProducts> {
       future: fetchProducts(context), // Gọi fetchProducts để tải dữ liệu
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Hình ảnh động hoặc bất kỳ widget nào thay thế cho CircularProgressIndicator
+                  Image.asset('assets/images/loadingflower.gif'),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Đang xử lý...',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            );
         } else if (snapshot.hasError) {
           return Center(child: Text('Error loading products'));
         } else {

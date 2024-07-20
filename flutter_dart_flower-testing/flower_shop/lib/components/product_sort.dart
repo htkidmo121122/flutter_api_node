@@ -31,21 +31,21 @@ class _ProductSorterState extends State<ProductSorter> {
       },
       itemBuilder: (BuildContext context) {
         return [
-          PopupMenuItem(
+          const PopupMenuItem(
             value: 'default',
             child: Text('Newest'),
           ),
-          PopupMenuItem(
+          const PopupMenuItem(
             value: 'price_asc',
             child: Text('Price: Low to High'),
           ),
-          PopupMenuItem(
+          const PopupMenuItem(
             value: 'price_desc',
             child: Text('Price: High to Low'),
           ),
         ];
       },
-      icon: Icon(Icons.sort),
+      icon: const Icon(Icons.sort, color: Color.fromARGB(255, 255, 106, 0),),
     );
   }
 }

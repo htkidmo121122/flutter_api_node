@@ -100,12 +100,12 @@ class _FogotFormState extends State<FogotForm> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: kPrimaryColor,
-              padding: EdgeInsets.symmetric(vertical: 12),
+              padding: const EdgeInsets.symmetric(vertical: 12),
               minimumSize:
-                  Size(double.infinity, 50), // Set kích thước tối thiểu
+                  const Size(double.infinity, 50), // Set kích thước tối thiểu
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
-                side: BorderSide(color: kPrimaryColor, width: 1),
+                side: const BorderSide(color: kPrimaryColor, width: 1),
                 // Set border radius here
               ),
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_care/mainpage.dart';
-import 'package:health_care/screens/cart_screen/cart_provider.dart';
-import 'package:health_care/screens/search_screen/components/search_provider.dart';
+import 'package:health_care/provider/cart_provider.dart';
+import 'package:health_care/provider/search_provider.dart';
 import 'package:health_care/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

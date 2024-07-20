@@ -2,15 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:health_care/constants.dart';
-import 'package:health_care/screens/cart_screen/cart_provider.dart';
+import 'package:health_care/mainpage.dart';
+import 'package:health_care/screens/signin_screen/signin_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:health_care/provider/cart_provider.dart';
 
 class Checkout extends StatefulWidget {
   const Checkout({super.key});
   static String screenroute = '/checkout';
+
   @override
   State<Checkout> createState() => _CheckoutState();
 }
@@ -18,10 +21,33 @@ class Checkout extends StatefulWidget {
 class _CheckoutState extends State<Checkout> {
   late TextEditingController _controller;
   bool _isEditing = false;
-  String formmattedDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
+  bool _isLoading = false;
+  String formattedDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
   String formattedTime = DateFormat('HH:mm:ss').format(DateTime.now());
 
-  Future<void> loadaddress() async {
+  String? _selectedPaymentMethod;
+  final List<Map<String, dynamic>> _paymentMethods = [
+    {'name': 'Thanh toán khi nhận hàng', 'iconPath': 'assets/images/cash.png'},
+    {'name': 'Visa', 'iconPath': 'assets/images/visa.png'},
+    {'name': 'MasterCard', 'iconPath': 'assets/images/card.png'},
+    
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+    loadAddress();
+    _selectedPaymentMethod = _paymentMethods.first['name'];
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> loadAddress() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userDataString = prefs.getString('user_data');
     if (userDataString != null) {
@@ -29,11 +55,15 @@ class _CheckoutState extends State<Checkout> {
       setState(() {
         _controller.text = userData['address'];
       });
+    } else {
+      Navigator.pushNamed(context, SignInScreen.routeName);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Bạn chưa đăng nhập vào tài khoản')),
+      );
     }
   }
 
-  //xử lý đơn hàng
-  Future<void> ordercreate() async {
+  Future<void> orderCreate() async {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     final cartItems = cartProvider.cartItems;
     final totalPrice = cartProvider.getTotalPrice();
@@ -41,60 +71,56 @@ class _CheckoutState extends State<Checkout> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userDataString = prefs.getString('user_data');
     String? token = prefs.getString('access_token');
-    if (userDataString != null || token != null) {
-      Map<String, dynamic> userData = jsonDecode(userDataString!);
+    if (userDataString != null && token != null) {
+      Map<String, dynamic> userData = jsonDecode(userDataString);
       final accessToken = token;
       final userId = userData['_id'];
-
-      final url = Uri.parse('http://10.0.2.2:3001/api/order/create/${userId}');
+      
+      final url = Uri.parse('http://localhost:3001/api/order/create/$userId');
       final headers = {
         'Content-Type': 'application/json',
-        'token': 'Bearer $accessToken ', // Thay thế bằng token thực tế nếu cần
+        'token': 'Bearer $accessToken',
       };
 
-      // Tạo dữ liệu đơn hàng từ cartItems
       final orderItems = cartItems
           .map((item) => {
                 'name': item.name,
                 'amount': item.quantity,
-                'image': item.img,
+                'image': 'data:image/png;base64,${item.img}',
                 'price': item.price,
-                'product': item.id, // Assuming this is the product ID
+                'product': item.id,
               })
           .toList();
 
-      print(userData['name']);
-
       final newOrder = {
         'orderItems': orderItems,
-        'fullName':
-            userData['name'], // Thay thế bằng thông tin người dùng thực tế
+        'fullName': userData['name'],
         'address': userData['address'],
-        'city': userData['city'], // Thay thế bằng thông tin thực tế
-        'phone': userData['phone'], // Thay thế bằng thông tin thực tế
-        'paymentMethod':
-            'Thanh toán khi nhận hàng', // Thay thế bằng phương thức thanh toán thực tế
+        'city': userData['city'],
+        'phone': userData['phone'],
+        'paymentMethod': _selectedPaymentMethod,
         'itemsPrice': totalPrice,
-        'shippingPrice': 30000, // Phí vận chuyển
-        'totalPrice': totalPrice + 30000, // Tổng giá
-        'user': userId, // Thay thế bằng thông tin thực tế
-        'isPaid': false, // Chỉnh sửa theo trạng thái thanh toán thực tế
+        'shippingPrice': 30000,
+        'totalPrice': totalPrice + 30000,
+        'user': userId,
+        'isPaid': false,
         'paidAt': DateTime.now().toIso8601String(),
         'email': userData['email']
-      }; // encode thành file json
+      };
 
       final body = json.encode(newOrder);
       try {
+        setState(() {
+          _isLoading = true;
+        });
         var response = await http.post(url, headers: headers, body: body);
 
         if (response.statusCode == 404) {
-          // Token hết hạn, refresh token và thử lại
-          String? newToken = await refreshToken(); // lấy token mới
+          String? newToken = await refreshToken();
           if (newToken != null) {
-            /////Gọi api lại với token mới
             response = await http.post(
               url,
-              headers: <String, String>{
+              headers: {
                 'token': 'Bearer $newToken',
                 'Content-Type': 'application/json',
               },
@@ -102,37 +128,45 @@ class _CheckoutState extends State<Checkout> {
             );
           }
         }
-        print(response.body);
 
         if (response.statusCode == 200) {
-          // Xử lý phản hồi nếu đơn hàng được tạo thành công
-          print('Order created successfully');
+          cartProvider.cartItems.clear();
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Đặt hàng thành công')),
+          );
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => Mainpage()),
+            (Route<dynamic> route) => false,
+          );
         } else {
-          // Xử lý lỗi nếu đơn hàng không được tạo thành công
-          print('Failed to create order: ${response.statusCode}');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Đặt hàng thất bại: ${response.statusCode}')),
+          );
         }
       } catch (e) {
-        // Xử lý lỗi khi gửi yêu cầu HTTP
-        print('Error: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Lỗi: $e')),
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
   }
 
-  //hàm lấy token mới khi token cũ hết han
   Future<String?> refreshToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? refreshToken = prefs.getString('refresh_token');
     if (refreshToken == null) {
-      // Không có refresh token
       return null;
     }
 
     final response = await http.post(
-      Uri.parse(
-          'http://10.0.2.2:3001/api/user/refresh-token'), // Thay URL bằng URL API thực tế của bạn
-      headers: <String, String>{
-        'token': 'Bearer $refreshToken',
-      },
+      Uri.parse('http://localhost:3001/api/user/refresh-token'),
+      headers: {'token': 'Bearer $refreshToken'},
     );
 
     if (response.statusCode == 200) {
@@ -141,22 +175,8 @@ class _CheckoutState extends State<Checkout> {
       await prefs.setString('access_token', newAccessToken);
       return newAccessToken;
     } else {
-      // Xử lý lỗi
       return null;
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(); // Initialize the controller
-    loadaddress();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose(); // Dispose of the controller
-    super.dispose();
   }
 
   @override
@@ -167,139 +187,196 @@ class _CheckoutState extends State<Checkout> {
     final formattedTotalPrice =
         NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
             .format(cartProvider.getTotalPrice());
+    final formattedTotalPriceShip =
+        NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
+            .format(cartProvider.getTotalPrice() + 30000);
 
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.black),
-              onPressed: () => Navigator.pop(context)),
-          title: const Text(
-            'Checkout',
-            style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, color: black),
-          ),
-          centerTitle: true,
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
         ),
-        body: Container(
-          color: white,
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Row(
+        title: const Text(
+          'Checkout',
+          style: TextStyle(fontSize: 20, color: black),
+        ),
+        centerTitle: true,
+      ),
+      body: _isLoading
+          ? Center(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(width: 8),
-                  Icon(Icons.play_arrow, color: Colors.pink),
-                  Text('Delivery',
-                      style: TextStyle(fontSize: 18, color: Colors.pink)),
-                  SizedBox(width: 16),
-                  Icon(Icons.play_arrow, color: Colors.grey),
-                  Text('Payment', style: TextStyle(color: Colors.grey)),
+                  Image.asset('assets/images/loading.gif'),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Đang xử lý...',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Delivery address'),
-                  // TextButton(
-                  //     onPressed: () {
-                  //       setState(() {
-                  //         _isEditing = !_isEditing;
-                  //       });
-                  //     },
-                  //     child: Text(_isEditing ? 'Save' : 'Edit'))
-                ],
-              ),
-              if (_isEditing)
-                TextField(
-                  controller: _controller,
-                )
-              else
-                Text(_controller.text,
-                    softWrap: true,
-                    overflow: TextOverflow.visible,
-                    style: const TextStyle(fontSize: 18)),
-              const SizedBox(height: 16),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const Text('date', style: TextStyle(fontSize: 18)),
-                Text(formmattedDate, style: const TextStyle(fontSize: 18)),
-              ]),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Time', style: TextStyle(fontSize: 18)),
-                  Text(formattedTime, style: const TextStyle(fontSize: 18)),
-                ],
-              ),
-              Container(
-                color: Colors.purple[50],
-                padding: const EdgeInsets.all(8),
-                height: 150, // Adjust height as needed
-                child: ListView.builder(
-                  itemCount: cartItems.length,
-                  itemBuilder: (context, index) {
-                    final item = cartItems[index];
-                    return Row(
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(width: 8),
+                        Icon(Icons.play_arrow, color: Colors.pink),
+                        Text('Delivery',
+                            style: TextStyle(fontSize: 18, color: Colors.pink)),
+                        SizedBox(width: 16),
+                        Icon(Icons.play_arrow, color: Colors.grey),
+                        Text('Payment',
+                            style: TextStyle(color: Colors.grey, fontSize: 18)),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(item.name),
-                        Text(
-                            '\$${NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(item.price * item.quantity)}'),
+                        const Text('Địa chỉ giao hàng',
+                            style: TextStyle(fontSize: 18)),
                       ],
-                    );
-                  },
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      _controller.text,
+                      softWrap: true,
+                      overflow: TextOverflow.visible,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Ngày', style: TextStyle(fontSize: 18)),
+                        Text(formattedDate,
+                            style: const TextStyle(fontSize: 18)),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Giờ', style: TextStyle(fontSize: 18)),
+                        Text(formattedTime,
+                            style: const TextStyle(fontSize: 18)),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    const Divider(),
+                    const SizedBox(height: 16),
+                    const Text('Sản phẩm', style: TextStyle(fontSize: 18)),
+                    const SizedBox(height: 16),
+                    Container(
+                      height: 200, // Adjust this height based on your layout
+                      child: ListView.builder(
+                        itemCount: cartItems.length,
+                        itemBuilder: (context, index) {
+                          final item = cartItems[index];
+                          return ListTile(
+                            leading: Image.memory(
+                              base64Decode(item.img),
+                              fit: BoxFit.cover,
+                              width: 60,
+                              height: 60,
+                            ),
+                            title: Text(item.name),
+                            subtitle: Text(
+                                'Số lượng: ${item.quantity} - Giá: ${NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(item.price)}'),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Divider(),
+                    const SizedBox(height: 16),
+                    const Text('Phương thức thanh toán',
+                        style: TextStyle(fontSize: 18)),
+                    const SizedBox(height: 8),
+                    ExpansionTile(
+                      title: Text(
+                        _selectedPaymentMethod ?? 'Chọn phương thức thanh toán',
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                      children: _paymentMethods.map((method) {
+                        return ListTile(
+                          leading: Image.asset(
+                            method['iconPath'],
+                            width: 40,
+                            height: 40,
+                          ),
+                          title: Text(method['name'],
+                              style: const TextStyle(fontSize: 18)),
+                          onTap: () {
+                            setState(() {
+                              _selectedPaymentMethod = method['name'];
+                            });
+                          },
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 16),
+                    const Divider(),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Tổng giá trị sản phẩm',
+                            style: TextStyle(fontSize: 18)),
+                        Text(formattedTotalPrice,
+                            style: const TextStyle(fontSize: 18)),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Phí vận chuyển',
+                            style: TextStyle(fontSize: 18)),
+                        const Text('30,000 ₫',
+                            style: TextStyle(fontSize: 18)),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Tổng giá trị thanh toán',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text(formattedTotalPriceShip,
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: orderCreate,
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          backgroundColor: kPrimaryColor,
+                        ),
+                        child: const Text('Thanh toán ngay',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: white)),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                  ],
                 ),
               ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Subtotal'),
-                  Text(
-                    formattedTotalPrice,
-                  ),
-                ],
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Delivery'),
-                  Text('\$3'),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Total',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text(
-                    formattedTotalPrice,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              const SizedBox(
-                height: 16,
-              ),
-              SizedBox(
-                width: MediaQuery.of(context)
-                    .size
-                    .width, // Chiều rộng của màn hình
-                child: ElevatedButton(
-                  onPressed: ordercreate,
-                  child: const Text('Thanh toán'),
-                ),
-              )
-            ],
-          ),
-        ));
+            ),
+    );
   }
 }
