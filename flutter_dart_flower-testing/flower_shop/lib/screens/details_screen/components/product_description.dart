@@ -26,7 +26,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
     double discountedPrice = widget.product.price * (1 - (widget.product.discount ?? 0) / 100);
 
     // Định dạng số tiền thành VND
-    final formattedDiscountedPrice = NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(discountedPrice);
+    // final formattedDiscountedPrice = NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(discountedPrice);
     final formattedOriginalPrice = NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(widget.product.price);
 
     return Column(
@@ -45,7 +45,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
           child: Row(
             children: [
               Text(
-                formattedDiscountedPrice,
+                formattedOriginalPrice,
                 style: const TextStyle(
                   backgroundColor: kSecondaryColor,
                   color: Colors.white,
@@ -53,17 +53,16 @@ class _ProductDescriptionState extends State<ProductDescription> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              if (widget.product.discount != null)
-                Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: Text(
-                    formattedOriginalPrice,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      decoration: TextDecoration.lineThrough,
-                    ),
-                  ),
-                ),
+               if (widget.product.selled != null)
+                 Padding(
+                   padding: const EdgeInsets.only(left: 8),
+                   child: Text(
+                     'Đã bán:' + widget.product.selled.toString(),
+                     style: const TextStyle(
+                       decoration: TextDecoration.underline,
+                     ),
+                   ),
+                 ),
             ],
           ),
         ),

@@ -42,15 +42,15 @@ class CartItemWidget extends StatelessWidget {
         padding: const EdgeInsets.all(0),
         child: Container(
           // color: white,
-          decoration: const BoxDecoration(
-                   color: Colors.white,
-                   borderRadius: BorderRadius.only(
-                     topLeft: Radius.circular(10),
-                     bottomLeft: Radius.circular(10),
-                     topRight: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                   ),
-                ),
+           decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                     bottomRight: Radius.circular(10),
+                    ),
+                 ),
           child: Row(
             children: [
               Container(
@@ -88,10 +88,10 @@ class CartItemWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(cartItem.name, style: const TextStyle(fontSize: 18, color: black)),
+                        Text(cartItem.name, style: const TextStyle(fontSize: 18)),
                         const SizedBox(height: 5),
                         Text(
-                          formattedPrice, style: const TextStyle(color: black, fontWeight: FontWeight.bold),
+                          formattedPrice, style: const TextStyle( fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 5),
                         Row(
@@ -121,7 +121,7 @@ class CartItemWidget extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(width: 10),
-                                Text(cartItem.quantity.toString(), style: const TextStyle(fontSize: 18, color: black)),
+                                Text(cartItem.quantity.toString(), style: const TextStyle(fontSize: 18)),
                                 const SizedBox(width: 10),
                                 Container(
                                   decoration: const BoxDecoration(
