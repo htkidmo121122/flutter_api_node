@@ -30,7 +30,9 @@ class HomeScreen extends StatelessWidget {
               AnimatedBanner(),
               // SpecialOffers(),
               // DiscountBanner(),
+              SizedBox(height: 10),
               Categories(),
+              SizedBox(height: 10),
               PopularProducts(),
               SizedBox(height: 20),
               SizedBox(

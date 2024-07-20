@@ -25,11 +25,10 @@ class DetailsScreen extends StatelessWidget {
     final product = agrs.product;
     return Scaffold(
       extendBody: true,
-      extendBodyBehindAppBar: false,
-      backgroundColor: white,
+      extendBodyBehindAppBar: true,
+      // backgroundColor: white,
       appBar: AppBar(
-        backgroundColor: white,
-        elevation: 0,
+        // elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
@@ -37,14 +36,12 @@ class DetailsScreen extends StatelessWidget {
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-              padding: EdgeInsets.zero,
-              elevation: 0,
-              backgroundColor: Colors.white,
+                shape: const CircleBorder(),
+               padding: EdgeInsets.zero,
+               elevation: 0,
             ),
             child: const Icon(
               Icons.arrow_back_ios_new,
-              color: Colors.black,
               size: 20,
             ),
           ),
@@ -81,9 +78,10 @@ class DetailsScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
+          const SizedBox(height: 20),
           ProductImages(product: product),
           TopRoundedContainer(
-            color: Colors.white,
+            color: Theme.of(context).scaffoldBackgroundColor,
             child: Column(
               children: [
                 ProductDescription(
@@ -105,7 +103,7 @@ class DetailsScreen extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: TopRoundedContainer(
-        color: kWhite,
+        color: Theme.of(context).scaffoldBackgroundColor,
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),

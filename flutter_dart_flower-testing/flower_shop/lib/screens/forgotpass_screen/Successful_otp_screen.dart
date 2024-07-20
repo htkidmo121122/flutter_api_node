@@ -13,7 +13,7 @@ class SuccessfulotpScreen extends StatelessWidget {
           "Forgot Password",
           style: TextStyle(fontWeight: FontWeight.bold, color: kPrimaryColor),
         ),
-        backgroundColor: Colors.white,
+
       ),
       body: SafeArea(
         child: SizedBox(

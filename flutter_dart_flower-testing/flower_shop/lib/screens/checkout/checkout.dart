@@ -194,15 +194,14 @@ class _CheckoutState extends State<Checkout> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           'Checkout',
-          style: TextStyle(fontSize: 20, color: black),
+          
         ),
         centerTitle: true,
       ),
@@ -316,7 +315,7 @@ class _CheckoutState extends State<Checkout> {
                             height: 40,
                           ),
                           title: Text(method['name'],
-                              style: const TextStyle(fontSize: 18)),
+                              style: const TextStyle(fontSize: 18, color: black)),
                           onTap: () {
                             setState(() {
                               _selectedPaymentMethod = method['name'];

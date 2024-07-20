@@ -101,7 +101,6 @@ class _SplashScreenState extends State<SplashScreen> {
                           "or connect with",
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -138,8 +137,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           child: const Text(
                             "No thanks! Later",
                             style: TextStyle(
-                                fontSize: 16,
-                                color: kPrimaryLightColor,
+                                fontSize: 16,    
                                 fontWeight: FontWeight.bold),
                           ),
                         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_care/constants.dart';
 
 // import 'constants.dart';
 
@@ -7,18 +8,24 @@ class AppTheme {
     return ThemeData(
       scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
       // fontFamily: "Muli",
-       appBarTheme: const AppBarTheme(
-           color: Colors.white,
-          //  elevation: 0,
-          //  iconTheme: IconThemeData(color: Colors.black),
-          //  titleTextStyle: TextStyle(color: Colors.black)
-        ),
-      // textTheme: const TextTheme(
-      //   bodyLarge: TextStyle(color: kTextColor),
-      //   bodyMedium: TextStyle(color: kTextColor),
-      //   bodySmall: TextStyle(color: kTextColor),
-      // ),
-      // inputDecorationTheme: const InputDecorationTheme(
+      appBarTheme: const AppBarTheme(
+          color: Colors.white,
+          elevation: 0,
+          iconTheme: IconThemeData(color: Color.fromARGB(255, 0, 0, 0)),
+          titleTextStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold),
+            
+      ),
+      textTheme: const TextTheme(
+         bodyLarge: TextStyle(color: kTextColor),
+         bodyMedium: TextStyle(color: kTextColor),
+         bodySmall: TextStyle(color: kTextColor),
+      ),
+      expansionTileTheme: const ExpansionTileThemeData(
+        textColor: Colors.black,
+        backgroundColor: Colors.white
+      ),
+       
+      //inputDecorationTheme: const InputDecorationTheme(
       //   floatingLabelBehavior: FloatingLabelBehavior.always,
       //   contentPadding: EdgeInsets.symmetric(horizontal: 42, vertical: 20),
       //   enabledBorder: outlineInputBorder,
@@ -30,6 +37,56 @@ class AppTheme {
       //   style: ElevatedButton.styleFrom(
       //     elevation: 0,
       //     backgroundColor: kPrimaryColor,
+      //     foregroundColor: Colors.white,
+      //     minimumSize: const Size(double.infinity, 48),
+      //     shape: const RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.all(Radius.circular(16)),
+      //     ),
+      //   ),
+      // ),
+       
+    );
+
+  }
+  static ThemeData darkTheme(BuildContext context) {
+    return ThemeData(
+      scaffoldBackgroundColor: Color.fromARGB(255, 38, 38, 38),
+      appBarTheme: const AppBarTheme(
+        color: Color.fromARGB(255, 34, 34, 34),
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.white),
+        titleTextStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      textTheme: const TextTheme(
+        bodyLarge: TextStyle(color: Colors.white),
+        bodyMedium: TextStyle(color: Colors.white),
+        bodySmall: TextStyle(color: Colors.white),
+        titleLarge: TextStyle(color: Colors.white)
+        
+        
+      ),
+      inputDecorationTheme: const InputDecorationTheme(
+        labelStyle: TextStyle(color: Colors.white),
+        hintStyle: TextStyle(color: Colors.white54),
+      ),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Colors.black, 
+      ),
+      listTileTheme: const ListTileThemeData(
+        textColor: Colors.white,
+        tileColor: Color.fromARGB(255, 29, 29, 29),
+        selectedTileColor: Color.fromARGB(255, 29, 29, 29),
+        selectedColor: Color.fromARGB(255, 29, 29, 29),
+
+      ),
+      expansionTileTheme: const ExpansionTileThemeData(
+        textColor: Colors.black,
+        backgroundColor: Colors.white
+      ),
+      // elevatedButtonTheme: ElevatedButtonThemeData(
+      //   style: ElevatedButton.styleFrom(
+      //     elevation: 0,
+      //     backgroundColor: kPrimaryColorDark,
       //     foregroundColor: Colors.white,
       //     minimumSize: const Size(double.infinity, 48),
       //     shape: const RoundedRectangleBorder(

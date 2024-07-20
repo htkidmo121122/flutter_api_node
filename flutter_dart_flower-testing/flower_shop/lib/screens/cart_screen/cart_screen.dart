@@ -52,7 +52,6 @@ class _CartScreenState extends State<CartScreen> {
             Navigator.of(context).pushNamed(Mainpage.routeName);
           },
         ),
-        backgroundColor: Colors.white
       ),
       body: Column(
         children: [
@@ -72,16 +71,16 @@ class _CartScreenState extends State<CartScreen> {
           ),
           Container(
             padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 10,
-                  offset: Offset(0, -2),
-                ),
-              ],
-            ),
+            // decoration: BoxDecoration(
+              
+            //   boxShadow: [
+            //     BoxShadow(
+            //       color: Colors.black26,
+            //       blurRadius: 10,
+            //       offset: Offset(0, -2),
+            //     ),
+            //   ],
+            // ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [

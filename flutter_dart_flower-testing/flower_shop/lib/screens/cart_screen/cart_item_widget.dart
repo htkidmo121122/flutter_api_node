@@ -41,20 +41,31 @@ class CartItemWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(0),
         child: Container(
-          color: Colors.white,
+          // color: white,
+          decoration: const BoxDecoration(
+                   color: Colors.white,
+                   borderRadius: BorderRadius.only(
+                     topLeft: Radius.circular(10),
+                     bottomLeft: Radius.circular(10),
+                     topRight: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
+                   ),
+                ),
           child: Row(
             children: [
               Container(
+                
                 decoration: BoxDecoration(
-                  color: Colors.black12.withOpacity(0.1),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
-                  ),
+                   color: Colors.pink.withOpacity(0.1),
+                   borderRadius: const BorderRadius.only(
+                     topLeft: Radius.circular(10),
+                     bottomLeft: Radius.circular(10),
+                   ),
                 ),
                 width: 140,
                 height: 140,
                 child: ClipRRect(
+                  
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(10),
@@ -69,28 +80,18 @@ class CartItemWidget extends StatelessWidget {
               Expanded(
                 child: ClipRRect(
                   borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  ),
-                  child: Container(
+                    topRight: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
+                  ), 
+                  child: Container(   
                     padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 1,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(cartItem.name, style: const TextStyle(fontSize: 18)),
+                        Text(cartItem.name, style: const TextStyle(fontSize: 18, color: black)),
                         const SizedBox(height: 5),
                         Text(
-                          formattedPrice,
+                          formattedPrice, style: const TextStyle(color: black, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 5),
                         Row(
@@ -120,7 +121,7 @@ class CartItemWidget extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(width: 10),
-                                Text(cartItem.quantity.toString(), style: const TextStyle(fontSize: 18)),
+                                Text(cartItem.quantity.toString(), style: const TextStyle(fontSize: 18, color: black)),
                                 const SizedBox(width: 10),
                                 Container(
                                   decoration: const BoxDecoration(

@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:health_care/mainpage.dart';
+import 'package:health_care/provider/theme_provider.dart';
 import 'package:health_care/screens/setting_screen/components/Privacy_policy_screen.dart';
 import 'package:health_care/screens/info_screen/edit_profile.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -17,14 +19,13 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   bool notificationsOn = true;
   String language = 'English';
-  String theme = 'Light mode';
 
   String userName = 'None';
   String userEmail = '';
   String userPhone = '';
   String? userImage64;
   Uint8List? userImage;
-  bool isAdmin = false;  // Thêm biến trạng thái isAdmin
+  bool isAdmin = false;
 
   @override
   void initState() {
@@ -42,19 +43,20 @@ class _SettingScreenState extends State<SettingScreen> {
         userEmail = userData['email'];
         userPhone = '0${userData['phone'] ?? ''}';
         userImage64 = userData['avatar'];
-        isAdmin = userData['isAdmin'] ?? false; // Lấy giá trị isAdmin
-        if(userImage64 != null){
+        isAdmin = userData['isAdmin'] ?? false;
+        if (userImage64 != null) {
           String base64String = userImage64!;
           String base64Image = base64String.split(',').last;
           userImage = Uint8List.fromList(base64.decode(base64Image));
         }
-        
       });
-    } 
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Setting and Information"),
@@ -64,7 +66,6 @@ class _SettingScreenState extends State<SettingScreen> {
             Navigator.of(context).pushNamed(Mainpage.routeName);
           },
         ),
-        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -95,7 +96,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
-                    if (isAdmin) // Hiển thị mục "Quản lý hệ thống" nếu là quản trị viên
+                    if (isAdmin)
                       buildSettingsGroup(
                         context,
                         [
@@ -125,11 +126,17 @@ class _SettingScreenState extends State<SettingScreen> {
                       context,
                       [
                         buildListTile(context, Icons.security, 'Security'),
-                        buildListTile(context, Icons.brightness_6, 'Theme',
-                            trailing: Text(
-                              theme,
-                              style: const TextStyle(color: Colors.pink),
-                            )),
+                        buildListTile(
+                          context,
+                          Icons.brightness_6,
+                          'Dark Mode',
+                          trailing: Switch(
+                            value: themeProvider.isDarkMode,
+                            onChanged: (value) {
+                              themeProvider.toggleTheme();
+                            },
+                          ),
+                        ),
                       ],
                     ),
                     buildSettingsGroup(
@@ -142,7 +149,6 @@ class _SettingScreenState extends State<SettingScreen> {
                             destination: PrivacyPolicyScreen()),
                       ],
                     ),
-                    
                   ],
                 ),
               ),
@@ -156,7 +162,7 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget buildSettingsGroup(BuildContext context, List<Widget> tiles) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Column(
         children: tiles,
       ),

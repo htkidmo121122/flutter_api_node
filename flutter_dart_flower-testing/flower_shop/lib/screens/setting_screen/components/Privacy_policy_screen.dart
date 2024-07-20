@@ -12,7 +12,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           "Privacy Policy",
           style: TextStyle(fontWeight: FontWeight.bold, color: kPrimaryColor),
         ),
-        backgroundColor: Colors.white,
+
       ),
       body: SafeArea(
           top: true,

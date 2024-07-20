@@ -19,7 +19,7 @@ class _ResetPassOTPScreenState extends State<ResetPassOTPScreen> {
           "Forgot Password",
           style: TextStyle(fontWeight: FontWeight.bold, color: kPrimaryColor),
         ),
-        backgroundColor: Colors.white,
+
       ),
       body: SafeArea(
         child: SizedBox(

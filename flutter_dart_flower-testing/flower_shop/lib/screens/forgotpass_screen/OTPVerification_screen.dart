@@ -19,7 +19,6 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
           "Forgot Password",
           style: TextStyle(fontWeight: FontWeight.bold, color: kPrimaryColor),
         ),
-        backgroundColor: Colors.white,
       ),
       body: SafeArea(
         child: SizedBox(

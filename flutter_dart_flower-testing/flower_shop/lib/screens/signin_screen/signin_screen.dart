@@ -26,7 +26,6 @@ class SignInScreen extends StatelessWidget {
               Navigator.of(context).pushNamed(SplashScreen.routeName);
             },
           ),
-        backgroundColor: Colors.white,
       ),
       body: SafeArea(
         child: SizedBox(

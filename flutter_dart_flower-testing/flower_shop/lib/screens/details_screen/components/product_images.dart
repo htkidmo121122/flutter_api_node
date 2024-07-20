@@ -33,7 +33,7 @@ class _ProductImagesState extends State<ProductImages> {
           ),
           
         ),
-        // SizedBox(height: 20),
+        const SizedBox(height: 30),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

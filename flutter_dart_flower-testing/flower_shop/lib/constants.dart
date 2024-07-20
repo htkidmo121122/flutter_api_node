@@ -25,6 +25,7 @@ const kPrimaryGradientColor = LinearGradient(
 const kSecondaryColor = Color.fromARGB(255, 255, 28, 81);
 //mau text
 const kTextColor = Colors.black;
+const kTextColorLight = Colors.white;
 
 
 const kAnimationDuration = Duration(milliseconds: 200);

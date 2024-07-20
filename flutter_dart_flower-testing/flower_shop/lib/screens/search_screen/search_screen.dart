@@ -31,6 +31,7 @@ class SearchScreen extends StatelessWidget {
                 SearchField(),
                 // SpecialOffers(),
                 // DiscountBanner(),
+                SizedBox(height: 10),
                 Categories(),
                 SizedBox(
                   height: 500, // Chiều cao cố định cho DiscountProducts

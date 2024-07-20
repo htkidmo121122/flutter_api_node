@@ -38,6 +38,7 @@ class PopularProducts extends StatelessWidget {
                 child: SectionTitle(
                   title: "Popular",
                   press: () {},
+                  
                 ),
               ),
               

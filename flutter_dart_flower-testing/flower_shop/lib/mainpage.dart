@@ -127,7 +127,7 @@ class _MainpageState extends State<Mainpage> {
       // ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          // color: Colors.white,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),

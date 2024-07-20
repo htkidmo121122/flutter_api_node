@@ -43,6 +43,7 @@ class Categories extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
+                      
                     ),
                   ),
                   const SizedBox(height: 20), // Optional SizedBox for spacing
