@@ -97,11 +97,12 @@ class CategoryCard extends StatelessWidget {
       child: Column(
         children: [
           Container(
+            
             padding: const EdgeInsets.all(14),
             height: 56,
             width: 56,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).scaffoldBackgroundColor,
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
@@ -111,6 +112,10 @@ class CategoryCard extends StatelessWidget {
                   offset: Offset(0, 3), // Offset in x and y direction
                 ),
               ],
+              border: Border.all(
+                color: Colors.white.withOpacity(0.4), // Màu viền với độ mờ
+                width: 1.0, // Độ dày của viền
+              ),
             
             ),
             child: SvgPicture.asset(icon),

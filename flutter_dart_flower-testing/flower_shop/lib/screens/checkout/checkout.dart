@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
 import 'package:health_care/constants.dart';
 import 'package:health_care/mainpage.dart';
 import 'package:health_care/screens/signin_screen/signin_screen.dart';
@@ -26,10 +27,12 @@ class _CheckoutState extends State<Checkout> {
   String formattedTime = DateFormat('HH:mm:ss').format(DateTime.now());
 
   String? _selectedPaymentMethod;
+  String? _iconPath;
   final List<Map<String, dynamic>> _paymentMethods = [
     {'name': 'Thanh toán khi nhận hàng', 'iconPath': 'assets/images/cash.png'},
     {'name': 'Visa', 'iconPath': 'assets/images/visa.png'},
     {'name': 'MasterCard', 'iconPath': 'assets/images/card.png'},
+    {'name': 'PayPal', 'iconPath': 'assets/images/paypal.png'}
     
   ];
 
@@ -39,6 +42,7 @@ class _CheckoutState extends State<Checkout> {
     _controller = TextEditingController();
     loadAddress();
     _selectedPaymentMethod = _paymentMethods.first['name'];
+    _iconPath = _paymentMethods.first['iconPath'];
   }
 
   @override
@@ -94,7 +98,8 @@ class _CheckoutState extends State<Checkout> {
 
       print(_selectedPaymentMethod);
       // Determine the payment status based on the selected payment method
-      bool isPaid = _selectedPaymentMethod == 'Visa' || _selectedPaymentMethod == 'MasterCard';
+      bool isPaid = _selectedPaymentMethod == 'Visa' || _selectedPaymentMethod == 'MasterCard' || _selectedPaymentMethod == 'PayPal';
+
 
       final newOrder = {
         'orderItems': orderItems,
@@ -182,6 +187,61 @@ class _CheckoutState extends State<Checkout> {
       return null;
     }
   }
+
+  void _handlePayment() {
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    if (_selectedPaymentMethod == 'PayPal') {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (BuildContext context) => PaypalCheckout(
+          sandboxMode: true,
+          clientId: "AY-EFxNB0HYWVdAuXrb_Lp5GTTB6OeOTFpI9qREX7dw9iK_p3xVWAoZOlQy5fXZH86-9Nw2olN-nCz2x",
+          secretKey: "EIvbsEiOhp2jx2WyPGnjLpH1skd80fChSEQICy77cKIAqBI5QeEGl_BTmTyrcqfyx_S2I7tpbCuOdz1r",
+          returnURL: "success.snippetcoder.com",
+          cancelURL: "cancel.snippetcoder.com",
+          transactions: [
+            {
+              "amount": {
+                "total": '${cartProvider.getTotalPriceInUSD() + 3}',
+                "currency": "USD",
+                "details": {
+                  "subtotal": '${cartProvider.getTotalPriceInUSD()}',
+                  "shipping": '3',
+                  "shipping_discount": 0
+                }
+              },
+              "description": "Order payment.",
+              "item_list": {
+                "items": cartProvider.cartItems.map((item) {
+                  return {
+                    "name": item.name,
+                    "quantity": item.quantity,
+                    "price": '${item.price / 24000}',
+                    "currency": "USD"
+                  };
+                }).toList()
+              }
+            }
+          ],
+          note: "Contact us for any questions on your order.",
+          onSuccess: (Map params) async {
+            print("onSuccess: $params");
+            await orderCreate();
+          },
+          onError: (error) {
+            print("onError: $error");
+            Navigator.pop(context);
+          },
+          onCancel: () {
+            print('cancelled:');
+            Navigator.pop(context);
+          },
+        ),
+      ));
+    } else {
+      orderCreate();
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -307,6 +367,11 @@ class _CheckoutState extends State<Checkout> {
                         style: TextStyle(fontSize: 18)),
                     const SizedBox(height: 8),
                     ExpansionTile(
+                      leading: Image.asset(
+                            _iconPath ?? 'assets/images/cash.png',
+                            width: 40,
+                            height: 40,
+                          ), 
                       title: Text(
                         _selectedPaymentMethod ?? 'Chọn phương thức thanh toán',
                         style: const TextStyle(fontSize: 18),
@@ -323,6 +388,7 @@ class _CheckoutState extends State<Checkout> {
                           onTap: () {
                             setState(() {
                               _selectedPaymentMethod = method['name'];
+                              _iconPath = method['iconPath'];
                               
                             });
                           },
@@ -367,7 +433,7 @@ class _CheckoutState extends State<Checkout> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: orderCreate,
+                        onPressed: _handlePayment,
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           backgroundColor: kPrimaryColor,
