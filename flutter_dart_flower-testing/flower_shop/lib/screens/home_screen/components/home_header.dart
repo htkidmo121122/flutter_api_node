@@ -29,11 +29,18 @@ class _HomeHeaderState extends State<HomeHeader> {
 
     if (userDataString != null) {
       Map<String, dynamic> userData = jsonDecode(userDataString);
-      String base64String = userData['avatar'].toString() ?? '';
-      String base64Image = base64String.split(',').last;
-      setState(() {
-        userImage = Uint8List.fromList(base64.decode(base64Image));
-      });
+      if(userData['avatar'] != null){
+        String base64String = userData['avatar'].toString() ?? '';
+        String base64Image = base64String.split(',').last;
+        setState(() {
+          userImage = Uint8List.fromList(base64.decode(base64Image));
+        });
+      }else{
+        setState(() {
+          userImage = null;
+        });
+      }
+      
     }
   }
 
