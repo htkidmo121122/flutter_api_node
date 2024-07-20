@@ -30,8 +30,6 @@ class _CheckoutState extends State<Checkout> {
   String? _iconPath;
   final List<Map<String, dynamic>> _paymentMethods = [
     {'name': 'Thanh toán khi nhận hàng', 'iconPath': 'assets/images/cash.png'},
-    {'name': 'Visa', 'iconPath': 'assets/images/visa.png'},
-    {'name': 'MasterCard', 'iconPath': 'assets/images/card.png'},
     {'name': 'PayPal', 'iconPath': 'assets/images/paypal.png'}
     
   ];
@@ -98,7 +96,7 @@ class _CheckoutState extends State<Checkout> {
 
       print(_selectedPaymentMethod);
       // Determine the payment status based on the selected payment method
-      bool isPaid = _selectedPaymentMethod == 'Visa' || _selectedPaymentMethod == 'MasterCard' || _selectedPaymentMethod == 'PayPal';
+      bool isPaid =  _selectedPaymentMethod == 'PayPal';
 
 
       final newOrder = {
@@ -438,7 +436,7 @@ class _CheckoutState extends State<Checkout> {
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           backgroundColor: kPrimaryColor,
                         ),
-                        child: const Text('Thanh toán ngay',
+                        child: const Text('Thanh toán',
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: white)),
                       ),
                     ),
