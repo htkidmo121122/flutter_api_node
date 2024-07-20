@@ -7,6 +7,7 @@ class AppTheme {
   static ThemeData lightTheme(BuildContext context) {
     return ThemeData(
       scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+      // canvasColor: Colors.black,
       // fontFamily: "Muli",
       appBarTheme: const AppBarTheme(
           color: Colors.white,
@@ -17,9 +18,9 @@ class AppTheme {
             
       ),
       textTheme: const TextTheme(
-         bodyLarge: TextStyle(color: kTextColor),
-         bodyMedium: TextStyle(color: kTextColor),
-         bodySmall: TextStyle(color: kTextColor),
+         bodyLarge: TextStyle(color: kTextColor, fontWeight: FontWeight.bold),
+         bodyMedium: TextStyle(color: kTextColor, fontWeight: FontWeight.bold),
+         bodySmall: TextStyle(color: kTextColor, fontWeight: FontWeight.bold),
          titleLarge: TextStyle(color: kTextColor, fontWeight: FontWeight.bold)
       ),
       expansionTileTheme: const ExpansionTileThemeData(
@@ -53,6 +54,7 @@ class AppTheme {
   static ThemeData darkTheme(BuildContext context) {
     return ThemeData(
       scaffoldBackgroundColor: Color.fromARGB(255, 38, 38, 38),
+      
       appBarTheme: const AppBarTheme(
         color: Color.fromARGB(255, 34, 34, 34),
         elevation: 0,
@@ -60,9 +62,9 @@ class AppTheme {
         titleTextStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
       ),
       textTheme: const TextTheme(
-        bodyLarge: TextStyle(color: Colors.white),
-        bodyMedium: TextStyle(color: Colors.white),
-        bodySmall: TextStyle(color: Colors.white),
+        bodyLarge: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        bodyMedium: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        bodySmall: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         titleLarge: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
         
         
@@ -75,6 +77,7 @@ class AppTheme {
           backgroundColor: Colors.black, 
       ),
       listTileTheme: const ListTileThemeData(
+        
         textColor: Colors.white,
         tileColor: Color.fromARGB(255, 29, 29, 29),
         selectedTileColor: Color.fromARGB(255, 29, 29, 29),

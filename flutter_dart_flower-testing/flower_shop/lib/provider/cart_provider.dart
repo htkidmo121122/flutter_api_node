@@ -9,6 +9,8 @@ class CartProvider extends ChangeNotifier {
   List<CartItem> get cartItems => _cartItems;
 
   int get itemCount => _cartItems.length;
+
+  static const int exchangeRate = 24000;
   //Thêm sp vào cart 
   void addToCart(CartItem item) {
     // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
@@ -45,5 +47,8 @@ class CartProvider extends ChangeNotifier {
       total += item.price * item.quantity;
     });
     return total;
+  }
+  double getTotalPriceInUSD() {
+    return getTotalPrice() / exchangeRate;
   }
 }
