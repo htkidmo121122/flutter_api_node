@@ -28,6 +28,7 @@ class _CheckoutState extends State<Checkout> {
 
   String? _selectedPaymentMethod;
   String? _iconPath;
+  
   final List<Map<String, dynamic>> _paymentMethods = [
     {'name': 'Thanh toán khi nhận hàng', 'iconPath': 'assets/images/cash.png'},
     {'name': 'PayPal', 'iconPath': 'assets/images/paypal.png'}
@@ -97,7 +98,7 @@ class _CheckoutState extends State<Checkout> {
       print(_selectedPaymentMethod);
       // Determine the payment status based on the selected payment method
       bool isPaid =  _selectedPaymentMethod == 'PayPal';
-
+      int shippingFee = calculateShippingFee(totalPrice);
 
       final newOrder = {
         'orderItems': orderItems,
@@ -107,8 +108,8 @@ class _CheckoutState extends State<Checkout> {
         'phone': userData['phone'],
         'paymentMethod': _selectedPaymentMethod,
         'itemsPrice': totalPrice,
-        'shippingPrice': 30000,
-        'totalPrice': totalPrice + 30000,
+        'shippingPrice': shippingFee,
+        'totalPrice': totalPrice + shippingFee,
         'user': userId,
         'isPaid': isPaid,
         'paidAt': DateTime.now().toIso8601String(),

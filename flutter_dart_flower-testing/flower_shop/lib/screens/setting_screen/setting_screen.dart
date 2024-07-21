@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:health_care/admin/adminpage.dart';
 import 'package:health_care/mainpage.dart';
 import 'package:health_care/provider/theme_provider.dart';
 import 'package:health_care/screens/myorder_screen/myorder_screen.dart';
@@ -102,7 +103,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         context,
                         [
                           buildListTile(context, Icons.admin_panel_settings,
-                              'Manage Systems'),
+                              'Manage Orders', destination: AdminOrdersScreen()),
                         ],
                       ),
                     buildSettingsGroup(

@@ -204,10 +204,91 @@ const getAllOrder = () => {
     })
 }
 
+// Confirm order delivery
+const confirmDelivery = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const order = await Order.findById(id);
+            if (!order) {
+                resolve({
+                    status: 'ERR',
+                    message: 'Order not found'
+                });
+            }
+            order.isDelivered = true;
+            order.deliveredAt = new Date();
+            await order.save();
+
+            resolve({
+                status: 'OK',
+                message: 'Order delivery confirmed',
+                data: order
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
+const deleteOrder = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const order = await Order.findByIdAndDelete(id);
+            if (!order) {
+                resolve({
+                    status: 'ERR',
+                    message: 'Order not found'
+                });
+            } else {
+                resolve({
+                    status: 'OK',
+                    message: 'Order deleted successfully'
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
+// Confirm payment
+const confirmPayment = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const order = await Order.findById(id);
+            if (!order) {
+                return resolve({
+                    status: 'ERR',
+                    message: 'Order not found'
+                });
+            }
+            if (order.isPaid) {
+                return resolve({
+                    status: 'ERR',
+                    message: 'Order has already been paid'
+                });
+            }
+            order.isPaid = true;
+            order.paidAt = new Date();
+            await order.save();
+
+            resolve({
+                status: 'OK',
+                message: 'Payment confirmed',
+                data: order
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
+
+
 module.exports = {
     createOrder,
     getAllOrderDetails,
     getOrderDetails,
     cancelOrderDetails,
-    getAllOrder
+    getAllOrder,
+    confirmDelivery,
+    deleteOrder,
+    confirmPayment
 }

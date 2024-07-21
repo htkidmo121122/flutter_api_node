@@ -41,7 +41,7 @@ class _AllProductsState extends State<AllProducts> {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error loading products'));
         } else {
-          //lay ds san phẩm theo từ khoá tìm kiếm tu ds san pham tong
+          //lay ds san phẩm theo từ khoá tìm kiếm tu ds san pham tong (demoProduct)
           final searchQuery = Provider.of<SearchProvider>(context).searchQuery;
           List<Product> searchResults = demoProducts.where((product) {
             final titleLower = product.title.toLowerCase();

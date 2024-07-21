@@ -57,10 +57,7 @@ class _SignFormState extends State<SignForm> {
         }),
       );
 
-      setState(() {
-        _isLoading = false;
-      });
-
+      
       if (response.statusCode == 200) {
         try {
           final data = jsonDecode(response.body);
@@ -74,6 +71,11 @@ class _SignFormState extends State<SignForm> {
           final userId = decodedToken['id'];
           //Fetch user details using the access_token and userId
           await _getUserDetails(userId, data['access_token']);
+
+          setState(() {
+            _isLoading = false;
+          });
+
 
           // Navigate to MyStoredDataPage after successful login
           Navigator.pushNamed(context, Mainpage.routeName);

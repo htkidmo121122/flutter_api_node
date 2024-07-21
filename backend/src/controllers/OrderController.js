@@ -88,10 +88,69 @@ const getAllOrder = async (req, res) => {
     }
 }
 
+const confirmDelivery = async (req, res) => {
+    try {
+        const orderId = req.params.id
+        if (!orderId) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The orderId is required'
+            })
+        }
+        const response = await OrderService.confirmDelivery(orderId)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+// Delete order
+const deleteOrder = async (req, res) => {
+    try {
+        const orderId = req.params.id
+        if (!orderId) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The orderId is required'
+            })
+        }
+        const response = await OrderService.deleteOrder(orderId)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+// Confirm payment
+const confirmPayment = async (req, res) => {
+    try {
+        const orderId = req.body.orderId;
+        if (!orderId) {
+            return res.status(400).json({
+                status: 'ERR',
+                message: 'Order ID is required'
+            });
+        }
+        const response = await OrderService.confirmPayment(orderId);
+        return res.status(200).json(response);
+    } catch (e) {
+        return res.status(500).json({
+            message: e.message
+        });
+    }
+}
+
 module.exports = {
     createOrder,
     getAllOrderDetails,
     getDetailsOrder,
     cancelOrderDetails,
-    getAllOrder
+    getAllOrder,
+    confirmDelivery,
+    deleteOrder,
+    confirmPayment
 }
