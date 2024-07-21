@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:intl/intl.dart'; // Import thư viện intl
 
 import '../constants.dart';
 import '../models/Product.dart';
@@ -23,12 +25,15 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // Define a list of colors
     final List<Color> colors = [
-      color1,color2, colot3, color4
-
+      color1, color2, color3, color4
     ];
 
     // Select a random color from the list
     final Color randomColor = colors[Random().nextInt(colors.length)];
+
+    // Định dạng số tiền
+    final formattedPrice = NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(product.price);
+
     return SizedBox(
       width: width,
       child: GestureDetector(
@@ -44,7 +49,7 @@ class ProductCard extends StatelessWidget {
                   color: randomColor.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Image.asset(product.images[0]),
+                child: Image.memory(base64Decode(product.images)),
               ),
             ),
             const SizedBox(height: 8),
@@ -57,36 +62,37 @@ class ProductCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "\$${product.price}",
+                  formattedPrice,
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: kPrimaryColor,
                   ),
                 ),
-                InkWell(
-                  borderRadius: BorderRadius.circular(50),
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    height: 24,
-                    width: 24,
-                    decoration: BoxDecoration(
-                      color: product.isFavourite
-                          ? kPrimaryColor.withOpacity(0.15)
-                          : kSecondaryColor.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: SvgPicture.asset(
-                      "assets/icons/heart.svg",
-                      colorFilter: ColorFilter.mode(
-                          product.isFavourite
-                              ? const Color(0xFFFF4848)
-                              : const Color(0xFFDBDEE4),
-                          BlendMode.srcIn),
-                    ),
-                  ),
-                ),
+                // Nếu cần sử dụng lại phần yêu thích, bỏ ghi chú các dòng dưới
+                // InkWell(
+                //   borderRadius: BorderRadius.circular(50),
+                //   onTap: () {},
+                //   child: Container(
+                //     padding: const EdgeInsets.all(6),
+                //     height: 24,
+                //     width: 24,
+                //     decoration: BoxDecoration(
+                //       color: product.isFavourite
+                //           ? kPrimaryColor.withOpacity(0.15)
+                //           : kSecondaryColor.withOpacity(0.1),
+                //       shape: BoxShape.circle,
+                //     ),
+                //     child: SvgPicture.asset(
+                //       "assets/icons/heart.svg",
+                //       colorFilter: ColorFilter.mode(
+                //           product.isFavourite
+                //               ? const Color(0xFFFF4848)
+                //               : const Color(0xFFDBDEE4),
+                //           BlendMode.srcIn),
+                //     ),
+                //   ),
+                // ),
               ],
             )
           ],

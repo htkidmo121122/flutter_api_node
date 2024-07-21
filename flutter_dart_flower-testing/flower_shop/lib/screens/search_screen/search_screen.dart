@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:health_care/screens/home_screen/components/all_product.dart';
 import 'package:health_care/screens/home_screen/components/search_field.dart';
-import 'package:health_care/screens/search_screen/components/search_provider.dart';
+import 'package:health_care/provider/search_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../home_screen/components/categories.dart';
@@ -26,16 +27,18 @@ class SearchScreen extends StatelessWidget {
               children: [
                 HomeHeader(),
                 SizedBox(height: 20),
+                //Tim kiem san pham
                 SearchField(),
                 // SpecialOffers(),
                 // DiscountBanner(),
+                SizedBox(height: 10),
                 Categories(),
-                PopularProducts(),
+                SizedBox(
+                  height: 500, // Chiều cao cố định cho DiscountProducts
+                  child: AllProducts(),
+                ),
                 SizedBox(height: 20),
-                PopularProducts(),
-                SizedBox(height: 20),
-                PopularProducts(),
-                SizedBox(height: 20),
+                
               ],
             ),
           ),

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:health_care/constants.dart';
 import 'package:health_care/models/CartItem.dart';
-import 'package:health_care/screens/cart_screen/cart_provider.dart';
+import 'package:health_care/provider/cart_provider.dart';
+import 'package:health_care/screens/details_screen/components/comment_section.dart';
 
 import 'package:provider/provider.dart';
 
@@ -25,28 +26,32 @@ class DetailsScreen extends StatelessWidget {
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      backgroundColor: white,
+      // backgroundColor: white,
       appBar: AppBar(
-        backgroundColor: white,
-        elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-              padding: EdgeInsets.zero,
-              elevation: 0,
-              backgroundColor: Colors.white,
-            ),
-            child: const Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.black,
-              size: 20,
-            ),
-          ),
+        // elevation: 0,
+        leading: 
+        // Padding(
+        //   padding: const EdgeInsets.all(8.0),
+        //   child: ElevatedButton(
+        //     onPressed: () {
+        //       Navigator.pop(context);
+        //     },
+        //     style: ElevatedButton.styleFrom(
+        //         shape: const CircleBorder(),
+        //        padding: EdgeInsets.zero,
+        //        elevation: 0,
+        //     ),
+        //     child: const Icon(
+        //       Icons.arrow_back_ios_new,
+        //       size: 20,
+        //     ),
+        //   ),
+        // ),
+        IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         actions: [
           Row(
@@ -80,9 +85,10 @@ class DetailsScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
+          const SizedBox(height: 20),
           ProductImages(product: product),
           TopRoundedContainer(
-            color: Colors.white,
+            color: Theme.of(context).scaffoldBackgroundColor,
             child: Column(
               children: [
                 ProductDescription(
@@ -97,33 +103,67 @@ class DetailsScreen extends StatelessWidget {
                 //     ],
                 //   ),
                 // ),
+                CommentsSection(productId: product.id),
               ],
             ),
           ),
         ],
       ),
       bottomNavigationBar: TopRoundedContainer(
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             child: 
             ElevatedButton(
               onPressed: () {
-                CartProvider cartProvider = Provider.of<CartProvider>(context, listen: false);
-                cartProvider.addToCart(CartItem(
-                  id: product.id,
-                  name: product.title,
-                  price: product.price,
-                  img: product.images[0],
-                  quantity: 1,
-                ));
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Added to Cart')),
-                );
+                if(product.countInStock > 0){
+                  CartProvider cartProvider = Provider.of<CartProvider>(context, listen: false);
+                    cartProvider.addToCart(CartItem(
+                    id: product.id,
+                    name: product.title,
+                    price: product.price,
+                    img: product.images,
+                    quantity: 1,
+                    discount: product.discount
+
+                  ));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Added to Cart'),
+                    duration: Duration(milliseconds: 500)),
+                  );
+                }
+                else {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            backgroundColor: Colors.white, // Nền của AlertDialog
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                // Hiển thị file GIF ở phía trên
+                                Image.asset(
+                                  'assets/images/outofstock.gif', // Thay đổi đường dẫn tới file GIF của bạn
+                                  width: 100, // Điều chỉnh kích thước phù hợp
+                                  height: 100, // Điều chỉnh kích thước phù hợp
+                                ),
+                                SizedBox(height: 16), // Khoảng cách giữa GIF và văn bản
+                                const Text('Sản phẩm đã hết hàng', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: black),),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                      Future.delayed(Duration(seconds: 2), () {
+                          Navigator.of(context, rootNavigator: true).pop();
+                      });
+                }
+              
+                
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: black
+                backgroundColor: kPrimaryColor
               ),
               child: const Text(
                 'Add To Cart',

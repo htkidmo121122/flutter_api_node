@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:health_care/screens/signin_screen/signin_screen.dart';
 // import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
 
 // import '../../../components/custom_surfix_icon.dart';
 // import '../../../components/form_error.dart';
@@ -19,7 +23,10 @@ class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
+  String? confirmPassword;
   bool? remember = false;
+  bool _isLoading = false;
+
   final List<String?> errors = [];
 
   void addError({String? error}) {
@@ -35,6 +42,65 @@ class _SignFormState extends State<SignForm> {
       setState(() {
         errors.remove(error);
       });
+    }
+  }
+
+  Future<void> _signup() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      if (email != null && password != null && confirmPassword != null) {
+        setState(() {
+          _isLoading = true;
+        });
+
+        try {
+          final response = await http.post(
+            Uri.parse('http://localhost:3001/api/user/sign-up'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, String>{
+              'email': email!,
+              'password': password!,
+              'confirmPassword': confirmPassword!
+            }),
+          );
+
+          if (response.statusCode == 200) {
+            final data = jsonDecode(response.body);
+            final message = data["message"];
+            if (data["status"] == "ERR") {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('$message')),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Đăng Kí Thành Công')),
+              );
+              Navigator.pushNamed(context, SignInScreen.routeName);
+            }
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Sign Up failed: ${response.statusCode}')),
+            );
+          }
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content:
+                    Text('Failed to connect with server: ${e.toString()}')),
+          );
+        } finally {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please fill out all fields')),
+        );
+      }
     }
   }
 
@@ -87,7 +153,8 @@ class _SignFormState extends State<SignForm> {
                 gapPadding: 10,
               ),
               filled: true,
-              fillColor: const Color.fromARGB(255, 255, 255, 255),
+              fillColor: Theme.of(context).scaffoldBackgroundColor
+        
 
               // hintText: "Email",
               // // If  you are using latest version of flutter then lable text and hint text shown like this
@@ -139,7 +206,8 @@ class _SignFormState extends State<SignForm> {
                 gapPadding: 10,
               ),
               filled: true,
-              fillColor: const Color.fromARGB(255, 255, 255, 255),
+              fillColor: Theme.of(context).scaffoldBackgroundColor,
+
               labelText: "Password",
               hintText: "Your Password",
               // If  you are using latest version of flutter then lable text and hint text shown like this
@@ -151,7 +219,7 @@ class _SignFormState extends State<SignForm> {
           const SizedBox(height: 20),
           TextFormField(
             obscureText: true,
-            onSaved: (newValue) => password = newValue,
+            onSaved: (newValue) => confirmPassword = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
                 removeError(error: kPassNullError);
@@ -191,7 +259,7 @@ class _SignFormState extends State<SignForm> {
                 gapPadding: 10,
               ),
               filled: true,
-              fillColor: const Color.fromARGB(255, 255, 255, 255),
+              fillColor: Theme.of(context).scaffoldBackgroundColor,
               labelText: "Confirm Password",
               hintText: "Confirm Your Password",
               // If  you are using latest version of flutter then lable text and hint text shown like this
@@ -225,33 +293,27 @@ class _SignFormState extends State<SignForm> {
           // ),
           // FormError(errors: errors),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                // KeyboardUtil.hideKeyboard(context);
-                // Navigator.pushNamed(context, LoginSuccessScreen.routeName);
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: kPrimaryColor,
-              padding: EdgeInsets.symmetric(vertical: 12),
-              minimumSize:
-                  Size(double.infinity, 50), // Set kích thước tối thiểu
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-                // Set border radius here
-              ),
-            ),
-            child: const Text(
-              "Sign Up",
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-          ),
+          _isLoading
+              ? CircularProgressIndicator()
+              : ElevatedButton(
+                  onPressed: _signup,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kPrimaryColor,
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    minimumSize: Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(color: kPrimaryColor, width: 1),
+                    ),
+                  ),
+                  child: const Text(
+                    "Sign Up",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ),
         ],
       ),
     );

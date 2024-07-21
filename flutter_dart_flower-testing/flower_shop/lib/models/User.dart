@@ -1,21 +1,18 @@
 class User {
-  final String? fullName;
-  final String email;
-  final String? phoneNumber;
-  final String? country;
-  final String? gender;
-  final String? address;
-  final String password;
-  final String? image;
+  final String? fullName; //name
+  final String email; //email
+  final String? phoneNumber; //phone
+  final String? country; //city
+  final String? address; //address
+  final String? image; //avatar
 
   User({
     this.fullName,
     required this.email,
     this.phoneNumber,
     this.country,
-    this.gender,
     this.address,
     this.image,
-    required this.password,
+
   });
 }

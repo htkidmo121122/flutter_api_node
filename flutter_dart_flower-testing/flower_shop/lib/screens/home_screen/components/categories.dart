@@ -17,63 +17,64 @@ class Categories extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error loading products'));
         } else {
-     // Extract unique categories from products
-     // lấy ra danh sách loại sản phẩm từ sản phẩm
-    List<String> categories = demoProducts
-        .map((product) => product.category)
-        .toSet()
-        .toList();
+          // Extract unique categories from products
+          // lấy ra danh sách loại sản phẩm từ sản phẩm
+          List<String> categories = demoProducts
+              .map((product) => product.category)
+              .toSet()
+              .toList();
 
-    
-    // Define a map for icons associated with categories
-    Map<String, String> categoryIcons = {
-      "Flower": "assets/icons/flower.svg",
-      "Gift": "assets/icons/gift.svg",
-      "Special": "assets/icons/special.svg",
-      "Daily Gift": "assets/icons/dailygift.svg",
-      "Classify": "assets/icons/classify.svg",
-    };
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'What are you looking for?',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 20), // Optional SizedBox for spacing
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: 
-              List.generate(
-                categories.length,
-                (index) => CategoryCard(
-                  icon: categoryIcons[categories[index]] ?? "assets/icons/Flower.svg",
-                  text: categories[index],
-                  press: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FilledScreen(
-                          category: categories[index],
-                          products: demoProducts,
-                        ),
+          
+          // Define a map for icons associated with categories
+          Map<String, String> categoryIcons = {
+            "Flower": "assets/icons/flower.svg",
+            "Gift": "assets/icons/gift.svg",
+            "Special": "assets/icons/special.svg",
+            "Collection": "assets/icons/dailygift.svg",
+            "Wedding": "assets/icons/classify.svg",
+          };
+          return Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'What are you looking for?',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      
+                    ),
+                  ),
+                  const SizedBox(height: 20), // Optional SizedBox for spacing
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: 
+                    List.generate(
+                      categories.length,
+                      (index) => CategoryCard(
+                        icon: categoryIcons[categories[index]] ?? "assets/icons/flower.svg",
+                        text: categories[index],
+                        press: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FilledScreen(
+                                category: categories[index],
+                                products: demoProducts,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-              ),
+                    ),
+                  ),
+                ]
             ),
-          ]
-      ),
-    );
-  }
-  }
+          );
+        }
+      }
     );
   }
 }
@@ -96,11 +97,12 @@ class CategoryCard extends StatelessWidget {
       child: Column(
         children: [
           Container(
+            
             padding: const EdgeInsets.all(14),
             height: 56,
             width: 56,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).scaffoldBackgroundColor,
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
@@ -110,6 +112,10 @@ class CategoryCard extends StatelessWidget {
                   offset: Offset(0, 3), // Offset in x and y direction
                 ),
               ],
+              border: Border.all(
+                color: Colors.white.withOpacity(0.4), // Màu viền với độ mờ
+                width: 1.0, // Độ dày của viền
+              ),
             
             ),
             child: SvgPicture.asset(icon),

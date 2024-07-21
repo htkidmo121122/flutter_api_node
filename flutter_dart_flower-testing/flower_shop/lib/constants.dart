@@ -6,15 +6,15 @@ const kcolorminor  = Color(0xFFFF85A1);
 //random color background list
 const color1 = Color(0xFF86CDEC);
 const color2 = Color(0xFF967BB6);
-const colot3 = Color(0xFFFFE454);
+const color3 = Color(0xFFFFE454);
 const color4 = Color(0xFFFFBBCB);
 //mau co ban
 const white = Colors.white;
 const black = Colors.black;
 
 //mau nut dam, mau nut nhat
-const kPrimaryColor = Color.fromRGBO(0, 0, 0, 1);
-const kWhite = Color.fromARGB(255, 182, 182, 182);
+const kPrimaryColor = Color.fromARGB(255, 255, 35, 87);
+const kWhite = Color.fromARGB(255, 235, 227, 227);
 const kPrimaryLightColor = Color.fromARGB(255, 65, 65, 65);
 const kPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,
@@ -22,9 +22,10 @@ const kPrimaryGradientColor = LinearGradient(
   colors: [Color(0xFFFFA53E), Color(0xFFFF7643)],
 );
 //mau navigator
-const kSecondaryColor = Color(0xFFFA1056);
+const kSecondaryColor = Color.fromARGB(255, 255, 28, 81);
 //mau text
 const kTextColor = Colors.black;
+const kTextColorLight = Colors.white;
 
 
 const kAnimationDuration = Duration(milliseconds: 200);

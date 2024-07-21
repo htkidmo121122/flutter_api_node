@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -25,25 +28,25 @@ class _ProductImagesState extends State<ProductImages> {
           width: 238,
           child: AspectRatio(
             aspectRatio: 1,
-            child: Image.asset(widget.product.images[selectedImage]),
+            child: Image.memory(base64Decode(widget.product.images)),
             
           ),
           
         ),
-        // SizedBox(height: 20),
+        const SizedBox(height: 30),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ...List.generate(
-              widget.product.images.length,
+              4,
               (index) => SmallProductImage(
-                isSelected: index ==selectedImage,
+                isSelected: index == selectedImage,
                 press: () {
                   setState(() {
                     selectedImage = index;
                   });
                 },
-                image: widget.product.images[index],
+                image: base64Decode(widget.product.images),
               ),
             ),
           ],
@@ -62,7 +65,7 @@ class SmallProductImage extends StatefulWidget {
 
   final bool isSelected;
   final VoidCallback press;
-  final String image;
+  final Uint8List image;
 
   @override
   State<SmallProductImage> createState() => _SmallProductImageState();
@@ -85,7 +88,7 @@ class _SmallProductImageState extends State<SmallProductImage> {
           border: Border.all(
               color: kPrimaryColor.withOpacity(widget.isSelected ? 1 : 0)),
         ),
-        child: Image.asset(widget.image),
+        child: Image.memory(widget.image),
       ),
     );
   }

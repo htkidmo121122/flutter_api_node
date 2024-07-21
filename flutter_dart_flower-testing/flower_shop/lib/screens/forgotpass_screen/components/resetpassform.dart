@@ -66,17 +66,17 @@ class _ResetPassFormState extends State<ResetPassForm> {
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.grey),
+                borderSide: const BorderSide(color: Colors.grey),
                 gapPadding: 10,
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.grey),
+                borderSide: const BorderSide(color: Colors.grey),
                 gapPadding: 10,
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: kPrimaryColor, width: 2),
+                borderSide: const BorderSide(color: kPrimaryColor, width: 2),
                 gapPadding: 10,
               ),
               filled: true,

@@ -9,9 +9,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^2.0.9 # help us to use SVG in our app
-  provider: ^6.1.1 # for State management
-  image_picker: ^0.8.4+4
+  flutter_svg: ^2.0.9 
+  provider: ^6.1.1 
+  image_picker: ^1.1.2
+  file_picker: ^8.0.5
+  http: ^0.13.5
+  shared_preferences: ^2.2.3
+  jwt_decoder: ^2.0.1
+  intl: ^0.17.0
+  socket_io_client: ^2.0.0
+  flutter_paypal_checkout: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -25,11 +32,4 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/products.json
-  # fonts:
-  #   - family: Muli
-  #     fonts:
-  #       - asset: assets/fonts/muli/Muli.ttf
-  #       - asset: assets/fonts/muli/Muli-Bold.ttf
-  #         weight: 700
-  #       - asset: assets/fonts/muli/Muli-Light.ttf
-  #         weight: 300
+
