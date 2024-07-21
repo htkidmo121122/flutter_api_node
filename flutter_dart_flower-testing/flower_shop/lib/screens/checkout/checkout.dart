@@ -203,9 +203,11 @@ class _CheckoutState extends State<Checkout> {
 
   void _handlePayment() {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    ////////
     final shippingFee = calculateShippingFee(cartProvider.getTotalPrice());
     final totalPriceInUSD = cartProvider.getTotalPriceInUSD();
     final shippingFeeInUSD = shippingFee / 24000;
+    //////////////
     print(cartProvider.cartItems.map((item) {
                   return {
                     "name": item.name,
@@ -217,6 +219,7 @@ class _CheckoutState extends State<Checkout> {
     print(totalPriceInUSD.toStringAsFixed(2));
     print(shippingFeeInUSD.toStringAsFixed(2));
     print((totalPriceInUSD + shippingFeeInUSD).toStringAsFixed(2));
+    /////////////////////
     if (_selectedPaymentMethod == 'PayPal') {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => PaypalCheckout(
@@ -474,18 +477,50 @@ class _CheckoutState extends State<Checkout> {
                       ],
                     ),
                     const SizedBox(height: 16),
+                    if (_selectedPaymentMethod == 'PayPal') 
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: _handlePayment,
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 10),
-                          backgroundColor: kPrimaryColor,
+                          backgroundColor: const Color.fromARGB(255, 255, 194, 11),
                         ),
-                        child: const Text('Thanh toán',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: white)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/paypal.gif', // Ensure the path is correct
+                              width: 50,
+                              height: 24,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Pay with PayPal',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 12, 22, 207),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
+                    const SizedBox(height: 16),
+                    if (_selectedPaymentMethod != 'PayPal') 
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _handlePayment,
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            backgroundColor: kPrimaryColor,
+                          ),
+                          child: const Text('Thanh toán',
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                        ),
+                      ),
                     const SizedBox(height: 30),
                   ],
                 ),
