@@ -138,14 +138,29 @@ class _CheckoutState extends State<Checkout> {
 
         if (response.statusCode == 200) {
           cartProvider.cartItems.clear();
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Đặt hàng thành công')),
-          );
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => Mainpage()),
             (Route<dynamic> route) => false,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Row(
+              children: [
+                SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: Image.asset('assets/images/ordersuccess.gif'), // Path to your GIF
+                ),
+                const SizedBox(width: 16),
+                const Expanded(
+                  child: Text(
+                    'Đặt Hàng Thành Công',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
+            ),
+            ),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -188,6 +203,20 @@ class _CheckoutState extends State<Checkout> {
 
   void _handlePayment() {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    final shippingFee = calculateShippingFee(cartProvider.getTotalPrice());
+    final totalPriceInUSD = cartProvider.getTotalPriceInUSD();
+    final shippingFeeInUSD = shippingFee / 24000;
+    print(cartProvider.cartItems.map((item) {
+                  return {
+                    "name": item.name,
+                    "quantity": item.quantity,
+                    "price": '${(item.price/24000.00)}',
+                    "currency": "USD"
+                  };
+                }).toList());
+    print(totalPriceInUSD.toStringAsFixed(2));
+    print(shippingFeeInUSD.toStringAsFixed(2));
+    print((totalPriceInUSD + shippingFeeInUSD).toStringAsFixed(2));
     if (_selectedPaymentMethod == 'PayPal') {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => PaypalCheckout(
@@ -199,25 +228,26 @@ class _CheckoutState extends State<Checkout> {
           transactions: [
             {
               "amount": {
-                "total": '${cartProvider.getTotalPriceInUSD() + 3}',
+                "total": '${(totalPriceInUSD + shippingFeeInUSD).toStringAsFixed(2)}',// Lấy theo giá dollar
                 "currency": "USD",
                 "details": {
-                  "subtotal": '${cartProvider.getTotalPriceInUSD()}',
-                  "shipping": '3',
+                  "subtotal": '${totalPriceInUSD.toStringAsFixed(2)}',
+                  "shipping": '${shippingFeeInUSD.toStringAsFixed(2)}',
                   "shipping_discount": 0
                 }
               },
               "description": "Order payment.",
-              "item_list": {
-                "items": cartProvider.cartItems.map((item) {
-                  return {
-                    "name": item.name,
-                    "quantity": item.quantity,
-                    "price": '${item.price / 24000}',
-                    "currency": "USD"
-                  };
-                }).toList()
-              }
+              
+              //   "item_list": {
+              //     "items": cartProvider.cartItems.map((item) {
+              //       return {
+              //         "name": item.name,
+              //         "quantity": item.quantity,
+              //         "price": '${(item.price/24000.00)}',
+              //         "currency": "USD"
+              //       };
+              //     }).toList()
+              //   }
             }
           ],
           note: "Contact us for any questions on your order.",
@@ -240,27 +270,43 @@ class _CheckoutState extends State<Checkout> {
     }
   }
 
+  int calculateShippingFee(double totalPrice) {
+    if (totalPrice > 5000000) {
+      return 50000; // Free shipping for orders over 5,000,000 VND
+    } else if (totalPrice > 2000000) {
+      return 150000; // 150,000 VND shipping fee for orders over 2000,000 VND
+    } else {
+      return 250000; // Default shipping fee for other orders
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     final cartItems = cartProvider.cartItems;
 
+    final totalPrice = cartProvider.getTotalPrice();
+    final shippingFee = calculateShippingFee(totalPrice);
+    final totalPriceWithShipping = totalPrice + shippingFee;
+
     final formattedTotalPrice =
         NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
-            .format(cartProvider.getTotalPrice());
-    final formattedTotalPriceShip =
+            .format(totalPrice);
+    final formattedShippingFee =
         NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
-            .format(cartProvider.getTotalPrice() + 30000);
+            .format(shippingFee);
+    final formattedTotalPriceShip = NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(totalPriceWithShipping);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
+        leading: _isLoading ? Container() : 
+          IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
         title: const Text(
           'Checkout',
           
@@ -411,7 +457,7 @@ class _CheckoutState extends State<Checkout> {
                       children: [
                         const Text('Phí vận chuyển',
                             style: TextStyle(fontSize: 18)),
-                        const Text('30,000 ₫',
+                        Text(formattedShippingFee,
                             style: TextStyle(fontSize: 18)),
                       ],
                     ),
