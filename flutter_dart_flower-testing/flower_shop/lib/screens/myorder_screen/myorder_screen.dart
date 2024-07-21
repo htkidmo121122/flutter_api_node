@@ -125,6 +125,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
         setState(() {
             // Remove the deleted order from the local list
             orders = orders.where((order) => order['_id'] != orderId).toList();
+            _isLoading = false;
           });
         showDialog(
             context: context,
@@ -290,7 +291,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
       body:_isLoading
         ? Center(
                 child: Image.asset(
-                  'assets/images/cartempty.gif',
+                  'assets/images/loading.gif',
                   width: 100,
                   height: 100,
                 ),
