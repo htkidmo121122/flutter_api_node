@@ -518,7 +518,7 @@ class _CheckoutState extends State<Checkout> {
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             backgroundColor: kPrimaryColor,
                           ),
-                          child: const Text('Thanh toán',
+                          child: const Text('Thanh Toán',
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
                         ),
                       ),

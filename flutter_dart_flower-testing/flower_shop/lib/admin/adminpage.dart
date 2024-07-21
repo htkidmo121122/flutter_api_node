@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:health_care/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AdminOrdersScreen extends StatefulWidget {
@@ -23,9 +24,9 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
   }
   //Fetch dữ liệu ban đầu 
   Future<void> fetchOrders() async {
-    //  setState(() {
-    //     _isProcessing = true; // Bắt đầu quá trình xử lý
-    //   });
+    setState(() {
+      _isProcessing = true; // Bắt đầu quá trình xử lý
+    });
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('access_token');
     if (token != null) {
@@ -57,7 +58,7 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
         if (data['status'] == 'OK') {
           setState(() {
             orders = List<Map<String, dynamic>>.from(data['data']);
-            // _isProcessing= false;
+            _isProcessing= false;
           });
           
         } else {
@@ -290,30 +291,40 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                 final order = orders[index];
                 final shippingAddress = order['shippingAddress'];
                 final orderItems = order['orderItems'] as List<dynamic>;
-              
+                final formattedTotalPrice =
+                    NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
+                        .format(order['totalPrice']);
+                final formattedShippingPrice =
+                    NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
+                        .format(order['shippingPrice']);
+                final formatteditemsPrice =
+                    NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
+                        .format(order['itemsPrice']);
                 return 
                 Card(
                   color: Theme.of(context).scaffoldBackgroundColor,
                   margin: const EdgeInsets.all(8.0),
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 8),
+                        const Divider(),
                         const Text(
-                          'Shipping Address:',
+                          'Địa chỉ giao hàng:',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Text(
                           '${shippingAddress['fullName']}, ${shippingAddress['address']}, ${shippingAddress['city']}, Phone: ${shippingAddress['phone']}',
                         ),
                         const SizedBox(height: 8),
+                         const Divider(),
                         const Text(
-                          'Order Items:',
+                          'Sản phẩm:',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-
+                       
                         ...orderItems.map((item) {
                           return ListTile(
                             contentPadding: EdgeInsets.zero,
@@ -329,9 +340,10 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                           );
                         }).toList(),
                         const Divider(),
-                        Text('Payment Method: ${order['paymentMethod']}'),
-                        Text('Shipping Price: ${order['shippingPrice']} VND'),
-                        Text('Total Price: ${order['totalPrice']} VND'),
+                        Text('Hình Thức: ${order['paymentMethod']}'),
+                        Text('Giá: ${formatteditemsPrice}'),
+                        Text('Phí Ship: ${formattedShippingPrice}'),
+                        Text('Tổng Tiền: ${formattedTotalPrice}'),
                         Text('Thanh Toán: ${order['isPaid'] ? "Đã Thanh Toán" : "Chưa Thanh Toán"}'),
                         Text('Giao Hàng: ${order['isDelivered'] ? "Đã Giao Hàng" : "Đang xử lý"}'),
                         
@@ -394,6 +406,8 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                             style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
                           ),
                         ),
+                        const Divider(),
+                        const SizedBox(height: 8),
                       ],
                     ),
                   ),

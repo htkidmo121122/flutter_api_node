@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:health_care/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyOrdersScreen extends StatefulWidget {
@@ -278,6 +279,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
+   
     return Scaffold(
       appBar: AppBar(
         title: Text("My Orders"),
@@ -291,7 +293,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
       body:_isLoading
         ? Center(
                 child: Image.asset(
-                  'assets/images/loading.gif',
+                  'assets/images/cartempty.gif',
                   width: 100,
                   height: 100,
                 ),
@@ -299,33 +301,48 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
         : orders.isEmpty
             ? Center(
                 child: Text('Đơn hàng của bạn trống', style: TextStyle()),
-              ): ListView.builder(
+              ): 
+              ListView.builder(
               itemCount: orders.length,
               itemBuilder: (context, index) {
                 final order = orders[index];
                 final shippingAddress = order['shippingAddress'];
                 final orderItems = order['orderItems'] as List<dynamic>;
-              
+                final formattedTotalPrice =
+                    NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
+                        .format(order['totalPrice']);
+                final formattedShippingPrice =
+                    NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
+                        .format(order['shippingPrice']);
+                final formatteditemsPrice =
+                    NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
+                        .format(order['itemsPrice']);
                 return 
                 Card(
                   color: Theme.of(context).scaffoldBackgroundColor,
                   margin: const EdgeInsets.all(8.0),
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 8),
+                        const Divider(),
+                        // const Text(
+                        //   '${}',
+                        //   style: TextStyle(fontWeight: FontWeight.bold),
+                        // ),
                         const Text(
-                          'Shipping Address:',
+                          'Địa chỉ giao hàng:',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Text(
                           '${shippingAddress['fullName']}, ${shippingAddress['address']}, ${shippingAddress['city']}, Phone: ${shippingAddress['phone']}',
                         ),
                         const SizedBox(height: 8),
+                        const Divider(),
                         const Text(
-                          'Order Items:',
+                          'Sản Phẩm:',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
 
@@ -344,10 +361,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                           );
                         }).toList(),
                         const Divider(),
-                        Text('Payment Method: ${order['paymentMethod']}'),
-                        Text('Items Price: ${order['itemsPrice']} VND'),
-                        Text('Phí Ship: ${order['shippingPrice']} VND'),
-                        Text('Tổng Tiền: ${order['totalPrice']} VND'),
+                        Text('Hình Thức: ${order['paymentMethod']}'),
+                        Text('Giá: ${formatteditemsPrice}'),
+                        Text('Phí Ship: ${formattedShippingPrice}'),
+                        Text('Tổng Tiền: ${formattedTotalPrice}'),
                         Text('Thanh Toán: ${order['isPaid'] ? "Đã Thanh Toán" : "Chưa Thanh Toán"}'),
                         Text('Giao Hàng: ${order['isDelivered'] ? "Đã Giao Hàng" : "Đang xử lý"}'),
                         
@@ -440,6 +457,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                             ),
                               
                             ),
+                        const Divider(),
                         const SizedBox(height: 8),
                       ],
                     ),
