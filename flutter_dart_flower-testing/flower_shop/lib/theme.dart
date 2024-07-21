@@ -88,6 +88,10 @@ class AppTheme {
         textColor: Colors.black,
         backgroundColor: Colors.white
       ),
+      snackBarTheme: const SnackBarThemeData(
+        backgroundColor: kPrimaryLightColor,
+
+      ),
       // elevatedButtonTheme: ElevatedButtonThemeData(
       //   style: ElevatedButton.styleFrom(
       //     elevation: 0,

@@ -347,6 +347,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                         ),
 
                         ...orderItems.map((item) {
+                          final formattedPrice =
+                              NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
+                                  .format(item['price']);
+                          
                           return ListTile(
                             contentPadding: EdgeInsets.zero,
                             leading: Image.memory(
@@ -356,8 +360,8 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                               fit: BoxFit.cover,
                             ),
                             title: Text(item['name']),
-                            subtitle: Text('Quantity: ${item['amount']}'),
-                            trailing: Text('${item['price']} VND'),
+                            subtitle: Text('Số Lượng: ${item['amount']}'),
+                            trailing: Text('${formattedPrice}'),
                           );
                         }).toList(),
                         const Divider(),
