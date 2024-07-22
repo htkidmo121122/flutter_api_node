@@ -48,6 +48,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       setState(() {
         user = User(
+          id: '',
           fullName: userData['name']?.toString() ?? '',
           email: userData['email'],
           phoneNumber: userData['phone']?.toString() ?? '',
@@ -117,6 +118,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           : user.image;
 
       user = User(
+        id: '', //bỏ trống vì ko chỉnh sửa id người dùng
         fullName: fullNameController.text,
         email: emailController.text,
         phoneNumber: phoneNumberController.text,

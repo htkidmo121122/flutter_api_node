@@ -79,7 +79,7 @@ List<Product> demoProducts = [];
 //   }
 //   else{
 //     // Cập nhật dữ liệu từ server nếu đã đủ 1 giờ hoặc không có dữ liệu cache
-//     final response = await http.get(Uri.parse('http://10.0.2.2:3001/api/product/get-all'));
+//     final response = await http.get(Uri.parse('http://localhost:3001/api/product/get-all'));
 //     if (response.statusCode == 200) {
 //       Map<String, dynamic> jsonResponse = json.decode(response.body);
 //       List<dynamic> jsonList = jsonResponse['data'];
@@ -110,7 +110,7 @@ Future<void> fetchProducts(BuildContext context) async {
           .toList();
     } else {
       final response =
-          await http.get(Uri.parse('http://10.0.2.2:3001/api/product/get-all'));
+          await http.get(Uri.parse('http://localhost:3001/api/product/get-all'));
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         List<dynamic> jsonList = jsonResponse['data'];

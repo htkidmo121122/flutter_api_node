@@ -34,7 +34,7 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
     if (token != null) {
       final accessToken = token;
 
-      final url = Uri.parse('http://10.0.2.2:3001/api/order/get-all-order');
+      final url = Uri.parse('http://localhost:3001/api/order/get-all-order');
       final headers = {
         'Content-Type': 'application/json',
         'token': 'Bearer $accessToken',
@@ -84,7 +84,7 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
       final accessToken = token;
 
       final url =
-          Uri.parse('http://10.0.2.2:3001/api/order/confirm-delivery/$orderId');
+          Uri.parse('http://localhost:3001/api/order/confirm-delivery/$orderId');
       final headers = {
         'Content-Type': 'application/json',
         'token': 'Bearer $accessToken',
@@ -171,7 +171,7 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
       final accessToken = token;
 
       final url =
-          Uri.parse('http://10.0.2.2:3001/api/order/delete-order/$orderId');
+          Uri.parse('http://localhost:3001/api/order/delete-order/$orderId');
       final headers = {
         'Content-Type': 'application/json',
         'token': 'Bearer $accessToken',
@@ -249,7 +249,7 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
     }
 
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:3001/api/user/refresh-token'),
+      Uri.parse('http://localhost:3001/api/user/refresh-token'),
       headers: {'token': 'Bearer $refreshToken'},
     );
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:health_care/admin/Orders/Orders.dart';
 import 'package:health_care/admin/Products/Products.dart';
 import 'package:health_care/admin/Users/Users.dart';
+import 'package:health_care/constants.dart';
 
 class AdminMainPage extends StatefulWidget {
   static String routeName = "/admin_main";
@@ -19,12 +20,13 @@ class _AdminMainPageState extends State<AdminMainPage> {
         title: const Text('Admin Dashboard'),
       ),
       drawer: Drawer(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: kcolorminor,
               ),
               child: Text(
                 'Admin Menu',
@@ -72,15 +74,15 @@ class _AdminMainPageState extends State<AdminMainPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildDashboardCard('Members Online', '9,823', Colors.blue),
-                _buildDashboardCard('New Users', '2,123', Colors.yellow),
-                _buildDashboardCard('Sales', '\$50,123', Colors.red),
+                _buildDashboardCard('Product', '', Colors.blue),
+                _buildDashboardCard('User', '', Colors.yellow),
+                _buildDashboardCard('Order', '', Colors.red),
               ],
             ),
             const SizedBox(height: 20),
-            Expanded(
-              child: _buildTrafficChart(),
-            ),
+            // Expanded(
+            //   // child: _buildTrafficChart(),
+            // ),
           ],
         ),
       ),

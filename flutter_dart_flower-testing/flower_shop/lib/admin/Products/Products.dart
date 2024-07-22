@@ -37,16 +37,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     }
   }
 
-  Future<void> deleteProduct(String id) async {
-    try {
-      await _productService.deleteProduct(id);
-      setState(() {
-        products.removeWhere((product) => product.id == id);
-      });
-    } catch (e) {
-      print('Error deleting product: $e');
-    }
-  }
+
 
   Future<void> showAddProductDialog() async {
     final titleController = TextEditingController();
@@ -136,14 +127,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
       appBar: AppBar(
         title: Text('Admin Products'),
         actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: showAddProductDialog,
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.add),
+          //   onPressed: showAddProductDialog,
+          // ),
         ],
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: Image.asset('assets/images/loadingflower.gif'))
           : ListView.builder(
               itemCount: products.length,
               itemBuilder: (context, index) {
@@ -155,18 +146,18 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.edit),
-                        onPressed: () {
-                          // Implement edit functionality here
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          deleteProduct(product.id);
-                        },
-                      ),
+                      // IconButton(
+                      //   icon: Icon(Icons.edit),
+                      //   onPressed: () {
+                      //     // Implement edit functionality here
+                      //   },
+                      // ),
+                      // IconButton(
+                      //   icon: Icon(Icons.delete),
+                      //   onPressed: () {
+                      //     // deleteProduct(index);
+                      //   },
+                      // ),
                     ],
                   ),
                 );
