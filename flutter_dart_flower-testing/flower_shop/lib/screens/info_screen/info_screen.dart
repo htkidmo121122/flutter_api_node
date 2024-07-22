@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:health_care/constants.dart';
+import 'package:health_care/provider/cart_provider.dart';
 import 'package:health_care/screens/signin_screen/components/sign_form.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:health_care/screens/signin_screen/signin_screen.dart';
 import 'package:health_care/mainpage.dart';
@@ -40,8 +42,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   }
 
   Future<void> logout() async {
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear(); // Xóa toàn bộ dữ liệu trong SharedPreferences
+    cartProvider.cartItems.clear(); //xoa gio hang
     Navigator.pushNamed(context, SignInScreen.routeName);
     // Điều hướng về màn hình đăng nhập
   }
@@ -66,7 +70,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
       setState(() {
         user = User(
-          id: '', //Không hiển thị id của người dùng đc
+          id: userData['_id'], //Không hiển thị id của người dùng đc
           fullName: userData['name']?.toString() ?? '',
           email: userData['email'],
           phoneNumber: userData['phone']?.toString() ?? '',

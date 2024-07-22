@@ -275,7 +275,10 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
           },
         ),
       ),
-      body: _isProcessing
+      body: RefreshIndicator(
+        onRefresh: () => fetchOrders(),
+        child:
+      _isProcessing
           ? Center(
               child: Image.asset(
                 'assets/images/cartempty.gif',
@@ -426,6 +429,7 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                     );
                   },
                 ),
+    )
     );
   }
 }

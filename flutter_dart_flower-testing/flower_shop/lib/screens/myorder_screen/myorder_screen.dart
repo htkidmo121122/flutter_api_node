@@ -290,7 +290,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
           },
         ),
       ),
-      body:_isLoading
+      body:RefreshIndicator(
+        onRefresh: () => fetchOrders(),
+        child:
+      _isLoading
         ? Center(
                 child: Image.asset(
                   'assets/images/cartempty.gif',
@@ -469,6 +472,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                 );
               },
             ),
+    )
     );
   }
 }

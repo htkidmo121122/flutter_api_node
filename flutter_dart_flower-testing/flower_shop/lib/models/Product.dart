@@ -104,7 +104,7 @@ Future<void> fetchProducts(BuildContext context) async {
     final currentTime = DateTime.now().millisecondsSinceEpoch;
     final lastFetchTime = prefs.getInt('lastFetchTime') ?? 0;
 
-    if (cachedData != null && currentTime - lastFetchTime < 200000) {
+    if (cachedData != null && currentTime - lastFetchTime < 500000) {
       demoProducts = (json.decode(cachedData) as List)
           .map((json) => Product.fromJson(json))
           .toList();

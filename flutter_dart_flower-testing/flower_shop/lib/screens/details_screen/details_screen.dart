@@ -118,61 +118,62 @@ class DetailsScreen extends StatelessWidget {
             child: 
             ElevatedButton(
               onPressed: () {
-                if(product.countInStock > 0){
+                
                   CartProvider cartProvider = Provider.of<CartProvider>(context, listen: false);
-                    cartProvider.addToCart(CartItem(
+                  bool result = cartProvider.addToCart(CartItem(
                     id: product.id,
                     name: product.title,
                     price: product.price,
                     img: product.images,
                     quantity: 1,
-                    discount: product.discount
-
+                    discount: product.discount,
+                    stockCount: product.countInStock
                   ));
+                  if(result){
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Added to Cart'),
-                    duration: Duration(milliseconds: 500)),
-                  );
-                }
-                else {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            backgroundColor: Colors.white, // Nền của AlertDialog
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                // Hiển thị file GIF ở phía trên
-                                Image.asset(
-                                  'assets/images/outofstock.gif', // Thay đổi đường dẫn tới file GIF của bạn
-                                  width: 100, // Điều chỉnh kích thước phù hợp
-                                  height: 100, // Điều chỉnh kích thước phù hợp
-                                ),
-                                SizedBox(height: 16), // Khoảng cách giữa GIF và văn bản
-                                const Text('Sản phẩm đã hết hàng', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: black),),
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                      Future.delayed(Duration(seconds: 2), () {
-                          Navigator.of(context, rootNavigator: true).pop();
-                      });
-                }
-              
+                      const SnackBar(content: Text('Added to Cart'),
+                      duration: Duration(milliseconds: 500)),
+                    );
+                  }
+                  else {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: Colors.white, // Nền của AlertDialog
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  // Hiển thị file GIF ở phía trên
+                                  Image.asset(
+                                    'assets/images/outofstock.gif', // Thay đổi đường dẫn tới file GIF của bạn
+                                    width: 100, // Điều chỉnh kích thước phù hợp
+                                    height: 100, // Điều chỉnh kích thước phù hợp
+                                  ),
+                                  SizedBox(height: 16), // Khoảng cách giữa GIF và văn bản
+                                  const Text('Sản phẩm đã hết hàng', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: black),),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                        Future.delayed(Duration(seconds: 3), () {
+                            Navigator.of(context, rootNavigator: true).pop();
+                        });
+                  }
                 
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: kPrimaryColor
-              ),
-              child: const Text(
-                'Add To Cart',
-              style: TextStyle(
-                color: white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16
-              ),
+                  
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: kPrimaryColor
+                ),
+                child: const Text(
+                  'Add To Cart',
+                style: TextStyle(
+                  color: white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16
+                ),
               ),
             ),
           ),

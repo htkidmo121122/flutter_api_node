@@ -12,20 +12,30 @@ class CartProvider extends ChangeNotifier {
 
   static const int exchangeRate = 24000;
   //Thêm sp vào cart 
-  void addToCart(CartItem item) {
+  bool addToCart(CartItem item) {
     // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
     bool found = false;
     for (int i = 0; i < _cartItems.length; i++) {
       if (_cartItems[i].id == item.id) {
-        _cartItems[i].quantity++;
-        found = true;
-        break;
+        if (_cartItems[i].quantity < _cartItems[i].stockCount || 
+        _cartItems[i].stockCount != 0) 
+        {
+          _cartItems[i].quantity++;
+          notifyListeners();
+          return true;
+        } 
+        else {
+          // Báo hết hàng
+          print('${item.name} đã hết hàng');
+          return false;
+        }
       }
     }
     if (!found) {
       _cartItems.add(item);
     }
     notifyListeners();
+    return true;
   }
   //Xoá sp khỏi cart
   void removeFromCart(String id) {
@@ -34,9 +44,15 @@ class CartProvider extends ChangeNotifier {
   }
   // cập nhập số lượng
   void updateQuantity(String id, int newQuantity) {
-    CartItem? item = _cartItems.firstWhere((item) => item.id == id, orElse: () => CartItem(id: '0', name: '', price: 0.0, img: '', quantity: 0));
+    CartItem? item = _cartItems.firstWhere((item) => item.id == id, orElse: () => CartItem(id: '0', name: '', price: 0.0, img: '', quantity: 0, stockCount: 0));
     if (item != null) {
-      item.quantity = newQuantity;
+      if (newQuantity <= item.stockCount) {
+        item.quantity = newQuantity;
+      } else {
+        // Báo hết hàng
+        print('Sản phẩm ${item.name} đã hết hàng');
+        
+      }
       notifyListeners();
     }
   }
