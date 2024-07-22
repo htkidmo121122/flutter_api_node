@@ -66,6 +66,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
       setState(() {
         user = User(
+          id: '', //Không hiển thị id của người dùng đc
           fullName: userData['name']?.toString() ?? '',
           email: userData['email'],
           phoneNumber: userData['phone']?.toString() ?? '',

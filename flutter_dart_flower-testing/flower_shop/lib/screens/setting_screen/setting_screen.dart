@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:health_care/admin/Orders/Orders.dart';
 import 'package:health_care/admin/adminpage.dart';
 import 'package:health_care/mainpage.dart';
 import 'package:health_care/provider/theme_provider.dart';
@@ -80,7 +81,8 @@ class _SettingScreenState extends State<SettingScreen> {
                     radius: 50,
                     backgroundImage: userImage != null
                         ? MemoryImage(userImage!)
-                        : const AssetImage('assets/images/profile_image.png') as ImageProvider,
+                        : const AssetImage('assets/images/profile_image.png')
+                            as ImageProvider,
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -103,20 +105,20 @@ class _SettingScreenState extends State<SettingScreen> {
                         context,
                         [
                           buildListTile(context, Icons.admin_panel_settings,
-                              'Manage Orders', destination: AdminOrdersScreen()),
+                              'Manage Orders',
+                              destination: AdminMainPage()),
                         ],
                       ),
                     buildSettingsGroup(
                       context,
                       [
-                        buildListTile(context, Icons.shopping_basket,
-                            'My Orders',
-                            destination: MyOrdersScreen()
-                            ),
-                        buildListTile(context, Icons.person,
-                            'Edit profile information'),
-                        buildListTile(context, Icons.notifications,
-                            'Notifications',
+                        buildListTile(
+                            context, Icons.shopping_basket, 'My Orders',
+                            destination: MyOrdersScreen()),
+                        buildListTile(
+                            context, Icons.person, 'Edit profile information'),
+                        buildListTile(
+                            context, Icons.notifications, 'Notifications',
                             trailing: Text(
                               notificationsOn ? 'ON' : 'OFF',
                               style: const TextStyle(color: Colors.pink),
@@ -149,9 +151,10 @@ class _SettingScreenState extends State<SettingScreen> {
                       context,
                       [
                         buildListTile(context, Icons.help, 'Help & Support'),
-                        buildListTile(context, Icons.contact_mail, 'Contact us'),
-                        buildListTile(context, Icons.privacy_tip,
-                            'Privacy policy',
+                        buildListTile(
+                            context, Icons.contact_mail, 'Contact us'),
+                        buildListTile(
+                            context, Icons.privacy_tip, 'Privacy policy',
                             destination: PrivacyPolicyScreen()),
                       ],
                     ),
