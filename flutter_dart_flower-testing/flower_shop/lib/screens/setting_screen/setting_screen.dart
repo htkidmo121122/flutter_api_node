@@ -105,7 +105,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         context,
                         [
                           buildListTile(context, Icons.admin_panel_settings,
-                              'Manage Orders',
+                              'Manage Systems',
                               destination: AdminMainPage()),
                         ],
                       ),

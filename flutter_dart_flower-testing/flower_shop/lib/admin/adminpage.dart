@@ -29,10 +29,11 @@ class _AdminMainPageState extends State<AdminMainPage> {
                 color: kcolorminor,
               ),
               child: Text(
-                'Admin Menu',
+                'Menu Admin',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
+                  fontWeight: FontWeight.bold
                 ),
               ),
             ),
@@ -52,14 +53,14 @@ class _AdminMainPageState extends State<AdminMainPage> {
             ),
             ListTile(
               leading: const Icon(Icons.production_quantity_limits),
-              title: const Text('Manage Products'),
+              title: const Text('Products'),
               onTap: () {
                 Navigator.pushNamed(context, ProductsScreen.routeName);
               },
             ),
             ListTile(
               leading: const Icon(Icons.person),
-              title: const Text('Manage Users'),
+              title: const Text('Users'),
               onTap: () {
                 Navigator.pushNamed(context, AdminUsers.routeName);
               },
@@ -74,9 +75,9 @@ class _AdminMainPageState extends State<AdminMainPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildDashboardCard('Product', '', Colors.blue),
-                _buildDashboardCard('User', '', Colors.yellow),
-                _buildDashboardCard('Order', '', Colors.red),
+                _buildDashboardCard('Product', '10', Colors.blue),
+                _buildDashboardCard('User', '2', kcolorminor),
+                _buildDashboardCard('Order', '10', Colors.red),
               ],
             ),
             const SizedBox(height: 20),
