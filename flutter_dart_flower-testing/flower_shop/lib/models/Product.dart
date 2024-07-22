@@ -15,31 +15,48 @@ class Product {
   final int countInStock;
   final int? selled;
 
-  Product(
-      {required this.id,
-      required this.images,
-      required this.rating,
-      required this.title,
-      required this.price,
-      required this.description,
-      required this.category,
-      this.discount,
-      required this.countInStock,
-      this.selled});
+  Product({
+    required this.id,
+    required this.images,
+    required this.rating,
+    required this.title,
+    required this.price,
+    required this.description,
+    required this.category,
+    this.discount,
+    required this.countInStock,
+    this.selled,
+  });
 
   factory Product.fromJson(Map<String, dynamic> json) {
     String base64Image = json['image'].split(',').last;
     return Product(
-        id: json['_id'],
-        images: base64Image,
-        title: json['name'],
-        price: json['price'].toDouble(),
-        description: json['description'],
-        rating: json['rating'] ?? 0,
-        category: json['type'],
-        discount: json['discount'] ?? 0,
-        countInStock: json['countInStock'] ?? 0,
-        selled: json['selled'] ?? 0);
+      id: json['_id'],
+      images: base64Image,
+      title: json['name'],
+      price: json['price'].toDouble(),
+      description: json['description'],
+      rating: json['rating'] ?? 0,
+      category: json['type'],
+      discount: json['discount'] ?? 0,
+      countInStock: json['countInStock'] ?? 0,
+      selled: json['selled'] ?? 0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'images': images,
+      'rating': rating,
+      'title': title,
+      'price': price,
+      'description': description,
+      'category': category,
+      'discount': discount,
+      'countInStock': countInStock,
+      'selled': selled,
+    };
   }
 }
 
@@ -54,7 +71,7 @@ List<Product> demoProducts = [];
 
 //   // Nếu chưa đủ 1 phút (60 milliseconds) kể từ lần cập nhật cuối cùng, sử dụng dữ liệu cache
 //   if (currentTime - lastFetchTime < 30 && cachedData != null) {
-    
+
 //       demoProducts = (json.decode(cachedData) as List)
 //           .map((json) => Product.fromJson(json))
 //           .toList();
@@ -62,7 +79,7 @@ List<Product> demoProducts = [];
 //   }
 //   else{
 //     // Cập nhật dữ liệu từ server nếu đã đủ 1 giờ hoặc không có dữ liệu cache
-//     final response = await http.get(Uri.parse('http://localhost:3001/api/product/get-all'));
+//     final response = await http.get(Uri.parse('http://10.0.2.2:3001/api/product/get-all'));
 //     if (response.statusCode == 200) {
 //       Map<String, dynamic> jsonResponse = json.decode(response.body);
 //       List<dynamic> jsonList = jsonResponse['data'];
@@ -87,13 +104,13 @@ Future<void> fetchProducts(BuildContext context) async {
     final currentTime = DateTime.now().millisecondsSinceEpoch;
     final lastFetchTime = prefs.getInt('lastFetchTime') ?? 0;
 
-
     if (cachedData != null && currentTime - lastFetchTime < 200000) {
       demoProducts = (json.decode(cachedData) as List)
           .map((json) => Product.fromJson(json))
           .toList();
     } else {
-      final response = await http.get(Uri.parse('http://localhost:3001/api/product/get-all'));
+      final response =
+          await http.get(Uri.parse('http://10.0.2.2:3001/api/product/get-all'));
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         List<dynamic> jsonList = jsonResponse['data'];
@@ -111,8 +128,8 @@ Future<void> fetchProducts(BuildContext context) async {
   }
 }
 
-  
-
-Uint8List _decodeBase64(String base64String) {
-  return base64Decode(base64String);
+class Utils {
+  static Uint8List decodeBase64(String base64String) {
+    return base64Decode(base64String);
+  }
 }
