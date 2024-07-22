@@ -37,8 +37,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
     }
   }
 
-
-
   Future<void> showAddProductDialog() async {
     final titleController = TextEditingController();
     final descriptionController = TextEditingController();
@@ -126,13 +124,13 @@ class _ProductsScreenState extends State<ProductsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Admin Products'),
-        actions: [
-          // IconButton(
-          //   icon: Icon(Icons.add),
-          //   onPressed: showAddProductDialog,
-          // ),
-        ],
+        //actions: [
+        // IconButton(
+        //icon: Icon(Icons.add),
+        //onPressed: showAddProductDialog,
       ),
+      //],
+      //),
       body: isLoading
           ? Center(child: Image.asset('assets/images/loadingflower.gif'))
           : ListView.builder(
@@ -142,22 +140,30 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 return ListTile(
                   leading: Image.memory(decodeBase64(product.images)),
                   title: Text(product.title),
-                  subtitle: Text('\$${product.price}'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${product.price}đ'),
+                      Text('Stock: ${product.countInStock}'),
+                    ],
+                  ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // IconButton(
-                      //   icon: Icon(Icons.edit),
-                      //   onPressed: () {
-                      //     // Implement edit functionality here
-                      //   },
-                      // ),
-                      // IconButton(
-                      //   icon: Icon(Icons.delete),
-                      //   onPressed: () {
-                      //     // deleteProduct(index);
-                      //   },
-                      // ),
+                      IconButton(
+                        icon: Icon(Icons.edit),
+                        color: Colors.white,
+                        onPressed: () {
+                          // Implement edit functionality here
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        color: Colors.white,
+                        onPressed: () {
+                          // deleteProduct(index);
+                        },
+                      ),
                     ],
                   ),
                 );
