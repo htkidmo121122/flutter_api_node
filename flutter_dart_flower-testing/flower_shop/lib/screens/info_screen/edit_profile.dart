@@ -197,7 +197,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 SnackBar(content: Text('Failed To Parse')),
               );
             }
-          } else {
+          } 
+          else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Lỗi khi cập nhật thông tin người dùng')),
             );
@@ -266,7 +267,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pushNamed(PersonalInfoScreen.routeName);
+            Navigator.pop(context);
           },
         ),
       ),

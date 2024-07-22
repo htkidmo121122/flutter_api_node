@@ -19,7 +19,7 @@ class PopularProducts extends StatelessWidget {
       future: fetchProducts(context), // Gọi fetchProducts để tải dữ liệu
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return Center();
         } else if (snapshot.hasError) {
           return Center(child: Text('Error loading products'));
         } else {

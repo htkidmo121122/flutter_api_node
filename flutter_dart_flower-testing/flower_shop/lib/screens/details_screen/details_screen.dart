@@ -103,6 +103,7 @@ class DetailsScreen extends StatelessWidget {
                 //     ],
                 //   ),
                 // ),
+                const SizedBox(height: 10),
                 CommentsSection(productId: product.id),
               ],
             ),
@@ -110,7 +111,7 @@ class DetailsScreen extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: TopRoundedContainer(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme.of(context).scaffoldBackgroundColor.withOpacity(1),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),

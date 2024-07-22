@@ -32,7 +32,7 @@ class _AllProductsState extends State<AllProducts> {
                   Image.asset('assets/images/loadingflower.gif'),
                   const SizedBox(height: 16),
                   const Text(
-                    'Đang xử lý...',
+                    'Đang tải...',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],

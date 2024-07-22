@@ -13,7 +13,7 @@ class Categories extends StatelessWidget {
       future: fetchProducts(context), // Gọi fetchProducts để tải dữ liệu
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return Center();
         } else if (snapshot.hasError) {
           return Center(child: Text('Error loading products'));
         } else {
@@ -113,8 +113,8 @@ class CategoryCard extends StatelessWidget {
                 ),
               ],
               border: Border.all(
-                color: Colors.white.withOpacity(0.4), // Màu viền với độ mờ
-                width: 1.0, // Độ dày của viền
+                color: Colors.white.withOpacity(0.5), // Màu viền với độ mờ
+                width: 1.5, // Độ dày của viền
               ),
             
             ),

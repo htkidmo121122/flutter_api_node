@@ -69,9 +69,6 @@ class _SignFormState extends State<SignForm> {
           final decodedToken = JwtDecoder.decode(
               data['access_token']); //decode access token lay id nguoi dung
           final userId = decodedToken['id'];
-          //Fetch user details using the access_token and userId
-          await _getUserDetails(userId, data['access_token']);
-
           setState(() {
             _isLoading = false;
           });
@@ -79,6 +76,10 @@ class _SignFormState extends State<SignForm> {
 
           // Navigate to MyStoredDataPage after successful login
           Navigator.pushNamed(context, Mainpage.routeName);
+          //Fetch user details using the access_token and userId
+          await _getUserDetails(userId, data['access_token']);
+
+          
         } catch (e) {
           final data = jsonDecode(response.body);
           final message = data['message'];
@@ -248,7 +249,7 @@ class _SignFormState extends State<SignForm> {
           ),
           const SizedBox(height: 16),
           _isLoading
-              ? CircularProgressIndicator()
+              ? const CircularProgressIndicator()
               : ElevatedButton(
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
