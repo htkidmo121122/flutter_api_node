@@ -57,7 +57,6 @@ class _FogotFormState extends State<FogotForm> {
           final responseData = jsonDecode(response.body);
           print(responseData);
           if(responseData['status'] == 'ERR'){
-
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(responseData['message']),

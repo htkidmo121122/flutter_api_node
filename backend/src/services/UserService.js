@@ -278,7 +278,7 @@ const requestPasswordReset = (email, req) => {
             if (!user) {
                 return resolve({
                     status: 'ERR',
-                    message: 'No account with that email address exists.'
+                    message: 'No Account With That Email Address Exists.'
                 });
             }
 
@@ -287,7 +287,7 @@ const requestPasswordReset = (email, req) => {
 
             resolve({
                 status: 'OK',
-                message: 'Password reset email has been sent.'
+                message: 'Password Reset Email Has Been Sent.'
             });
         } catch (e) {
             reject(e);
