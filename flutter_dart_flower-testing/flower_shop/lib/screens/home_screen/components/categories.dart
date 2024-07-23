@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:health_care/components/categories_skeleton.dart';
 import 'package:health_care/models/Product.dart';
 import 'package:health_care/screens/product_filled/filled_screen.dart';
+import 'package:skeleton_text/skeleton_text.dart';
 
 
 class Categories extends StatelessWidget {
@@ -13,7 +15,31 @@ class Categories extends StatelessWidget {
       future: fetchProducts(context), // Gọi fetchProducts để tải dữ liệu
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center();
+          return Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'What are you looking for?',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: List.generate(
+                      5, // Số lượng skeleton cards muốn hiển thị
+                      (index) => const CategoryCardSkeleton(),
+                    ),
+                  ),
+                ]
+            ),
+          );
         } else if (snapshot.hasError) {
           return Center(child: Text('Error loading products'));
         } else {
@@ -127,3 +153,46 @@ class CategoryCard extends StatelessWidget {
     );
   }
 }
+
+
+////Card Categoríes Skeleton Loading
+///
+// class CategoryCardSkeleton extends StatelessWidget {
+//   const CategoryCardSkeleton({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         SkeletonAnimation(
+//           shimmerColor: Colors.grey[300]!,
+//           borderRadius: BorderRadius.circular(10.0),
+//           shimmerDuration: 2000,
+//           child: Container(
+//             padding: const EdgeInsets.all(14),
+//             height: 56,
+//             width: 56,
+//             decoration: BoxDecoration(
+//               color: Colors.grey[300],
+//               borderRadius: BorderRadius.circular(10),
+//             ),
+//           ),
+//         ),
+//         const SizedBox(height: 4),
+//         SkeletonAnimation(
+//           shimmerColor: Colors.grey[300]!,
+//           borderRadius: BorderRadius.circular(10.0),
+//           shimmerDuration: 2000,
+//           child: Container(
+//             width: 60,
+//             height: 16,
+//             decoration: BoxDecoration(
+//               color: Colors.grey[300],
+//               borderRadius: BorderRadius.circular(10),
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }

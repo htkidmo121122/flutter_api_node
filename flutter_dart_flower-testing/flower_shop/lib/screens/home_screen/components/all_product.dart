@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:health_care/components/all_product_skeleton.dart';
 import 'package:health_care/components/product_card.dart';
 import 'package:health_care/models/Product.dart';
 import 'package:health_care/screens/details_screen/details_screen.dart';
 import 'package:health_care/provider/search_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:health_care/components/product_sort.dart'; // Import the ProductSorter
+import 'package:skeleton_text/skeleton_text.dart';
 
 import 'section_title.dart';
 
@@ -21,23 +23,43 @@ class _AllProductsState extends State<AllProducts> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
-      future: fetchProducts(context), // Gọi fetchProducts để tải dữ liệu
+      future: fetchProducts(context), // Gọi fetchProducts để tải dữ liệu mỗi khi truy cập vào trang
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Hình ảnh động hoặc bất kỳ widget nào thay thế cho CircularProgressIndicator
-                  Image.asset('assets/images/loadingflower.gif'),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Đang tải...',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ],
+          // Hiển thị các skeleton cards khi dữ liệu đang tải
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SectionTitle(
+                      title: "All ",
+                      press: () {},
+                    ),
+                  ],
+                ),
               ),
-            );
+              const SizedBox(height: 5),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: GridView.builder(
+                    itemCount: 8, // Số lượng skeleton cards muốn hiển thị
+                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200,
+                      childAspectRatio: 0.7,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 16,
+                    ),
+                    itemBuilder: (context, index) => const AllCardSkeleton(),
+                  ),
+                ),
+              ),
+            ],
+          );
         } else if (snapshot.hasError) {
           return Center(child: Text('Error loading products'));
         } else {
@@ -111,3 +133,7 @@ class _AllProductsState extends State<AllProducts> {
     );
   }
 }
+
+
+
+
