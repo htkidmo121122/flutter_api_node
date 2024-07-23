@@ -5,6 +5,7 @@ import 'package:health_care/admin/Orders/Orders.dart';
 import 'package:health_care/admin/adminpage.dart';
 import 'package:health_care/mainpage.dart';
 import 'package:health_care/provider/theme_provider.dart';
+import 'package:health_care/screens/charge_screen/charge_screen.dart';
 import 'package:health_care/screens/myorder_screen/myorder_screen.dart';
 import 'package:health_care/screens/setting_screen/components/Privacy_policy_screen.dart';
 import 'package:health_care/screens/info_screen/edit_profile.dart';
@@ -119,6 +120,10 @@ class _SettingScreenState extends State<SettingScreen> {
                         buildListTile(
                             context, Icons.shopping_basket, 'My Orders',
                             destination: MyOrdersScreen()),
+                        if (userId.isNotEmpty)
+                        buildListTile(
+                            context, Icons.password, 'Change Password',
+                            destination: ChangePasswordPage()),
                             
                         buildListTile(
                             context, Icons.person, 'Edit profile information'),

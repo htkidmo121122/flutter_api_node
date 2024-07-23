@@ -107,8 +107,8 @@ class AppTheme {
   }
 }
 
-// const OutlineInputBorder outlineInputBorder = OutlineInputBorder(
-//   borderRadius: BorderRadius.all(Radius.circular(28)),
-//   borderSide: BorderSide(color: kTextColor),
-//   gapPadding: 10,
-// );
+//  const OutlineInputBorder outlineInputBorder = OutlineInputBorder(
+//    borderRadius: BorderRadius.all(Radius.circular(28)),
+//    borderSide: BorderSide(color: kTextColor),
+//    gapPadding: 10,
+//  );

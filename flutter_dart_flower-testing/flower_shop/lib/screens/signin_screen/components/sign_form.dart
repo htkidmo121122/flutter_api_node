@@ -93,6 +93,9 @@ class _SignFormState extends State<SignForm> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('${message}')),
           );
+          setState(() {
+            _isLoading = false;
+          });
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -115,7 +118,7 @@ class _SignFormState extends State<SignForm> {
         final userData = jsonDecode(response.body);
         final userDetail = userData['data'];
         
-        print(userDetail);
+        // print(userDetail);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         // user_data lưu trữ thông tin người dùng chi tiết
         await prefs.setString(

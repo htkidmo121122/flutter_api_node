@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_care/mainpage.dart';
+import 'package:health_care/provider/auth_provider.dart';
 import 'package:health_care/provider/cart_provider.dart';
 import 'package:health_care/provider/search_provider.dart';
 import 'package:health_care/provider/theme_provider.dart';
@@ -17,6 +18,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => SearchProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider(isDarkMode)),
