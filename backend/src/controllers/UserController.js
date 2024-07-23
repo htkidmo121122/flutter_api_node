@@ -203,6 +203,44 @@ const changePassword = async (req, res) => {
     }
 }
 
+const requestPasswordReset = async (req, res) => {
+    try {
+        const { email } = req.body;
+        if (!email) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The email is required'
+            });
+        }
+
+        const response = await UserService.requestPasswordReset(email, req);
+        return res.status(200).json(response);
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        });
+    }
+};
+
+const resetPassword = async (req, res) => {
+    try {
+        const { token, newPassword } = req.body;
+        if (!token || !newPassword) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The token and newPassword are required'
+            });
+        }
+
+        const response = await UserService.resetPassword(token, newPassword);
+        return res.status(200).json(response);
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        });
+    }
+};
+
 
 module.exports = {
     createUser,
@@ -214,5 +252,7 @@ module.exports = {
     refreshToken,
     logoutUser,
     deleteMany,
-    changePassword
+    changePassword,
+    resetPassword,
+    requestPasswordReset
 }
