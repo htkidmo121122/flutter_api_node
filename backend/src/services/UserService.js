@@ -14,7 +14,7 @@ const createUser = (newUser) => {
             if (checkUser !== null) {
                 resolve({
                     status: 'ERR',
-                    message: 'The email is already'
+                    message: 'The Mail Is Already'
                 })
             }
             const hash = bcrypt.hashSync(password, 10)
@@ -55,7 +55,7 @@ const loginUser = (userLogin) => {
             if (!comparePassword) {
                 resolve({
                     status: 'ERR',
-                    message: 'The password or user is incorrect'
+                    message: 'The Password Or User Is Incorrect'
                 })
             }
             const access_token = await genneralAccessToken({
@@ -181,7 +181,8 @@ const getDetailsUser = (id) => {
         }
     })
 }
-
+ 
+///Chức năng đổi mật khấu
 const changePassword = (id, oldPassword, newPassword) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -191,7 +192,7 @@ const changePassword = (id, oldPassword, newPassword) => {
             if (user === null) {
                 return resolve({
                     status: 'ERR',
-                    message: 'The user is not defined'
+                    message: 'The User Is Not Defined'
                 });
             }
 
@@ -200,7 +201,7 @@ const changePassword = (id, oldPassword, newPassword) => {
             if (!isMatch) {
                 return resolve({
                     status: 'ERR',
-                    message: 'The old password is incorrect'
+                    message: 'The Old Password Is Incorrect'
                 });
             }
             
@@ -210,7 +211,7 @@ const changePassword = (id, oldPassword, newPassword) => {
 
             resolve({
                 status: 'OK',
-                message: 'Password changed successfully'
+                message: 'Password Changed Successfully'
             });
         } catch (e) {
             reject(e);
@@ -219,7 +220,7 @@ const changePassword = (id, oldPassword, newPassword) => {
 }
 
 
-
+/////// Chức năng forgot password
 const generateResetToken = async (user) => {
     return new Promise((resolve, reject) => {
         crypto.randomBytes(20, (err, buffer) => {
@@ -306,7 +307,7 @@ const resetPassword = (token, newPassword) => {
             if (!user) {
                 return resolve({
                     status: 'ERR',
-                    message: 'Password reset token is invalid or has expired.'
+                    message: 'Password Reset Token Is Invalid Or Has Expired.'
                 });
             }
 
@@ -319,7 +320,7 @@ const resetPassword = (token, newPassword) => {
 
             resolve({
                 status: 'OK',
-                message: 'Password has been reset successfully.'
+                message: 'Password Has Been Reset Successfully.'
             });
         } catch (e) {
             reject(e);

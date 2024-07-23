@@ -19,7 +19,7 @@ const createUser = async (req, res) => {
         } else if (password !== confirmPassword) {
             return res.status(200).json({
                 status: 'ERR',
-                message: 'The password is equal confirmPassword'
+                message: 'The Password Is Equal ConfirmPassword'
             })
         }
         const response = await UserService.createUser(req.body)
@@ -39,7 +39,7 @@ const loginUser = async (req, res) => {
         if (!email || !password) {
             return res.status(200).json({
                 status: 'ERR',
-                message: 'The input is required'
+                message: 'The Input Is Required'
             })
         } else if (!isCheckEmail) {
             return res.status(200).json({
@@ -190,7 +190,7 @@ const changePassword = async (req, res) => {
         if (!userId || !oldPassword || !newPassword) {
             return res.status(200).json({
                 status: 'ERR',
-                message: 'The userId, oldPassword, and newPassword are required'
+                message: 'Old Password,New Password Are Required'
             });
         }
 
@@ -209,7 +209,7 @@ const requestPasswordReset = async (req, res) => {
         if (!email) {
             return res.status(200).json({
                 status: 'ERR',
-                message: 'The email is required'
+                message: 'The Email Is Required'
             });
         }
 
@@ -228,7 +228,7 @@ const resetPassword = async (req, res) => {
         if (!token || !newPassword) {
             return res.status(200).json({
                 status: 'ERR',
-                message: 'The token and newPassword are required'
+                message: 'The Token and NewPassword Are Required'
             });
         }
 
