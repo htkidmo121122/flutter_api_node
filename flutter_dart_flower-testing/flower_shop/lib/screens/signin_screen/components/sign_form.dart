@@ -169,7 +169,7 @@ class _SignFormState extends State<SignForm> {
             },
             decoration: InputDecoration(
               labelText: 'Email',
-              hintText: 'Email',
+              hintText: 'Email Của Bạn',
               floatingLabelBehavior: FloatingLabelBehavior.always,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 16),

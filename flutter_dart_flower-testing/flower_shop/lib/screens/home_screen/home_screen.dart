@@ -25,7 +25,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _isLoading = true;
+  bool _isLoading = false;
 
   Future<void> _refreshProducts() async {
     setState(() {
