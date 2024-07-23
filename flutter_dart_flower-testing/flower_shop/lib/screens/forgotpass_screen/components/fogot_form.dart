@@ -54,16 +54,27 @@ class _FogotFormState extends State<FogotForm> {
         );
 
         if (response.statusCode == 200) {
-          // Thành công
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Password reset link sent to your email.'),
-            ),
-          );
-        } else {
-          // Thất bại
           final responseData = jsonDecode(response.body);
           print(responseData);
+          if(responseData['status'] == 'ERR'){
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(responseData['message']),
+              ),
+            );
+          }
+          else{
+            // Thành công
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Password reset link sent to your email.'),
+              ),
+            );
+          }
+          
+        } else {
+          // Thất bại
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Failed to send reset link.'),
