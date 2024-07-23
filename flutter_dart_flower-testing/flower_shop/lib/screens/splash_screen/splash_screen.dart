@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
                             ),
                           ),
                           child: const Text(
-                            "Sign Up",
+                            "Đăng Kí",
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -88,7 +88,7 @@ class _SplashScreenState extends State<SplashScreen> {
                             ),
                           ),
                           child: const Text(
-                            "Login",
+                            "Đăng Nhập",
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -98,7 +98,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         const SizedBox(height: 16),
                         //or connect with
                         const Text(
-                          "-or connect with-",
+                          "-hoặc-",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -137,7 +137,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           onTap: () =>
                               Navigator.pushNamed(context, Mainpage.routeName),
                           child: const Text(
-                            "No thanks! Later...",
+                            "Bỏ Qua Đăng Nhập",
                             style: TextStyle(
                                 fontSize: 16,    
                                 fontWeight: FontWeight.bold),

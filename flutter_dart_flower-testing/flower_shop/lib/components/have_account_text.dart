@@ -11,13 +11,13 @@ class HaveAccountText extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text(
-          "Already have an account? ",
+          "Bạn Đã Có Tài Khoản? ",
           style: TextStyle(fontSize: 16),
         ),
         GestureDetector(
           onTap: () => Navigator.pushNamed(context, SignInScreen.routeName),
           child: const Text(
-            "Login",
+            "Đăng Nhập",
             style: TextStyle(fontSize: 16, color: kSecondaryColor, fontWeight: FontWeight.bold),
           ),
         ),

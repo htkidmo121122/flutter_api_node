@@ -267,7 +267,7 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Manage Order"),
+        title: Text("Đơn Hàng Hệ Thống"),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {

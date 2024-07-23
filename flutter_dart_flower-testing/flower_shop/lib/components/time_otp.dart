@@ -68,7 +68,7 @@ class _TimeOTPState extends State<TimeOTP> {
             }
           },
           child: Text(
-            _remainingTime > 0 ? getFormattedTime(_remainingTime) : 'Resend',
+            _remainingTime > 0 ? getFormattedTime(_remainingTime) : 'Gửi Lại',
             style: TextStyle(
             fontSize: 16,
             color: _remainingTime > 0 ? Colors.red : Colors.blue,

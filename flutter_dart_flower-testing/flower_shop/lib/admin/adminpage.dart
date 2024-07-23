@@ -46,21 +46,21 @@ class _AdminMainPageState extends State<AdminMainPage> {
             ),
             ListTile(
               leading: const Icon(Icons.receipt),
-              title: const Text('Manage Orders'),
+              title: const Text('Quản Lý Đơn Hàng'),
               onTap: () {
                 Navigator.pushNamed(context, AdminOrdersScreen.routeName);
               },
             ),
             ListTile(
               leading: const Icon(Icons.production_quantity_limits),
-              title: const Text('Products'),
+              title: const Text('Sản Phẩm'),
               onTap: () {
                 Navigator.pushNamed(context, ProductsScreen.routeName);
               },
             ),
             ListTile(
               leading: const Icon(Icons.person),
-              title: const Text('Users'),
+              title: const Text('Người Dùng'),
               onTap: () {
                 Navigator.pushNamed(context, AdminUsers.routeName);
               },

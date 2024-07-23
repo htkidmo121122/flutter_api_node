@@ -36,7 +36,7 @@ class _AllProductsState extends State<AllProducts> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SectionTitle(
-                      title: "All ",
+                      title: "Tất Cả Sản Phẩm",
                       press: () {},
                     ),
                   ],
@@ -89,7 +89,7 @@ class _AllProductsState extends State<AllProducts> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SectionTitle(
-                      title: "All ",
+                      title: "Tất Cả Sản Phẩm",
                       press: () {},
                     ),
                     ProductSorter(

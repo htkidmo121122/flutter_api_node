@@ -131,7 +131,7 @@ class DetailsScreen extends StatelessWidget {
                   ));
                   if(result){
                   ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Added to Cart'),
+                      const SnackBar(content: Text('Đã thêm vào giỏ hàng'),
                       duration: Duration(milliseconds: 500)),
                     );
                   }
@@ -168,7 +168,7 @@ class DetailsScreen extends StatelessWidget {
                   backgroundColor: kPrimaryColor
                 ),
                 child: const Text(
-                  'Add To Cart',
+                  'Thêm vào giỏ hàng',
                 style: TextStyle(
                   color: white,
                   fontWeight: FontWeight.bold,

@@ -5,7 +5,7 @@ import 'package:health_care/admin/Orders/Orders.dart';
 import 'package:health_care/admin/adminpage.dart';
 import 'package:health_care/mainpage.dart';
 import 'package:health_care/provider/theme_provider.dart';
-import 'package:health_care/screens/charge_screen/charge_screen.dart';
+import 'package:health_care/screens/change_screen/change_screen.dart';
 import 'package:health_care/screens/myorder_screen/myorder_screen.dart';
 import 'package:health_care/screens/setting_screen/components/Privacy_policy_screen.dart';
 import 'package:health_care/screens/info_screen/edit_profile.dart';
@@ -66,7 +66,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Setting and Information"),
+        title: const Text("Cài Đặt Và Thông Tin"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -109,7 +109,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         context,
                         [
                           buildListTile(context, Icons.admin_panel_settings,
-                              'Manage Systems',
+                              'Quản Lý Hệ Thống',
                               destination: AdminMainPage()),
                         ],
                       ),
@@ -118,22 +118,22 @@ class _SettingScreenState extends State<SettingScreen> {
                       [
                         if (userId.isNotEmpty)
                         buildListTile(
-                            context, Icons.shopping_basket, 'My Orders',
+                            context, Icons.shopping_basket, 'Đơn Hàng Của Tôi',
                             destination: MyOrdersScreen()),
                         if (userId.isNotEmpty)
                         buildListTile(
-                            context, Icons.password, 'Change Password',
+                            context, Icons.password, 'Đổi Mật Khẩu',
                             destination: ChangePasswordPage()),
                             
                         buildListTile(
-                            context, Icons.person, 'Edit profile information'),
+                            context, Icons.person, 'Sửa Thông Tin'),
                         buildListTile(
-                            context, Icons.notifications, 'Notifications',
+                            context, Icons.notifications, 'Thông Báo',
                             trailing: Text(
                               notificationsOn ? 'ON' : 'OFF',
                               style: const TextStyle(color: Colors.pink),
                             )),
-                        buildListTile(context, Icons.language, 'Language',
+                        buildListTile(context, Icons.language, 'Ngôn Ngữ',
                             trailing: Text(
                               language,
                               style: const TextStyle(color: Colors.pink),
@@ -143,7 +143,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     buildSettingsGroup(
                       context,
                       [
-                        buildListTile(context, Icons.security, 'Security'),
+                        buildListTile(context, Icons.security, 'Bảo Mật'),
                         buildListTile(
                           context,
                           Icons.brightness_6,
@@ -162,9 +162,9 @@ class _SettingScreenState extends State<SettingScreen> {
                       [
                         buildListTile(context, Icons.help, 'Help & Support'),
                         buildListTile(
-                            context, Icons.contact_mail, 'Contact us'),
+                            context, Icons.contact_mail, 'Liên Hệ'),
                         buildListTile(
-                            context, Icons.privacy_tip, 'Privacy policy',
+                            context, Icons.privacy_tip, 'Privacy Policy',
                             destination: PrivacyPolicyScreen()),
                       ],
                     ),
@@ -195,9 +195,9 @@ class _SettingScreenState extends State<SettingScreen> {
       title: Text(title),
       trailing: trailing ?? const Icon(Icons.arrow_forward_ios),
       onTap: () {
-        if (title == 'Edit profile information') {
+        if (title == 'Sửa Thông Tin') {
           Navigator.of(context).pushNamed(EditProfileScreen.routeName);
-        } else if (title == 'Notifications') {
+        } else if (title == 'Thông Báo') {
           setState(() {
             notificationsOn = !notificationsOn;
           });

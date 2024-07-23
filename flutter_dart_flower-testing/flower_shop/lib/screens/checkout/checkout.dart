@@ -316,7 +316,7 @@ class _CheckoutState extends State<Checkout> {
             onPressed: () => Navigator.pop(context),
           ),
         title: const Text(
-          'Checkout',
+          'Thanh Toán',
           
         ),
         centerTitle: true,
@@ -346,11 +346,11 @@ class _CheckoutState extends State<Checkout> {
                       children: [
                         SizedBox(width: 8),
                         Icon(Icons.play_arrow, color: Colors.pink),
-                        Text('Delivery',
+                        Text('Giao Hàng',
                             style: TextStyle(fontSize: 18, color: Colors.pink)),
                         SizedBox(width: 16),
                         Icon(Icons.play_arrow, color: Colors.grey),
-                        Text('Payment',
+                        Text('Thanh Toán',
                             style: TextStyle(color: Colors.grey, fontSize: 18)),
                       ],
                     ),
@@ -358,7 +358,7 @@ class _CheckoutState extends State<Checkout> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Địa chỉ giao hàng',
+                        const Text('Địa Chỉ Giao Hàng',
                             style: TextStyle(fontSize: 18)),
                       ],
                     ),

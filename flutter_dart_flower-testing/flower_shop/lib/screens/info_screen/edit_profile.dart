@@ -264,7 +264,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Edit Profile"),
+        title: const Text("Sửa Thông Tin Người Dùng"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -319,12 +319,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     TextFormField(
                       controller: fullNameController,
                       decoration: const InputDecoration(
-                        labelText: 'Full Name',
+                        labelText: 'Tên',
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your full name';
+                          return 'Điền Tên';
                         }
                         return null;
                       },
@@ -339,10 +339,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
+                          return 'Điền Email';
                         }
                         if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                          return 'Please enter a valid email address';
+                          return 'Điền Email Hợp Lệ';
                         }
                         return null;
                       },
@@ -351,15 +351,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     TextFormField(
                       controller: phoneNumberController,
                       decoration: const InputDecoration(
-                        labelText: 'Phone Number',
+                        labelText: 'Số Điện Thoại',
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your phone number';
+                          return 'Điền Số Điện Thoại';
                         }
                         if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-                          return 'Please enter a valid phone number';
+                          return 'Điền Số Điện Thoại Khả Dụng';
                         }
                         return null;
                       },
@@ -368,12 +368,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     TextFormField(
                       controller: countryController,
                       decoration: const InputDecoration(
-                        labelText: 'Country',
+                        labelText: 'Thành Phố',
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your country';
+                          return 'Điền Thành Phố Của Bạn';
                         }
                         return null;
                       },
@@ -382,12 +382,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     TextFormField(
                       controller: addressController,
                       decoration: const InputDecoration(
-                        labelText: 'Address',
+                        labelText: 'Địa Chỉ',
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your address';
+                          return 'Điền Địa Chỉ';
                         }
                         return null;
                       },
@@ -408,7 +408,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       fontSize: 16, color: Colors.white),
                                 ),
                                 onPressed: _saveUserData,
-                                child: const Text('Save',
+                                child: const Text('Lưu',
                                     style: TextStyle(color: Colors.white)),
                               ),
                       ),

@@ -133,7 +133,7 @@ class _SignFormState extends State<SignForm> {
             },
             decoration: InputDecoration(
               labelText: 'Email',
-              hintText: 'Enter your email',
+              hintText: 'Email',
               floatingLabelBehavior: FloatingLabelBehavior.always,
 
               contentPadding:
@@ -208,8 +208,8 @@ class _SignFormState extends State<SignForm> {
               filled: true,
               fillColor: Theme.of(context).scaffoldBackgroundColor,
 
-              labelText: "Password",
-              hintText: "Your Password",
+              labelText: "Mật Khẩu",
+              hintText: "Mật Khẩu Của Bạn",
               // If  you are using latest version of flutter then lable text and hint text shown like this
               // if you r using flutter less then 1.20.* then maybe this is not working properly
               // floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -260,8 +260,8 @@ class _SignFormState extends State<SignForm> {
               ),
               filled: true,
               fillColor: Theme.of(context).scaffoldBackgroundColor,
-              labelText: "Confirm Password",
-              hintText: "Confirm Your Password",
+              labelText: "Xác Nhận Mật Khẩu",
+              hintText: "Xác Nhận Mật Khẩu Của Bạn",
               // If  you are using latest version of flutter then lable text and hint text shown like this
               // if you r using flutter less then 1.20.* then maybe this is not working properly
               // floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -307,7 +307,7 @@ class _SignFormState extends State<SignForm> {
                     ),
                   ),
                   child: const Text(
-                    "Sign Up",
+                    "Đăng Kí",
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

@@ -125,7 +125,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Admin Products'),
+        title: Text('Sản Phẩm'),
         actions: [
           // IconButton(
           //   icon: Icon(Icons.add),

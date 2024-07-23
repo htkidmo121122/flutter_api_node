@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'What are you looking for?',
+                              'Bạn đang tìm kiếm?',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
@@ -107,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: SectionTitle(
-                            title: "Popular",
+                            title: "Sản Phẩm Mới Nhất",
                             press: () {},
                           ),
                         ),
@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SectionTitle(
-                                  title: "All ",
+                                  title: "Tất Cả Sản Phẩm",
                                   press: () {},
                                 ),
                               ],

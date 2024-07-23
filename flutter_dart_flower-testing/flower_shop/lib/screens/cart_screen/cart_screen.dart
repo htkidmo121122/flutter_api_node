@@ -45,7 +45,7 @@ class _CartScreenState extends State<CartScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Shopping Cart"),
+        title: const Text("Giỏ Hàng"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

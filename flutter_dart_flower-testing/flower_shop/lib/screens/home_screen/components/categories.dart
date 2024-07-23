@@ -21,7 +21,7 @@ class Categories extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'What are you looking for?',
+                    'Bạn đang tìm kiếm?',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -65,7 +65,7 @@ class Categories extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'What are you looking for?',
+                    'Bạn đang tìm kiếm?',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,

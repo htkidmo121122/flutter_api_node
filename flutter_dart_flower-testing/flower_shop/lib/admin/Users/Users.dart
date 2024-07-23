@@ -78,7 +78,7 @@ class _AdminUsersState extends State<AdminUsers> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Users'),
+        title: const Text('Người Dùng'),
       ),
       body: users.isEmpty
       ? Center(child: Image.asset('assets/images/loadingflower.gif'))
@@ -88,7 +88,7 @@ class _AdminUsersState extends State<AdminUsers> {
         itemBuilder: (context, index) {
           final user = users[index];
           return ListTile(
-            title: Text('Name: ${user['name']?? 'No Name'}'),
+            title: Text('Tên: ${user['name']?? 'No Name'}'),
             subtitle: Text('Email: ${user['email']}'),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,

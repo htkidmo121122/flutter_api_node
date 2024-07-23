@@ -85,7 +85,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
             child: Row(
               children: [
                 Text(
-                  isExpanded ? "Show Less" : "See More Detail",
+                  isExpanded ? "Thu Gọn" : "Xem Thêm",
                   style: const TextStyle(fontWeight: FontWeight.w600, color: kPrimaryColor),
                 ),
                 const SizedBox(width: 5),

@@ -187,25 +187,25 @@ class _MainpageState extends State<Mainpage> {
                         ),
                       ]
               ),
-              label: 'Cart'
+              label: 'Giỏ Hàng'
                         
             ),
             
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.search),
-              label: 'Search',
+              label: 'Tìm Kiếm',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: 'Home',
+              label: 'Trang Chủ',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.settings),
-              label: 'Setting',
+              label: 'Cài Đặt',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              label: 'Personal',
+              label: 'Cá Nhân',
             ),
           ],
           currentIndex: _selectedIndex,

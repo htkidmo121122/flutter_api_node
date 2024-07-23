@@ -169,7 +169,7 @@ class _SignFormState extends State<SignForm> {
             },
             decoration: InputDecoration(
               labelText: 'Email',
-              hintText: 'Enter your email',
+              hintText: 'Email',
               floatingLabelBehavior: FloatingLabelBehavior.always,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -234,8 +234,8 @@ class _SignFormState extends State<SignForm> {
               ),
               filled: true,
               fillColor: Theme.of(context).scaffoldBackgroundColor,
-              labelText: "Password",
-              hintText: "Your Password",
+              labelText: "Mật Khẩu",
+              hintText: "Mật Khẩu Của Bạn",
             ),
           ),
           const SizedBox(height: 20),
@@ -246,7 +246,7 @@ class _SignFormState extends State<SignForm> {
                 onTap: () => Navigator.pushNamed(
                     context, ForgotPasswordScreen.routeName),
                 child: const Text(
-                  "Forgot Password?",
+                  "Quên Mật Khẩu?",
                   style: TextStyle(
                       color: kSecondaryColor, fontWeight: FontWeight.bold),
                 ),
@@ -268,7 +268,7 @@ class _SignFormState extends State<SignForm> {
                     ),
                   ),
                   child: const Text(
-                    "Sign In",
+                    "Đăng Nhập",
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

@@ -119,7 +119,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Personal Information"),
+        title: const Text("Thông Tin Cá Nhân"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -247,7 +247,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     isAdmin ? "Administrator" : "Customer",
                     style: const TextStyle(
                         fontSize: 20.0,
-                        fontFamily: 'Source Sans Pro',
+                        // fontFamily: 'Source Sans Pro',
                         color: kcolorminor,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 2.5),

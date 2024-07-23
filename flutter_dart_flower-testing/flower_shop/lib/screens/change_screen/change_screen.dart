@@ -92,7 +92,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Change Password'),
+        title: Text('Đổi Mật Khẩu'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -105,12 +105,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 controller: _oldPasswordController,
                 obscureText: true,
                 decoration: const InputDecoration(
-                  labelText: 'Old Password',
+                  labelText: 'Mật Khẩu Hiện Tại',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your old password';
+                    return 'Điền mật khẩu hiện tại';
                   }
                   return null;
                 },
@@ -119,16 +119,16 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               TextFormField(
                 controller: _newPasswordController,
                 decoration: const InputDecoration(
-                  labelText: 'New Password',
+                  labelText: 'Mật Khẩu Mới',
                   border: OutlineInputBorder(),
                   ),
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your new password';
+                    return 'Điền mật khẩu mới';
                   }
                   if (value.length < 8) {
-                    return 'Password must be at least 8 characters';
+                    return 'Mật Khẩu phải có ít nhất 8 ký tự';
                   }
                   return null;
                 },
@@ -137,16 +137,16 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               TextFormField(
                 controller: _confirmPasswordController,
                 decoration: const InputDecoration(
-                  labelText: 'Confirm New Password',
+                  labelText: 'Xác Nhận Mật Khẩu Mới',
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please confirm your new password';
+                    return 'Xác nhận mật khẩu mới';
                   }
                   if (value != _newPasswordController.text) {
-                    return 'Password do not match';
+                    return 'Mật khẩu không khớp';
                   }
                   return null;
                 },
@@ -167,7 +167,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                 fontSize: 16, color: Colors.white),
                           ),
                           onPressed: _changePassword,
-                          child: const Text('Save',
+                          child: const Text('Lưu',
                               style: TextStyle(color: Colors.white)),
                         ),
                 ),

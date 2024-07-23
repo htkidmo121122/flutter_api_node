@@ -33,15 +33,15 @@ class _ProductSorterState extends State<ProductSorter> {
         return [
           const PopupMenuItem(
             value: 'default',
-            child: Text('Newest'),
+            child: Text('Mới Nhất'),
           ),
           const PopupMenuItem(
             value: 'price_asc',
-            child: Text('Price: Low to High'),
+            child: Text('Giá: Thấp Đến Cao'),
           ),
           const PopupMenuItem(
             value: 'price_desc',
-            child: Text('Price: High to Low'),
+            child: Text('Giá: Cao Đến Thấp'),
           ),
         ];
       },
