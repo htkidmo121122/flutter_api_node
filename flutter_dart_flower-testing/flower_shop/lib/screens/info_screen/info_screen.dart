@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:health_care/constants.dart';
+import 'package:health_care/provider/cart_provider.dart';
 import 'package:health_care/screens/signin_screen/components/sign_form.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:health_care/screens/signin_screen/signin_screen.dart';
 import 'package:health_care/mainpage.dart';
@@ -29,18 +32,33 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   bool isLoading = true;
   Uint8List? userImage;
 
+  bool isAdmin = false;
 
   @override
   void initState() {
     super.initState();
     loadUserData();
+    checkrole();
   }
 
   Future<void> logout() async {
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear(); // Xóa toàn bộ dữ liệu trong SharedPreferences
+    cartProvider.cartItems.clear(); //xoa gio hang
     Navigator.pushNamed(context, SignInScreen.routeName);
     // Điều hướng về màn hình đăng nhập
+  }
+
+  Future<void> checkrole() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userDataString = prefs.getString('user_data');
+    if (userDataString != null) {
+      Map<String, dynamic> userData = jsonDecode(userDataString);
+      setState(() {
+        isAdmin = userData['isAdmin'] ?? false;
+      });
+    }
   }
 
   Future<void> loadUserData() async {
@@ -52,23 +70,26 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
       setState(() {
         user = User(
+          id: userData['_id'], //Không hiển thị id của người dùng đc
           fullName: userData['name']?.toString() ?? '',
           email: userData['email'],
           phoneNumber: userData['phone']?.toString() ?? '',
           country: userData['city']?.toString() ?? '',
           address: userData['address']?.toString() ?? '',
           image: userData['avatar'],
+          
         );
 
        
 
         // Cập nhật giá trị của các TextEditingController
-        fullNameController.text = user.fullName!;
-        emailController.text = user.email;
-        phoneNumberController.text = user.phoneNumber!;
-        countryController.text = user.country!;
         // genderController.text = user.gender!;
-        addressController.text = user.address!;
+        // fullNameController.text = user.fullName!;
+        // emailController.text = user.email;
+        // phoneNumberController.text = user.phoneNumber!;
+        // countryController.text = user.country!;
+        
+        // addressController.text = user.address!;
 
         if(user.image != null)
         {
@@ -119,8 +140,12 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
         padding: const EdgeInsets.all(16.0),
         child: isLoading
             ? Center(child: CircularProgressIndicator()) // Hiển thị loading khi đang tải dữ liệu
-            : Column(
+            : 
+           
+            Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  const SizedBox(height: 16),
                   Stack(
                     alignment: Alignment.center,
                     children: [
@@ -166,61 +191,138 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
-                  TextFormField(
-                    controller: fullNameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Full Name',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: phoneNumberController,
-                    decoration: const InputDecoration(
-                      labelText: 'Phone Number',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
+                  // TextFormField(
+                  //   controller: fullNameController,
+                  //   decoration: const InputDecoration(
+                  //     labelText: 'Full Name',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 16),
+                  // TextFormField(
+                  //   controller: emailController,
+                  //   decoration: const InputDecoration(
+                  //     labelText: 'Email',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 16),
+                  // TextFormField(
+                  //   controller: phoneNumberController,
+                  //   decoration: const InputDecoration(
+                  //     labelText: 'Phone Number',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 16),
                   
-                  TextFormField(
-                          controller: countryController,
-                          decoration: const InputDecoration(
-                            labelText: 'Country',
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
+                  // TextFormField(
+                  //         controller: countryController,
+                  //         decoration: const InputDecoration(
+                  //           labelText: 'Country',
+                  //           border: OutlineInputBorder(),
+                  //         ),
+                  //       ),
                  
-                      const SizedBox(width: 16),
-                      // Expanded(
-                      //   child: TextFormField(
-                      //     controller: genderController,
-                      //     decoration: const InputDecoration(
-                      //       labelText: 'Gender',
-                      //       border: OutlineInputBorder(),
-                      //     ),
-                      //   ),
-                      // ),
+                  //     const SizedBox(width: 16),
+                  //     // Expanded(
+                  //     //   child: TextFormField(
+                  //     //     controller: genderController,
+                  //     //     decoration: const InputDecoration(
+                  //     //       labelText: 'Gender',
+                  //     //       border: OutlineInputBorder(),
+                  //     //     ),
+                  //     //   ),
+                  //     // ),
                  
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: addressController,
-                    decoration: const InputDecoration(
-                      labelText: 'Address',
-                      border: OutlineInputBorder(),
+                  // const SizedBox(height: 16),
+                  // TextFormField(
+                  //   controller: addressController,
+                  //   decoration: const InputDecoration(
+                  //     labelText: 'Address',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  // ),
+                  Text(
+                    isAdmin ? "Administrator" : "Customer",
+                    style: const TextStyle(
+                        fontSize: 20.0,
+                        fontFamily: 'Source Sans Pro',
+                        color: kcolorminor,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2.5),
+                  ),
+                  const SizedBox(
+                    width: 150.0,
+                    height: 20.0,
+                    child: Divider(
+                      color: kcolormajor,
+                    ),
+                  ),
+                  Card(
+                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.phone,
+                        color: kPrimaryColor,
+                      ),
+                      title: Text(
+                        '+84 0${user.phoneNumber}',
+                        style: const TextStyle(
+                            fontSize: 20.0,
+                           
+                            ),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.email,
+                        color: kPrimaryColor,
+                      ),
+                      title: Text(
+                        user.email,
+                        style: const TextStyle(
+                            fontSize: 20.0,
+                            ),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.location_city,
+                        color: kPrimaryColor,
+                      ),
+                      title: Text(
+                        user.address!,
+                        style: const TextStyle(
+                            fontSize: 20.0,
+                            ),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.location_city_outlined,
+                        color: kPrimaryColor,
+                      ),
+                      title: Text(
+                        user.country!,
+                        style: const TextStyle(
+                            fontSize: 20.0,
+                            ),
+                      ),
                     ),
                   ),
                 ],
               ),
-      ),
-    );
-  }
-}
+            ),
+          );
+        }
+      }

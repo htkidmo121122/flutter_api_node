@@ -48,6 +48,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       setState(() {
         user = User(
+          id: userData['_id'],
           fullName: userData['name']?.toString() ?? '',
           email: userData['email'],
           phoneNumber: userData['phone']?.toString() ?? '',
@@ -113,10 +114,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         isSaving = true;
       });
       String? updatedImageBase64 = _imageBase64.isNotEmpty
-          ? 'data:image/png;base64,$_imageBase64'
+          ? 'data:image/jpeg;base64,$_imageBase64'
           : user.image;
 
       user = User(
+        id: '', //bỏ trống vì ko chỉnh sửa id người dùng
         fullName: fullNameController.text,
         email: emailController.text,
         phoneNumber: phoneNumberController.text,
@@ -178,7 +180,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             try {
               final userData = jsonDecode(response.body);
               final userDetail = userData['data'];
-
               //load lại dữ liệu người dùng sau khi đã cập nhập vào sharedPreferences
 
               final SharedPreferences prefs =
@@ -187,17 +188,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               await prefs.setString(
                   'user_data', jsonEncode(userDetail)); //luu duoi dang json
 
+              Navigator.pushNamed(context, PersonalInfoScreen.routeName);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Sửa thông tin thành công')),
               );
-              Navigator.pushNamed(context, PersonalInfoScreen.routeName);
             } catch (e) {
               // Handle JSON parse error
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Failed To Parse')),
               );
             }
-          } else {
+          } 
+          else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Lỗi khi cập nhật thông tin người dùng')),
             );
@@ -266,7 +268,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pushNamed(PersonalInfoScreen.routeName);
+            Navigator.pop(context);
           },
         ),
       ),

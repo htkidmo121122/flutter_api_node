@@ -66,11 +66,11 @@ class _HomeHeaderState extends State<HomeHeader> {
             ),
           ),
           const SizedBox(width: 16),
-          IconBtnWithCounter(
-            svgSrc: "assets/icons/bell.svg",
-            numOfitem: 3,
-            press: () {},
-          ),
+          // IconBtnWithCounter(
+          //   svgSrc: "assets/icons/bell.svg",
+          //   numOfitem: 3,
+          //   press: () {},
+          // ),
           const SizedBox(width: 8),
           InkWell(
             onTap: () {},

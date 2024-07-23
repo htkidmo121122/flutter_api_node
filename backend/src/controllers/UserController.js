@@ -180,6 +180,30 @@ const logoutUser = async (req, res) => {
         })
     }
 }
+
+//charge password
+const changePassword = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const { oldPassword, newPassword } = req.body;
+
+        if (!userId || !oldPassword || !newPassword) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The userId, oldPassword, and newPassword are required'
+            });
+        }
+
+        const response = await UserService.changePassword(userId, oldPassword, newPassword);
+        return res.status(200).json(response);
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        });
+    }
+}
+
+
 module.exports = {
     createUser,
     loginUser,
@@ -189,5 +213,6 @@ module.exports = {
     getDetailsUser,
     refreshToken,
     logoutUser,
-    deleteMany
+    deleteMany,
+    changePassword
 }

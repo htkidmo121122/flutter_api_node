@@ -61,7 +61,7 @@ class _CheckoutState extends State<Checkout> {
     } else {
       Navigator.pushNamed(context, SignInScreen.routeName);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Bạn chưa đăng nhập vào tài khoản')),
+        SnackBar(content: Text('Bạn chưa đăng nhập vào tài khoản', style: TextStyle(color: Theme.of(context).scaffoldBackgroundColor),)),
       );
     }
   }
@@ -145,7 +145,8 @@ class _CheckoutState extends State<Checkout> {
             (Route<dynamic> route) => false,
           );
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Row(
+            SnackBar(
+              content: Row(
               children: [
                 SizedBox(
                   width: 50,
@@ -206,8 +207,11 @@ class _CheckoutState extends State<Checkout> {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     ////////
     final shippingFee = calculateShippingFee(cartProvider.getTotalPrice());
-    final totalPriceInUSD = cartProvider.getTotalPriceInUSD();
-    final shippingFeeInUSD = shippingFee / 24000;
+    final totalPriceInUSD = cartProvider.getTotalPriceInUSD().toStringAsFixed(2);
+ 
+    final shippingFeeInUSD = (shippingFee / 24000).toStringAsFixed(2);
+    double total = double.parse(totalPriceInUSD) + double.parse(shippingFeeInUSD);
+    final totalprice = total.toStringAsFixed(2);
     //////////////
     print(cartProvider.cartItems.map((item) {
                   return {
@@ -217,9 +221,9 @@ class _CheckoutState extends State<Checkout> {
                     "currency": "USD"
                   };
                 }).toList());
-    print(totalPriceInUSD.toStringAsFixed(2));
-    print(shippingFeeInUSD.toStringAsFixed(2));
-    print((totalPriceInUSD + shippingFeeInUSD).toStringAsFixed(2));
+    print(totalPriceInUSD);
+    print(shippingFeeInUSD);
+    print(totalprice);
     /////////////////////
     if (_selectedPaymentMethod == 'PayPal') {
       Navigator.of(context).push(MaterialPageRoute(
@@ -232,11 +236,11 @@ class _CheckoutState extends State<Checkout> {
           transactions: [
             {
               "amount": {
-                "total": '${(totalPriceInUSD + shippingFeeInUSD).toStringAsFixed(2)}',// Lấy theo giá dollar
+                "total": totalprice,// Lấy theo giá dollar
                 "currency": "USD",
                 "details": {
-                  "subtotal": '${totalPriceInUSD.toStringAsFixed(2)}',
-                  "shipping": '${shippingFeeInUSD.toStringAsFixed(2)}',
+                  "subtotal": '${totalPriceInUSD}',
+                  "shipping": '${shippingFeeInUSD}',
                   "shipping_discount": 0
                 }
               },
@@ -325,7 +329,7 @@ class _CheckoutState extends State<Checkout> {
                   Image.asset('assets/images/loading.gif'),
                   const SizedBox(height: 16),
                   const Text(
-                    'Đang xử lý...',
+                    'Đang xác nhận...',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -386,8 +390,8 @@ class _CheckoutState extends State<Checkout> {
                     const SizedBox(height: 16),
                     const Divider(),
                     const SizedBox(height: 16),
-                    const Text('Sản phẩm', style: TextStyle(fontSize: 18)),
-                    const SizedBox(height: 16),
+                    const Text('Sản phẩm:', style: TextStyle(fontSize: 18)),
+                    const SizedBox(height: 10),
                     Container(
                       height: 200, // Adjust this height based on your layout
                       child: ListView.builder(
@@ -508,20 +512,19 @@ class _CheckoutState extends State<Checkout> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
                     if (_selectedPaymentMethod != 'PayPal') 
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: _handlePayment,
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            backgroundColor: kPrimaryColor,
-                          ),
-                          child: const Text('Thanh toán',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _handlePayment,
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          backgroundColor: kPrimaryColor,
                         ),
+                        child: const Text('Thanh Toán',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
                       ),
+                    ),
                     const SizedBox(height: 30),
                   ],
                 ),

@@ -18,8 +18,8 @@ class AppTheme {
             
       ),
       textTheme: const TextTheme(
-         bodyLarge: TextStyle(color: kTextColor, fontWeight: FontWeight.bold),
-         bodyMedium: TextStyle(color: kTextColor, fontWeight: FontWeight.bold),
+         bodyLarge: TextStyle(color: kTextColor),
+         bodyMedium: TextStyle(color: kTextColor),
          bodySmall: TextStyle(color: kTextColor, fontWeight: FontWeight.bold),
          titleLarge: TextStyle(color: kTextColor, fontWeight: FontWeight.bold)
       ),
@@ -62,7 +62,7 @@ class AppTheme {
         titleTextStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
       ),
       textTheme: const TextTheme(
-        bodyLarge: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        bodyLarge: TextStyle(color: Colors.white),
         bodyMedium: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         bodySmall: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         titleLarge: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
@@ -88,6 +88,10 @@ class AppTheme {
         textColor: Colors.black,
         backgroundColor: Colors.white
       ),
+      snackBarTheme: const SnackBarThemeData(
+        backgroundColor: kPrimaryLightColor,
+
+      ),
       // elevatedButtonTheme: ElevatedButtonThemeData(
       //   style: ElevatedButton.styleFrom(
       //     elevation: 0,
@@ -103,8 +107,8 @@ class AppTheme {
   }
 }
 
-// const OutlineInputBorder outlineInputBorder = OutlineInputBorder(
-//   borderRadius: BorderRadius.all(Radius.circular(28)),
-//   borderSide: BorderSide(color: kTextColor),
-//   gapPadding: 10,
-// );
+//  const OutlineInputBorder outlineInputBorder = OutlineInputBorder(
+//    borderRadius: BorderRadius.all(Radius.circular(28)),
+//    borderSide: BorderSide(color: kTextColor),
+//    gapPadding: 10,
+//  );

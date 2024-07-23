@@ -19,6 +19,8 @@ dependencies:
   intl: ^0.17.0
   socket_io_client: ^2.0.0
   flutter_paypal_checkout: ^1.0.1
+  skeleton_loader: ^2.0.0+4
+  skeleton_text: ^3.0.1
 
 dev_dependencies:
   flutter_test:

@@ -23,10 +23,11 @@ class _CommentsSectionState extends State<CommentsSection> {
   final TextEditingController _commentController = TextEditingController();
   final TextEditingController _ratingController = TextEditingController();
   List<Comment> comments = [];
+  ////////////////
   int _rating = 0;
   int _currentPage = 0;
   late IO.Socket socket;
-
+  bool _isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -54,6 +55,9 @@ class _CommentsSectionState extends State<CommentsSection> {
         if (mounted) {
           setState(() {
             comments.insert(0, comment);
+            if (comments.length == 1) {
+              futureComments = Future.value(comments);
+            }
           });
         }
       }
@@ -70,8 +74,8 @@ class _CommentsSectionState extends State<CommentsSection> {
     if (response.statusCode == 200) {
       List<dynamic> body = jsonDecode(response.body);
       List<Comment> comments =
-          body.map((dynamic item) => Comment.fromJson(item)).toList();
-      comments.sort((a, b) => b.date.compareTo(a.date));
+            body.map((dynamic item) => Comment.fromJson(item)).toList();
+        comments.sort((a, b) => b.date.compareTo(a.date));
       return comments;
     } else {
       throw Exception('Failed to load comments');
@@ -79,6 +83,9 @@ class _CommentsSectionState extends State<CommentsSection> {
   }
 
   Future<void> _addComment(String content, int rating) async {
+    setState(() {
+      _isLoading = true;
+    });
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userDataString = prefs.getString('user_data');
 
@@ -116,11 +123,22 @@ class _CommentsSectionState extends State<CommentsSection> {
       );
 
       if (response.statusCode == 201) {
+
         _commentController.clear();
         _ratingController.clear();
+       
+        setState(() {
+          _isLoading = false;
+
+        });
+    
+        
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Gửi Thành Công')),
         );
+        // if(comments.isEmpty){
+        //   futureComments = fetchCommentsByProduct(widget.productId);  
+        // }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Bạn chưa điền bình luận và đánh giá')),
@@ -194,33 +212,38 @@ class _CommentsSectionState extends State<CommentsSection> {
                 ],
               ),
               const SizedBox(height: 8.0),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    String content = _commentController.text;
-                    if (mounted) {
-                      _addComment(content, _rating);
-                    }
-                  },
-                  child: Text(
-                    'Gửi',
-                    style: TextStyle(color: white, fontWeight: FontWeight.bold),
+              
+              _isLoading ? 
+                  Center(child: Image.asset('assets/images/send.gif'))
+                : Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      String content = _commentController.text;
+                      if (mounted) {
+                        _addComment(content, _rating);
+                      }
+                    },
+                    child: Text(
+                      'Gửi',
+                      style: TextStyle(color: white, fontWeight: FontWeight.bold),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24.0, vertical: 12.0),
+                        backgroundColor: kcolorminor),
                   ),
-                  style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24.0, vertical: 12.0),
-                      backgroundColor: kcolorminor),
                 ),
-              ),
             ],
           ),
         ),
+        const SizedBox(height: 10),
+        const Divider(),
         const SizedBox(height: 20),
         FutureBuilder<List<Comment>>(
-          future: futureComments,
+          future: futureComments, 
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: Image.asset('assets/images/loadingflower.gif'));
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -315,7 +338,10 @@ class _CommentsSectionState extends State<CommentsSection> {
             }
           },
         ),
+        const SizedBox(height: 20),
+        const Divider(),
       ],
+
     );
   }
 }

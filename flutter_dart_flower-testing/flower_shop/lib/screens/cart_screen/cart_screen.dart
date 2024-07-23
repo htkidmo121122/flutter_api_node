@@ -145,7 +145,7 @@ class _CartScreenState extends State<CartScreen> {
                               children: <Widget>[
                                 // Hiển thị file GIF ở phía trên
                                 Image.asset(
-                                  'assets/images/cartempty.gif', // Thay đổi đường dẫn tới file GIF của bạn
+                                  'assets/images/cart.gif', // Thay đổi đường dẫn tới file GIF của bạn
                                   width: 100, // Điều chỉnh kích thước phù hợp
                                   height: 100, // Điều chỉnh kích thước phù hợp
                                 ),

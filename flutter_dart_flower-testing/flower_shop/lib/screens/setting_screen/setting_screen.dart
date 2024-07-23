@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:health_care/admin/Orders/Orders.dart';
 import 'package:health_care/admin/adminpage.dart';
 import 'package:health_care/mainpage.dart';
 import 'package:health_care/provider/theme_provider.dart';
+import 'package:health_care/screens/charge_screen/charge_screen.dart';
 import 'package:health_care/screens/myorder_screen/myorder_screen.dart';
 import 'package:health_care/screens/setting_screen/components/Privacy_policy_screen.dart';
 import 'package:health_care/screens/info_screen/edit_profile.dart';
@@ -28,6 +30,8 @@ class _SettingScreenState extends State<SettingScreen> {
   String? userImage64;
   Uint8List? userImage;
   bool isAdmin = false;
+  String userId = '';
+  
 
   @override
   void initState() {
@@ -41,6 +45,7 @@ class _SettingScreenState extends State<SettingScreen> {
     if (userDataString != null) {
       Map<String, dynamic> userData = jsonDecode(userDataString);
       setState(() {
+        userId = userData['_id'] ;
         userName = userData['name'] ?? 'none';
         userEmail = userData['email'];
         userPhone = '0${userData['phone'] ?? ''}';
@@ -80,7 +85,8 @@ class _SettingScreenState extends State<SettingScreen> {
                     radius: 50,
                     backgroundImage: userImage != null
                         ? MemoryImage(userImage!)
-                        : const AssetImage('assets/images/profile_image.png') as ImageProvider,
+                        : const AssetImage('assets/images/profile_image.png')
+                            as ImageProvider,
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -103,20 +109,26 @@ class _SettingScreenState extends State<SettingScreen> {
                         context,
                         [
                           buildListTile(context, Icons.admin_panel_settings,
-                              'Manage Orders', destination: AdminOrdersScreen()),
+                              'Manage Systems',
+                              destination: AdminMainPage()),
                         ],
                       ),
                     buildSettingsGroup(
                       context,
                       [
-                        buildListTile(context, Icons.shopping_basket,
-                            'My Orders',
-                            destination: MyOrdersScreen()
-                            ),
-                        buildListTile(context, Icons.person,
-                            'Edit profile information'),
-                        buildListTile(context, Icons.notifications,
-                            'Notifications',
+                        if (userId.isNotEmpty)
+                        buildListTile(
+                            context, Icons.shopping_basket, 'My Orders',
+                            destination: MyOrdersScreen()),
+                        if (userId.isNotEmpty)
+                        buildListTile(
+                            context, Icons.password, 'Change Password',
+                            destination: ChangePasswordPage()),
+                            
+                        buildListTile(
+                            context, Icons.person, 'Edit profile information'),
+                        buildListTile(
+                            context, Icons.notifications, 'Notifications',
                             trailing: Text(
                               notificationsOn ? 'ON' : 'OFF',
                               style: const TextStyle(color: Colors.pink),
@@ -149,9 +161,10 @@ class _SettingScreenState extends State<SettingScreen> {
                       context,
                       [
                         buildListTile(context, Icons.help, 'Help & Support'),
-                        buildListTile(context, Icons.contact_mail, 'Contact us'),
-                        buildListTile(context, Icons.privacy_tip,
-                            'Privacy policy',
+                        buildListTile(
+                            context, Icons.contact_mail, 'Contact us'),
+                        buildListTile(
+                            context, Icons.privacy_tip, 'Privacy policy',
                             destination: PrivacyPolicyScreen()),
                       ],
                     ),
