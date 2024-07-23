@@ -17,10 +17,12 @@ class CartProvider extends ChangeNotifier {
     bool found = false;
     for (int i = 0; i < _cartItems.length; i++) {
       if (_cartItems[i].id == item.id) {
-        if (_cartItems[i].quantity < _cartItems[i].stockCount || 
+        found = true;
+        if (_cartItems[i].quantity < _cartItems[i].stockCount && 
         _cartItems[i].stockCount != 0) 
         {
           _cartItems[i].quantity++;
+          
           notifyListeners();
           return true;
         } 
@@ -32,7 +34,14 @@ class CartProvider extends ChangeNotifier {
       }
     }
     if (!found) {
-      _cartItems.add(item);
+      if(item.stockCount != 0){
+        _cartItems.add(item);
+        return true;
+      }
+      else{
+        return false;
+      }
+      
     }
     notifyListeners();
     return true;

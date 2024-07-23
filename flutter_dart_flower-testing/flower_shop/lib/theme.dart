@@ -63,7 +63,7 @@ class AppTheme {
       ),
       textTheme: const TextTheme(
         bodyLarge: TextStyle(color: Colors.white),
-        bodyMedium: TextStyle(color: Colors.white),
+        bodyMedium: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         bodySmall: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         titleLarge: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
         
