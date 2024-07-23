@@ -98,7 +98,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         const SizedBox(height: 16),
                         //or connect with
                         const Text(
-                          "or connect with",
+                          "-or connect with-",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -130,12 +130,14 @@ class _SplashScreenState extends State<SplashScreen> {
                           ],
                         ),
                         const SizedBox(height: 16),
+                        // const SizedBox(height: 16),
+                        const Divider(),
                         const SizedBox(height: 16),
                         GestureDetector(
                           onTap: () =>
                               Navigator.pushNamed(context, Mainpage.routeName),
                           child: const Text(
-                            "No thanks! Later",
+                            "No thanks! Later...",
                             style: TextStyle(
                                 fontSize: 16,    
                                 fontWeight: FontWeight.bold),

@@ -29,6 +29,8 @@ class _SettingScreenState extends State<SettingScreen> {
   String? userImage64;
   Uint8List? userImage;
   bool isAdmin = false;
+  String userId = '';
+  
 
   @override
   void initState() {
@@ -42,6 +44,7 @@ class _SettingScreenState extends State<SettingScreen> {
     if (userDataString != null) {
       Map<String, dynamic> userData = jsonDecode(userDataString);
       setState(() {
+        userId = userData['_id'] ;
         userName = userData['name'] ?? 'none';
         userEmail = userData['email'];
         userPhone = '0${userData['phone'] ?? ''}';
@@ -112,9 +115,11 @@ class _SettingScreenState extends State<SettingScreen> {
                     buildSettingsGroup(
                       context,
                       [
+                        if (userId.isNotEmpty)
                         buildListTile(
                             context, Icons.shopping_basket, 'My Orders',
                             destination: MyOrdersScreen()),
+                            
                         buildListTile(
                             context, Icons.person, 'Edit profile information'),
                         buildListTile(
