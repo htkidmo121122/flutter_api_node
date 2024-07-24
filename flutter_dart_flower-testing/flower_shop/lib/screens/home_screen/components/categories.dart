@@ -16,33 +16,11 @@ class Categories extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           return Container();
-          // Padding(
-          //   padding: const EdgeInsets.all(20),
-          //   child: Column(
-          //       crossAxisAlignment: CrossAxisAlignment.start,
-          //       children: [
-          //         const Text(
-          //           'Bạn đang tìm kiếm?',
-          //           style: TextStyle(
-          //             fontSize: 18,
-          //             fontWeight: FontWeight.w500,         
-          // ),
-          //         ),
-          //         const SizedBox(height: 20),
-          //         Row(
-          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: List.generate(
-          //             5, // Số lượng skeleton cards muốn hiển thị
-          //             (index) => const CategoryCardSkeleton(),
-          //           ),
-          //         ),
-          //       ]
-          //   ),
-          // );
+          
         } else if (snapshot.hasError) {
           return Center(child: Text('Error loading products'));
-        } else {
+        } 
+        else {
           // Extract unique categories from products
           // lấy ra danh sách loại sản phẩm từ sản phẩm
           List<String> categories = demoProducts
@@ -72,7 +50,18 @@ class Categories extends StatelessWidget {
                       
                     ),
                   ),
+                  
                   const SizedBox(height: 20), // Optional SizedBox for spacing
+                  if (categories.isEmpty)
+                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: List.generate(
+                      5, // Số lượng skeleton cards muốn hiển thị
+                      (index) => const CategoryCardSkeleton(),
+                    ),
+                  ),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,

@@ -74,14 +74,12 @@ class PopularProducts extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (searchResults.isEmpty)
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Text(
-                          "Không tìm thấy sản phẩm nào",
-                          style: TextStyle(fontSize: 15, color: Colors.red),
-                        ),
-                      ),
-                    
+                      ...List.generate(
+                       4, // Số lượng skeleton cards muốn hiển thị
+                       (index) => const ProductCardSkeleton(),
+                     ),
+
+                     
                     SizedBox(height: 20),
                     ...List.generate(
                       searchResults.length,

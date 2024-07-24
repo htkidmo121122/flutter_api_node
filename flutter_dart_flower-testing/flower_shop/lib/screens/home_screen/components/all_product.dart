@@ -66,6 +66,8 @@ class _AllProductsState extends State<AllProducts> {
         } else {
           //lay ds san phẩm theo từ khoá tìm kiếm tu ds san pham tong (demoProduct)
           final searchQuery = Provider.of<SearchProvider>(context).searchQuery;
+
+          /////
           List<Product> searchResults = demoProducts.where((product) {
             final titleLower = product.title.toLowerCase();
             final searchLower = searchQuery.toLowerCase();
@@ -105,6 +107,23 @@ class _AllProductsState extends State<AllProducts> {
                 ),
               ),
               const SizedBox(height: 5),
+              if (displayedProducts.isEmpty)
+              Expanded(
+                 child: Padding(
+                   padding: const EdgeInsets.symmetric(horizontal: 20),
+                   child: GridView.builder(
+                     itemCount: 8, // Số lượng skeleton cards muốn hiển thị
+                     gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                       maxCrossAxisExtent: 200,
+                       childAspectRatio: 0.7,
+                       mainAxisSpacing: 20,
+                       crossAxisSpacing: 16,
+                     ),
+                     itemBuilder: (context, index) => const AllCardSkeleton(),
+                   ),
+                 ),
+              ),
+
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
