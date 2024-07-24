@@ -6,6 +6,7 @@ import 'package:health_care/admin/adminpage.dart';
 import 'package:health_care/mainpage.dart';
 import 'package:health_care/provider/theme_provider.dart';
 import 'package:health_care/screens/change_screen/change_screen.dart';
+import 'package:health_care/screens/favourite_screen/favourite_screen.dart';
 import 'package:health_care/screens/myorder_screen/myorder_screen.dart';
 import 'package:health_care/screens/setting_screen/components/Privacy_policy_screen.dart';
 import 'package:health_care/screens/info_screen/edit_profile.dart';
@@ -120,6 +121,10 @@ class _SettingScreenState extends State<SettingScreen> {
                         buildListTile(
                             context, Icons.shopping_basket, 'Đơn Hàng Của Tôi',
                             destination: MyOrdersScreen()),
+                        if (userId.isNotEmpty)
+                        buildListTile(
+                            context, Icons.favorite, 'Yêu Thích Của Tôi',
+                            destination: FavoritesScreen()),
                         if (userId.isNotEmpty)
                         buildListTile(
                             context, Icons.password, 'Đổi Mật Khẩu',

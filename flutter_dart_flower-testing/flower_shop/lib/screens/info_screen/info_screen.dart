@@ -244,7 +244,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                   //   ),
                   // ),
                   Text(
-                    isAdmin ? "Administrator" : "Customer",
+                    isAdmin ? "Administrator" :"Khách Hàng",
                     style: const TextStyle(
                         fontSize: 20.0,
                         // fontFamily: 'Source Sans Pro',

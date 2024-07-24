@@ -62,8 +62,8 @@ class CartItemWidget extends StatelessWidget {
                      bottomLeft: Radius.circular(10),
                    ),
                 ),
-                width: 140,
-                height: 140,
+                width: 150,
+                height: 180,
                 child: ClipRRect(
                   
                   borderRadius: const BorderRadius.only(
