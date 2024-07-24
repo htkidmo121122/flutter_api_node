@@ -257,7 +257,7 @@ const confirmPayment = (id) => {
             if (!order) {
                 return resolve({
                     status: 'ERR',
-                    message: 'Order not found'
+                    message: 'Order Not Found'
                 });
             }
             if (order.isPaid) {

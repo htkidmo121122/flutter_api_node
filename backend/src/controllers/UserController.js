@@ -19,7 +19,7 @@ const createUser = async (req, res) => {
         } else if (password !== confirmPassword) {
             return res.status(200).json({
                 status: 'ERR',
-                message: 'The password is equal confirmPassword'
+                message: 'The Password Is Equal ConfirmPassword'
             })
         }
         const response = await UserService.createUser(req.body)
@@ -39,7 +39,7 @@ const loginUser = async (req, res) => {
         if (!email || !password) {
             return res.status(200).json({
                 status: 'ERR',
-                message: 'The input is required'
+                message: 'The Input Is Required'
             })
         } else if (!isCheckEmail) {
             return res.status(200).json({
@@ -190,7 +190,7 @@ const changePassword = async (req, res) => {
         if (!userId || !oldPassword || !newPassword) {
             return res.status(200).json({
                 status: 'ERR',
-                message: 'The userId, oldPassword, and newPassword are required'
+                message: 'Old Password,New Password Are Required'
             });
         }
 
@@ -203,6 +203,44 @@ const changePassword = async (req, res) => {
     }
 }
 
+const requestPasswordReset = async (req, res) => {
+    try {
+        const { email } = req.body;
+        if (!email) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The Email Is Required'
+            });
+        }
+
+        const response = await UserService.requestPasswordReset(email, req);
+        return res.status(200).json(response);
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        });
+    }
+};
+
+const resetPassword = async (req, res) => {
+    try {
+        const { token, newPassword } = req.body;
+        if (!token || !newPassword) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The Token and NewPassword Are Required'
+            });
+        }
+
+        const response = await UserService.resetPassword(token, newPassword);
+        return res.status(200).json(response);
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        });
+    }
+};
+
 
 module.exports = {
     createUser,
@@ -214,5 +252,7 @@ module.exports = {
     refreshToken,
     logoutUser,
     deleteMany,
-    changePassword
+    changePassword,
+    resetPassword,
+    requestPasswordReset
 }

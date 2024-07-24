@@ -20,30 +20,31 @@ class PopularProducts extends StatelessWidget {
     return FutureBuilder<void>(
       future: fetchProducts(context), // Gọi fetchProducts để tải dữ liệu
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: SectionTitle(
-                  title: "Sản Phẩm Mới Nhất",
-                  press: () {},
-                ),
-              ),
-              const SizedBox(height: 5),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.generate(
-                    4, // Số lượng skeleton cards muốn hiển thị
-                    (index) => const ProductCardSkeleton(),
-                  ),
-                ),
-              ),
-            ],
-          );
+        if (snapshot.connectionState == ConnectionState.active) {
+          return Container();
+          // Column(
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     Padding(
+          //       padding: const EdgeInsets.symmetric(horizontal: 20),
+          //       child: SectionTitle(
+          //         title: "Sản Phẩm Mới Nhất",
+          //         press: () {},
+          //       ),
+          //     ),
+          //     const SizedBox(height: 5),
+          //     SingleChildScrollView(
+          //       scrollDirection: Axis.horizontal,
+          //       child: Row(
+          //         crossAxisAlignment: CrossAxisAlignment.start,
+          //         children: List.generate(
+          //           4, // Số lượng skeleton cards muốn hiển thị
+          //           (index) => const ProductCardSkeleton(),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // );
         } else if (snapshot.hasError) {
           return Center(child: Text('Error loading products'));
         } else {

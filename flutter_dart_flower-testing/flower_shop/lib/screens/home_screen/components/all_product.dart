@@ -25,41 +25,42 @@ class _AllProductsState extends State<AllProducts> {
     return FutureBuilder<void>(
       future: fetchProducts(context), // Gọi fetchProducts để tải dữ liệu mỗi khi truy cập vào trang
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.active) {
           // Hiển thị các skeleton cards khi dữ liệu đang tải
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SectionTitle(
-                      title: "Tất Cả Sản Phẩm",
-                      press: () {},
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 5),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: GridView.builder(
-                    itemCount: 8, // Số lượng skeleton cards muốn hiển thị
-                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
-                      childAspectRatio: 0.7,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 16,
-                    ),
-                    itemBuilder: (context, index) => const AllCardSkeleton(),
-                  ),
-                ),
-              ),
-            ],
-          );
+          return Container();
+          // Column(
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     Padding(
+          //       padding: const EdgeInsets.symmetric(horizontal: 20),
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: [
+          //           SectionTitle(
+          //             title: "Tất Cả Sản Phẩm",
+          //             press: () {},
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //     const SizedBox(height: 5),
+          //     Expanded(
+          //       child: Padding(
+          //         padding: const EdgeInsets.symmetric(horizontal: 20),
+          //         child: GridView.builder(
+          //           itemCount: 8, // Số lượng skeleton cards muốn hiển thị
+          //           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          //             maxCrossAxisExtent: 200,
+          //             childAspectRatio: 0.7,
+          //             mainAxisSpacing: 20,
+          //             crossAxisSpacing: 16,
+          //           ),
+          //           itemBuilder: (context, index) => const AllCardSkeleton(),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // );
         } else if (snapshot.hasError) {
           return Center(child: Text('Error loading products'));
         } else {

@@ -13,5 +13,7 @@ router.get('/get-details/:id', authUserMiddleWare, userController.getDetailsUser
 router.post('/refresh-token', userController.refreshToken)
 router.post('/delete-many', authMiddleWare, userController.deleteMany)
 router.put('/change-password/:id', authUserMiddleWare, userController.changePassword)
+router.post('/forgot-password', userController.requestPasswordReset);
+router.post('/reset-password', userController.resetPassword);
 
 module.exports = router

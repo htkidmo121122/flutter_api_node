@@ -124,7 +124,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         buildListTile(
                             context, Icons.password, 'Đổi Mật Khẩu',
                             destination: ChangePasswordPage()),
-                            
+                        if (userId.isNotEmpty)
                         buildListTile(
                             context, Icons.person, 'Sửa Thông Tin'),
                         buildListTile(

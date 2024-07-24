@@ -1,5 +1,7 @@
 const User = require("../models/UserModel")
 const bcrypt = require("bcrypt")
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 const { genneralAccessToken, genneralRefreshToken } = require("./JwtService")
 
 const createUser = (newUser) => {
@@ -12,7 +14,7 @@ const createUser = (newUser) => {
             if (checkUser !== null) {
                 resolve({
                     status: 'ERR',
-                    message: 'The email is already'
+                    message: 'The Mail Is Already'
                 })
             }
             const hash = bcrypt.hashSync(password, 10)
@@ -53,7 +55,7 @@ const loginUser = (userLogin) => {
             if (!comparePassword) {
                 resolve({
                     status: 'ERR',
-                    message: 'The password or user is incorrect'
+                    message: 'The Password Or User Is Incorrect'
                 })
             }
             const access_token = await genneralAccessToken({
@@ -179,7 +181,8 @@ const getDetailsUser = (id) => {
         }
     })
 }
-
+ 
+///Chức năng đổi mật khấu
 const changePassword = (id, oldPassword, newPassword) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -189,7 +192,7 @@ const changePassword = (id, oldPassword, newPassword) => {
             if (user === null) {
                 return resolve({
                     status: 'ERR',
-                    message: 'The user is not defined'
+                    message: 'The User Is Not Defined'
                 });
             }
 
@@ -198,7 +201,7 @@ const changePassword = (id, oldPassword, newPassword) => {
             if (!isMatch) {
                 return resolve({
                     status: 'ERR',
-                    message: 'The old password is incorrect'
+                    message: 'The Old Password Is Incorrect'
                 });
             }
             
@@ -208,13 +211,122 @@ const changePassword = (id, oldPassword, newPassword) => {
 
             resolve({
                 status: 'OK',
-                message: 'Password changed successfully'
+                message: 'Password Changed Successfully'
             });
         } catch (e) {
             reject(e);
         }
     });
 }
+
+
+/////// Chức năng forgot password
+const generateResetToken = async (user) => {
+    return new Promise((resolve, reject) => {
+        crypto.randomBytes(20, (err, buffer) => {
+            if (err) {
+                return reject(err);
+            }
+            const token = buffer.toString('hex');
+            const resetTokenExpiry = Date.now() + 3600000; // 1 hour
+
+            user.resetPasswordToken = token;
+            user.resetPasswordExpires = resetTokenExpiry;
+
+            user.save((err) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(token);
+            });
+        });
+    });
+};
+
+const sendResetEmail = (user, token, req) => {
+    return new Promise((resolve, reject) => {
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth: {
+                user: process.env.MAIL_ACCOUNT,
+                pass: process.env.MAIL_PASSWORD,
+            }
+        });
+
+        const mailOptions = {
+            to: user.email,
+            from: process.env.MAIL_ACCOUNT,
+            subject: 'Password Reset',
+            text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
+                   Please click on the following link, or paste this into your browser to complete the process:\n\n
+                   http://localhost:3002/reset/${token}\n\n
+                   If you did not request this, please ignore this email and your password will remain unchanged.\n`
+        };
+
+        transporter.sendMail(mailOptions, (err, response) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(response);
+        });
+    });
+};
+
+const requestPasswordReset = (email, req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const user = await User.findOne({ email: email });
+            if (!user) {
+                return resolve({
+                    status: 'ERR',
+                    message: 'No Account With That Email Address Exists.'
+                });
+            }
+
+            const token = await generateResetToken(user);
+            await sendResetEmail(user, token, req);
+
+            resolve({
+                status: 'OK',
+                message: 'Password Reset Email Has Been Sent.'
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+const resetPassword = (token, newPassword) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const user = await User.findOne({
+                resetPasswordToken: token,
+                resetPasswordExpires: { $gt: Date.now() }
+            });
+
+            if (!user) {
+                return resolve({
+                    status: 'ERR',
+                    message: 'Password Reset Token Is Invalid Or Has Expired.'
+                });
+            }
+
+            const hash = bcrypt.hashSync(newPassword, 10);
+            user.password = hash;
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpires = undefined;
+
+            await user.save();
+
+            resolve({
+                status: 'OK',
+                message: 'Password Has Been Reset Successfully.'
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 
 module.exports = {
     createUser,
@@ -224,5 +336,7 @@ module.exports = {
     getAllUser,
     getDetailsUser,
     deleteManyUser,
-    changePassword
+    changePassword,
+    requestPasswordReset,
+    resetPassword,
 }

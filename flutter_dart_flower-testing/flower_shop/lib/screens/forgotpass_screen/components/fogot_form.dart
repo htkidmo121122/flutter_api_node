@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:health_care/screens/forgotpass_screen/OTPVerification_screen.dart';
 import 'package:health_care/screens/signin_screen/signin_screen.dart';
@@ -15,6 +17,7 @@ class _FogotFormState extends State<FogotForm> {
   String? email;
   String? password;
   bool? remember = false;
+  bool _isLoading = false;
   final List<String?> errors = [];
 
   void addError({String? error}) {
@@ -30,6 +33,66 @@ class _FogotFormState extends State<FogotForm> {
       setState(() {
         errors.remove(error);
       });
+    }
+  }
+  Future<void> forgotPassword() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        final response = await http.post(
+          Uri.parse('http://localhost:3001/api/user/forgot-password'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'email': email!,
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          final responseData = jsonDecode(response.body);
+          print(responseData);
+          if(responseData['status'] == 'ERR'){
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(responseData['message']),
+              ),
+            );
+          }
+          else{
+            // Thành công
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Password Reset Link Sent To Your Email. CHECK YOUR EMAIL!!!!'),
+              ),
+            );
+          }
+          
+        } else {
+          // Thất bại
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to send reset link.'),
+            ),
+          );
+        }
+      } catch (error) {
+        // Lỗi mạng hoặc lỗi khác
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('An error occurred. Please try again.'),
+          ),
+        );
+      }
+      finally{
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -62,7 +125,7 @@ class _FogotFormState extends State<FogotForm> {
             },
             decoration: InputDecoration(
               labelText: 'Email',
-              hintText: 'Enter your email',
+              hintText: 'Điền Email',
               floatingLabelBehavior: FloatingLabelBehavior.always,
 
               contentPadding:
@@ -88,16 +151,10 @@ class _FogotFormState extends State<FogotForm> {
           const SizedBox(height: 20),
           // FormError(errors: errors),
           const SizedBox(height: 16),
+          _isLoading ? const Center(child: CircularProgressIndicator(),)
+          :
           ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => OTPVerificationScreen()),
-                );
-                _formKey.currentState!.save();
-              }
-            },
+            onPressed: forgotPassword,
             style: ElevatedButton.styleFrom(
               backgroundColor: kPrimaryColor,
               padding: const EdgeInsets.symmetric(vertical: 12),
@@ -110,7 +167,7 @@ class _FogotFormState extends State<FogotForm> {
               ),
             ),
             child: const Text(
-              "Send verification code",
+              "Gửi Đặt Lại Mật Khẩu",
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

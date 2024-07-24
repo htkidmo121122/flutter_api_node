@@ -25,7 +25,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _isLoading = true;
+  bool _isLoading = false;
 
   Future<void> _refreshProducts() async {
     setState(() {
@@ -72,97 +72,102 @@ class _HomeScreenState extends State<HomeScreen> {
                 const AnimatedBanner(),
                 const SizedBox(height: 10),
                 _isLoading
-                    ? Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Bạn đang tìm kiếm?',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: List.generate(
-                                5, // Số lượng skeleton cards muốn hiển thị
-                                (index) => const CategoryCardSkeleton(),
-                              ),
-                            ),
-                          ]
-                      ),
-                    )
+                    ? 
+                    Container()
+                    //  Padding(
+                    //    padding: const EdgeInsets.all(20),
+                    //    child: Column(
+                    //        crossAxisAlignment: CrossAxisAlignment.start,
+                    //        children: [
+                    //          const Text(
+                    //            'Bạn đang tìm kiếm?',
+                    //            style: TextStyle(
+                    //              fontSize: 18,
+                    //              fontWeight: FontWeight.w500,         
+                    //            ),
+                    //          ),
+                    //          const SizedBox(height: 20),
+                    //          Row(
+                    //            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //            crossAxisAlignment: CrossAxisAlignment.start,
+                    //            children: List.generate(
+                    //              5,  //Số lượng skeleton cards muốn hiển thị
+                    //              (index) => const CategoryCardSkeleton(),
+                    //            ),
+                    //          ),
+                    //        ]
+                    //    ),
+                    //  )
                     : 
                     const Categories(),
                 const SizedBox(height: 10),
                 _isLoading
-                    ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: SectionTitle(
-                            title: "Sản Phẩm Mới Nhất",
-                            press: () {},
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(
-                              4, // Số lượng skeleton cards muốn hiển thị
-                              (index) => const ProductCardSkeleton(),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
+                    ? 
+                    Container()
+                    // Column(
+                    //    crossAxisAlignment: CrossAxisAlignment.start,
+                    //    children: [
+                    //      Padding(
+                    //        padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //        child: SectionTitle(
+                    //          title: "Sản Phẩm Mới Nhất",
+                    //          press: () {},
+                    //        ),
+                    //      ),
+                    //      const SizedBox(height: 5),
+                    //      SingleChildScrollView(
+                    //        scrollDirection: Axis.horizontal,
+                    //        child: Row(
+                    //          crossAxisAlignment: CrossAxisAlignment.start,
+                    //          children: List.generate(
+                    //            4,  //Số lượng skeleton cards muốn hiển thị
+                    //            (index) => const ProductCardSkeleton(),
+                    //          ),
+                    //        ),
+                    //      ),
+                    //    ],
+                    //  )
                     : const PopularProducts(),
                 const SizedBox(height: 20),
                 SizedBox(
                   height: 600,
                   child: _isLoading
-                      ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SectionTitle(
-                                  title: "Tất Cả Sản Phẩm",
-                                  press: () {},
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: GridView.builder(
-                                itemCount: 8, // Số lượng skeleton cards muốn hiển thị
-                                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 200,
-                                  childAspectRatio: 0.7,
-                                  mainAxisSpacing: 20,
-                                  crossAxisSpacing: 16,
-                                ),
-                                itemBuilder: (context, index) => const AllCardSkeleton(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                      : const AllProducts(),
+                    ?  
+                    Container()
+                    // Column(
+                    //    crossAxisAlignment: CrossAxisAlignment.start,
+                    //    children: [
+                    //      Padding(
+                    //        padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //        child: Row(
+                    //          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //          children: [
+                    //            SectionTitle(
+                    //              title: "Tất Cả Sản Phẩm",
+                    //              press: () {},
+                    //            ),
+                    //          ],
+                    //        ),
+                    //      ),
+                    //      const SizedBox(height: 5),
+                    //      Expanded(
+                    //        child: Padding(
+                    //          padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //          child: GridView.builder(
+                    //            itemCount: 8, // Số lượng skeleton cards muốn hiển thị
+                    //            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    //              maxCrossAxisExtent: 200,
+                    //              childAspectRatio: 0.7,
+                    //              mainAxisSpacing: 20,
+                    //              crossAxisSpacing: 16,
+                    //            ),
+                    //            itemBuilder: (context, index) => const AllCardSkeleton(),
+                    //          ),
+                    //        ),
+                    //      ),
+                    //    ],
+                    //  )
+                    : const AllProducts(),
                 ),
               ],
             ),

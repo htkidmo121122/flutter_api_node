@@ -8,7 +8,14 @@ const userSchema = new mongoose.Schema(
         phone: { type: Number },
         address: { type: String },
         avatar: { type: String },
-        city: {type: String}
+        city: {type: String},
+        resetPasswordToken: {
+            type: String,
+            default: ''
+        },
+        resetPasswordExpires: {
+            type: Date
+        }
     },
     {
         timestamps: true

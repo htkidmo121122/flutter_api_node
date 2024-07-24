@@ -17,7 +17,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Forgot Password",
+          "Quên Mật Khẩu?",
           style: TextStyle(fontWeight: FontWeight.bold, color: kPrimaryColor),
         ),
       ),
@@ -37,13 +37,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                   const SizedBox(height: 20),
                   const Text(
-                    "Forgot your password?  ",
+                    "Bạn Quên Mật Khẩu?  ",
                     style: TextStyle(fontSize: 30),
                   ),
                   const SizedBox(height: 30),
                   const FogotForm(),
                   const SizedBox(height: 20),
-                  const HaveAccountText(),
+                  // const HaveAccountText(),
                 ],
               ),
             ),

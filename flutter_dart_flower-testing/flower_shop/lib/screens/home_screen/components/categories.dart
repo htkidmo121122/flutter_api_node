@@ -14,32 +14,32 @@ class Categories extends StatelessWidget {
     return FutureBuilder<void>(
       future: fetchProducts(context), // Gọi fetchProducts để tải dữ liệu
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Bạn đang tìm kiếm?',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(
-                      5, // Số lượng skeleton cards muốn hiển thị
-                      (index) => const CategoryCardSkeleton(),
-                    ),
-                  ),
-                ]
-            ),
-          );
+        if (snapshot.connectionState == ConnectionState.active) {
+          return Container();
+          // Padding(
+          //   padding: const EdgeInsets.all(20),
+          //   child: Column(
+          //       crossAxisAlignment: CrossAxisAlignment.start,
+          //       children: [
+          //         const Text(
+          //           'Bạn đang tìm kiếm?',
+          //           style: TextStyle(
+          //             fontSize: 18,
+          //             fontWeight: FontWeight.w500,         
+          // ),
+          //         ),
+          //         const SizedBox(height: 20),
+          //         Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //           crossAxisAlignment: CrossAxisAlignment.start,
+          //           children: List.generate(
+          //             5, // Số lượng skeleton cards muốn hiển thị
+          //             (index) => const CategoryCardSkeleton(),
+          //           ),
+          //         ),
+          //       ]
+          //   ),
+          // );
         } else if (snapshot.hasError) {
           return Center(child: Text('Error loading products'));
         } else {

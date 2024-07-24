@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_care/components/all_product_skeleton.dart';
 import 'package:health_care/components/product_card.dart';
 import 'package:health_care/models/Product.dart';
 import 'package:health_care/screens/details_screen/details_screen.dart';
@@ -27,8 +28,43 @@ class _FilteredProductsPageState extends State<FilteredProductsPage> {
     return FutureBuilder<void>(
       future: fetchProducts(context), // Gọi fetchProducts để tải dữ liệu
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+        if (snapshot.connectionState == ConnectionState.active) {
+          return Container();
+          // Column(
+          //    crossAxisAlignment: CrossAxisAlignment.start,
+          //    children: [
+          //      Padding(
+          //        padding: const EdgeInsets.symmetric(horizontal: 20),
+          //        child: Row(
+          //          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //          children: [Text(
+          //                 widget.category,
+          //                 style: const TextStyle(
+          //                   fontSize: 24,
+          //                   fontWeight: FontWeight.bold,
+          //                 ),
+          //         ),
+          //         ]
+          //        ),
+          //      ),
+          //      const SizedBox(height: 5),
+          //      Expanded(
+          //        child: Padding(
+          //          padding: const EdgeInsets.symmetric(horizontal: 20),
+          //          child: GridView.builder(
+          //            itemCount: 8,  //Số lượng skeleton cards muốn hiển thị
+          //            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          //              maxCrossAxisExtent: 200,
+          //              childAspectRatio: 0.7,
+          //              mainAxisSpacing: 20,
+          //              crossAxisSpacing: 16,
+          //            ),
+          //            itemBuilder: (context, index) => const AllCardSkeleton(),
+          //          ),
+          //        ),
+          //      ),
+          //    ],
+          // );
         } else if (snapshot.hasError) {
           return Center(child: Text('Error loading products'));
         } else {
