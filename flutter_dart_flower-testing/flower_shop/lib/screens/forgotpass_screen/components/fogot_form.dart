@@ -67,7 +67,7 @@ class _FogotFormState extends State<FogotForm> {
             // Thành công
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Password reset link sent to your email.'),
+                content: Text('Password Reset Link Sent To Your Email. CHECK YOUR EMAIL!!!!'),
               ),
             );
           }
@@ -125,7 +125,7 @@ class _FogotFormState extends State<FogotForm> {
             },
             decoration: InputDecoration(
               labelText: 'Email',
-              hintText: 'Enter your email',
+              hintText: 'Điền Email',
               floatingLabelBehavior: FloatingLabelBehavior.always,
 
               contentPadding:
@@ -167,7 +167,7 @@ class _FogotFormState extends State<FogotForm> {
               ),
             ),
             child: const Text(
-              "Send reset password to email",
+              "Gửi Đặt Lại Mật Khẩu",
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
