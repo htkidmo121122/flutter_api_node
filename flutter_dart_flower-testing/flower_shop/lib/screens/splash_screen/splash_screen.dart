@@ -3,6 +3,7 @@ import 'package:health_care/mainpage.dart';
 import 'package:health_care/screens/signin_screen/signin_screen.dart';
 import 'package:health_care/screens/signup_screen/signup_screen.dart';
 import 'package:health_care/screens/splash_screen/components/splash_content.dart';
+import 'package:health_care/screens/youtube_screen.dart';
 import '../../constants.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -121,10 +122,10 @@ class _SplashScreenState extends State<SplashScreen> {
                             ),
                             const SizedBox(width: 20),
                             IconButton(
-                              icon: const Icon(Icons.email, color: Colors.red),
+                              icon: const Icon(Icons.youtube_searched_for, color: Colors.red),
                               iconSize: 40,
                               onPressed: () {
-                                // Handle Gmail login
+                                Navigator.pushNamed(context, YouTubeVideoPage.routeName); // Chuyển hướng đến YouTubeVideoPage
                               },
                             ),
                           ],

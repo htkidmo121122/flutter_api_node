@@ -18,6 +18,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   bool _isLoading = false;
   String _responseMessage = '';
 
+  bool _obscureOldPassword = true;
+  bool _obscureNewPassword = true;
+  bool _obscureConfirmPassword = true;
+
   @override
   void dispose() {
     _oldPasswordController.dispose();
@@ -58,11 +62,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               content: Text(_responseMessage),
             ),
           );
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   const SnackBar(
-          //     content: Text('Password changed successfully'),
-          //   ),
-          // );
         } catch (error) {
           setState(() {
             _responseMessage = '$error';
@@ -73,7 +72,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               content: Text(_responseMessage),
             ),
           );
-        } 
+        }
       } else {
         setState(() {
           _responseMessage = 'User data or token not found';
@@ -103,10 +102,22 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _oldPasswordController,
-                obscureText: true,
-                decoration: const InputDecoration(
+                obscureText: _obscureOldPassword,
+                decoration: InputDecoration(
                   labelText: 'Mật Khẩu Hiện Tại',
                   border: OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureOldPassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureOldPassword = !_obscureOldPassword;
+                      });
+                    },
+                  ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -118,11 +129,23 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _newPasswordController,
-                decoration: const InputDecoration(
+                obscureText: _obscureNewPassword,
+                decoration: InputDecoration(
                   labelText: 'Mật Khẩu Mới',
                   border: OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureNewPassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureNewPassword = !_obscureNewPassword;
+                      });
+                    },
                   ),
-                obscureText: true,
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Điền mật khẩu mới';
@@ -133,14 +156,26 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   return null;
                 },
               ),
-              const SizedBox(height: 16,),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _confirmPasswordController,
-                decoration: const InputDecoration(
+                obscureText: _obscureConfirmPassword,
+                decoration: InputDecoration(
                   labelText: 'Xác Nhận Mật Khẩu Mới',
                   border: OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureConfirmPassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureConfirmPassword = !_obscureConfirmPassword;
+                      });
+                    },
+                  ),
                 ),
-                obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Xác nhận mật khẩu mới';
@@ -161,8 +196,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       : ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
-                            padding:
-                                const EdgeInsets.symmetric(vertical: 12),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
                             textStyle: const TextStyle(
                                 fontSize: 16, color: Colors.white),
                           ),

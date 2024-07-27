@@ -16,6 +16,7 @@ class SignForm extends StatefulWidget {
 }
 
 class _SignFormState extends State<SignForm> {
+  bool _isPasswordVisible = false;
   final _formKey = GlobalKey<FormState>();
   String? email = '';
   String? password = '';
@@ -193,7 +194,7 @@ class _SignFormState extends State<SignForm> {
           ),
           const SizedBox(height: 20),
           TextFormField(
-            obscureText: true,
+            obscureText: !_isPasswordVisible,
             onSaved: (newValue) => password = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
@@ -236,6 +237,17 @@ class _SignFormState extends State<SignForm> {
               fillColor: Theme.of(context).scaffoldBackgroundColor,
               labelText: "Mật Khẩu",
               hintText: "Mật Khẩu Của Bạn",
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isPasswordVisible = !_isPasswordVisible;
+                  });
+                },
+              ),
             ),
           ),
           const SizedBox(height: 20),
